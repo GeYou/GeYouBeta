@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/ivanwesleychua/Documents/GitItDone/jerkiic/GeYouBeta/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.1/jars/libs/internal_impl-22.2.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="c471eaaba13ff64f6e0383d1c30a9cdc9a97efeb">
+        <dex dex="/Users/ivanwesleychua/Documents/GitItDone/jerkiic/GeYouBeta/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.1-3e09502fb7ad4877ddef3d30e60022c6506856b9.jar" />
+    </item>
+    <item
+        jar="/Users/ivanwesleychua/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.6.0/a0990e2e812ac6639b6ce955c91b13228500476e/jackson-annotations-2.6.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="a0990e2e812ac6639b6ce955c91b13228500476e">
+        <dex dex="/Users/ivanwesleychua/Documents/GitItDone/jerkiic/GeYouBeta/app/build/intermediates/pre-dexed/debug/jackson-annotations-2.6.0-d980d0331dba8b3e9a436c40818543720ed3c758.jar" />
+    </item>
+    <item
+        jar="/Users/ivanwesleychua/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/22.2.1/support-annotations-22.2.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="61a0ff5c29295ec56d7e0bd3d25d95dbf71b4b2b">
+        <dex dex="/Users/ivanwesleychua/Documents/GitItDone/jerkiic/GeYouBeta/app/build/intermediates/pre-dexed/debug/support-annotations-22.2.1-a6d2df693871db20c59baf761543b4f93c4cca01.jar" />
+    </item>
+    <item
+        jar="/Users/ivanwesleychua/Documents/GitItDone/jerkiic/GeYouBeta/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="4486e953d1f35f8ccab098b1dd67146366d5f731">
+        <dex dex="/Users/ivanwesleychua/Documents/GitItDone/jerkiic/GeYouBeta/app/build/intermediates/pre-dexed/debug/classes-5afedac2f876ef5be3e48de42615016e79385f80.jar" />
+    </item>
+    <item
+        jar="/Users/ivanwesleychua/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.6.4/f2abadd10891512268b16a1a1a6f81890f3e2976/jackson-databind-2.6.4.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="f2abadd10891512268b16a1a1a6f81890f3e2976">
+        <dex dex="/Users/ivanwesleychua/Documents/GitItDone/jerkiic/GeYouBeta/app/build/intermediates/pre-dexed/debug/jackson-databind-2.6.4-0d27f2a8617848b6925834e6bc26fdcf669a459f.jar" />
+    </item>
+    <item
+        jar="/Users/ivanwesleychua/Documents/GitItDone/jerkiic/GeYouBeta/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="f8efd0096475e0daf054267b61544e10dc776503">
+        <dex dex="/Users/ivanwesleychua/Documents/GitItDone/jerkiic/GeYouBeta/app/build/intermediates/pre-dexed/debug/classes-a3eb5f58183a76daa6c600d2cfef063084e7b138.jar" />
+    </item>
+    <item
+        jar="/Users/ivanwesleychua/Documents/GitItDone/jerkiic/GeYouBeta/app/build/intermediates/exploded-aar/com.android.support/design/22.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="1821601ddbec5ff125653097812823388700af74">
+        <dex dex="/Users/ivanwesleychua/Documents/GitItDone/jerkiic/GeYouBeta/app/build/intermediates/pre-dexed/debug/classes-1dd0be1867090c659ce06c903e972a07f5e0e384.jar" />
+    </item>
+    <item
+        jar="/Users/ivanwesleychua/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.6.4/27d3a9f7bbdcf72d93c9b2da7017e39551bfa9fb/jackson-core-2.6.4.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="27d3a9f7bbdcf72d93c9b2da7017e39551bfa9fb">
+        <dex dex="/Users/ivanwesleychua/Documents/GitItDone/jerkiic/GeYouBeta/app/build/intermediates/pre-dexed/debug/jackson-core-2.6.4-3d0b3a6c2b46b75cd36218ff59d19a7be16ca088.jar" />
+    </item>
+
+</items>
