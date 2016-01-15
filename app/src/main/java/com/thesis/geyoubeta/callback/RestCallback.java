@@ -1,8 +1,11 @@
+/*
+ *  Unauthorized copying of this file, via any medium is strictly prohibited
+ *  Proprietary and confidential
+ *  Copyright (C) 2015 Ivan Wesley Chua and Jethro Divino
+ */
+
 package com.thesis.geyoubeta.callback;
 
-/**
- * Created by ivanwesleychua on 09/01/2016.
- */
 public interface RestCallback {
 
     void onRestFinish(Object data);
