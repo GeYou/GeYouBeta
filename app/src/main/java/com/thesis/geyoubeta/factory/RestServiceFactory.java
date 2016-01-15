@@ -1,3 +1,9 @@
+/*
+ *  Unauthorized copying of this file, via any medium is strictly prohibited
+ *  Proprietary and confidential
+ *  Copyright (C) 2015 Ivan Wesley Chua and Jethro Divino
+ */
+
 package com.thesis.geyoubeta.factory;
 
 import android.os.AsyncTask;
@@ -13,9 +19,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
-/**
- * Created by ivanwesleychua on 09/01/2016.
- */
 public class RestServiceFactory {
 
     private static RestServiceFactory factory;
