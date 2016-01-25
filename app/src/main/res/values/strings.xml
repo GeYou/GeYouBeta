@@ -27,4 +27,8 @@
 
     <string name="action_example">Example action</string>
     <string name="title_activity_user_info_edit">UserInfoEditActivity</string>
+    <string name="title_activity_create_party">CreatePartyActivity</string>
+    <string name="title_activity_party_info">PartyInfoActivity</string>
+    <string name="title_activity_messages">MessagesActivity</string>
+    <string name="title_activity_map">MapActivity</string>
 </resources>

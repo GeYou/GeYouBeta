@@ -21,8 +21,20 @@
             android:name=".activity.RegisterActivity"
             android:label="@string/title_activity_register" />
         <activity
-            android:name=".activity.UserInfoEditActivity"
-            android:label="@string/title_activity_user_info_edit"></activity>
+            android:name=".activity.UserInfoActivity"
+            android:label="@string/title_activity_user_info_edit" />
+        <activity
+            android:name=".activity.CreatePartyActivity"
+            android:label="@string/title_activity_create_party" />
+        <activity
+            android:name=".activity.PartyInfoActivity"
+            android:label="@string/title_activity_party_info" />
+        <activity
+            android:name=".activity.MessagesActivity"
+            android:label="@string/title_activity_messages" />
+        <activity
+            android:name=".activity.MapActivity"
+            android:label="@string/title_activity_map"></activity>
     </application>
 
 </manifest>
