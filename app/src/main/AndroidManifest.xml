@@ -26,6 +26,9 @@
         <activity
             android:name=".activity.RegisterActivity"
             android:label="@string/title_activity_register" />
+        <activity
+            android:name=".activity.TestDrawerActivity"
+            android:label="@string/title_activity_test_drawer"></activity>
     </application>
 
 </manifest>

@@ -16,4 +16,5 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_test">TestActivity</string>
+    <string name="title_activity_test_drawer">TestDrawerActivity</string>
 </resources>
