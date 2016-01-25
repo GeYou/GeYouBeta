@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~  Unauthorized copying of this file, via any medium is strictly prohibited
   ~  Proprietary and confidential
@@ -12,11 +13,6 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.thesis.geyoubeta.activity.TestActivity$PlaceholderFragment">
-
-    <TextView
-        android:id="@+id/section_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    tools:context="com.thesis.geyoubeta.activity.UserInfoEditActivity">
 
 </RelativeLayout>

@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.LoginActivity"
-            android:label="@string/title_activity_login"></activity>
+            android:label="@string/title_activity_login" />
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/title_activity_main" />
@@ -21,14 +21,8 @@
             android:name=".activity.RegisterActivity"
             android:label="@string/title_activity_register" />
         <activity
-            android:name=".activity.TestActivity"
-            android:label="@string/title_activity_test">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:name=".activity.UserInfoEditActivity"
+            android:label="@string/title_activity_user_info_edit"></activity>
     </application>
 
 </manifest>
