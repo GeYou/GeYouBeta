@@ -1,12 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~  Unauthorized copying of this file, via any medium is strictly prohibited
   ~  Proprietary and confidential
   ~  Copyright (C) 2015 Ivan Wesley Chua and Jethro Divino
   -->
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,11 +12,11 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".activity.TestDrawerActivity">
+    tools:context="com.thesis.geyoubeta.activity.TestActivity$PlaceholderFragment">
 
-    <android.support.v4.widget.DrawerLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <TextView
+        android:id="@+id/section_label"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/Drawerlayout" />
+        android:layout_height="wrap_content" />
+
 </RelativeLayout>
