@@ -8,7 +8,6 @@ package com.thesis.geyoubeta.activity;
 
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -40,7 +39,6 @@ public class MainActivity extends ActionBarActivity {
 
     // slide menu items
     private String[] navMenuTitles;
-    private TypedArray navMenuIcons;
 
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
@@ -74,10 +72,6 @@ public class MainActivity extends ActionBarActivity {
         // What's hot, We  will add a counter here
         navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], true, "50+"));
 
-
-        // Recycle the typed array
-        navMenuIcons.recycle();
-
         mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
 
         // setting the nav drawer list adapter
@@ -86,8 +80,8 @@ public class MainActivity extends ActionBarActivity {
         mDrawerList.setAdapter(adapter);
 
         // enabling action bar app icon and behaving it as toggle button
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setHomeButtonEnabled(true);
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.drawable.ic_drawer, //nav menu toggle icon
@@ -186,7 +180,7 @@ public class MainActivity extends ActionBarActivity {
                 break;
 
             default:
-                i = new Intent(MainActivity.this, PartyInfoActivity.class);
+                i = null;
                 break;
         }
 
@@ -195,7 +189,7 @@ public class MainActivity extends ActionBarActivity {
             // update selected item and title, then close the drawer
             mDrawerList.setItemChecked(position, true);
             mDrawerList.setSelection(position);
-            setTitle(navMenuTitles[position]);
+            //setTitle(navMenuTitles[position]);
             mDrawerLayout.closeDrawer(mDrawerList);
 
             startActivity(i);
@@ -205,11 +199,11 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    @Override
-    public void setTitle(CharSequence title) {
-        mTitle = title;
-        getActionBar().setTitle(mTitle);
-    }
+    //@Override
+    //public void setTitle(CharSequence title) {
+    //    mTitle = title;
+    //    getActionBar().setTitle(mTitle);
+    //}
 
     /**
      * When using the ActionBarDrawerToggle, you must call it during
