@@ -18,5 +18,4 @@ public class CreatePartyActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_party);
     }
-
 }

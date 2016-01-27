@@ -53,8 +53,6 @@ public class LoginActivity extends ActionBarActivity {
 
     public boolean checkLoginCredentials(String email, String password) {
 
-
         return true;
     }
-
 }

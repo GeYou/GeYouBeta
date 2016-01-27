@@ -79,10 +79,8 @@ public class RegisterActivity extends ActionBarActivity implements RestCallback 
 
         if (data != null) {
             Toast.makeText(getApplicationContext(), data.toString(), Toast.LENGTH_LONG).show();
-        }else {
+        } else {
             Toast.makeText(getApplicationContext(), "data is null", Toast.LENGTH_LONG).show();
         }
-
     }
-
 }

@@ -29,7 +29,6 @@ public class MainActivity extends ActionBarActivity {
     String TITLES[] = {"Main", "Create Party", "Map"};
     int ICONS[] = {R.drawable.traffic_light_50, R.drawable.heart_monitor_50, R.drawable.info_filled_50};
 
-
     RecyclerView mRecyclerView;                           // Declaring RecyclerView
     RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
     RecyclerView.LayoutManager mLayoutManager;            // Declaring Layout Manager as a linear layout manager
@@ -54,7 +53,6 @@ public class MainActivity extends ActionBarActivity {
 
         mRecyclerView.setAdapter(mAdapter);                              // Setting the adapter to RecyclerView
 
-
         final GestureDetector mGestureDetector = new GestureDetector(MainActivity.this, new GestureDetector.SimpleOnGestureListener() {
 
             @Override
@@ -64,12 +62,10 @@ public class MainActivity extends ActionBarActivity {
 
         });
 
-
         mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
             public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
                 View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
-
 
                 if ((child != null) && mGestureDetector.onTouchEvent(motionEvent)) {
                     Drawer.closeDrawers();
@@ -89,11 +85,8 @@ public class MainActivity extends ActionBarActivity {
                         startActivity(intent);
                     }
 
-
                     return true;
-
                 }
-
                 return false;
             }
 
@@ -103,11 +96,9 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-
         mLayoutManager = new LinearLayoutManager(this);                 // Creating a layout Manager
 
         mRecyclerView.setLayoutManager(mLayoutManager);                 // Setting the layout Manager
-
 
         Drawer = (DrawerLayout) findViewById(R.id.DrawerLayout);        // Drawer object Assigned to the view
         mDrawerToggle = new android.support.v7.app.ActionBarDrawerToggle(this, Drawer, toolbar, R.string.app_name, R.string.app_name) {
@@ -125,7 +116,6 @@ public class MainActivity extends ActionBarActivity {
                 // Code here will execute once drawer is closed
             }
 
-
         }; // Drawer Toggle Object Made
         Drawer.setDrawerListener(mDrawerToggle); // Drawer Listener set to the Drawer toggle
         mDrawerToggle.syncState();               // Finally we set the drawer toggle sync State
@@ -136,7 +126,6 @@ public class MainActivity extends ActionBarActivity {
         menu.setDisplayUseLogoEnabled(true);
         menu.setTitle(" ");
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -152,8 +141,6 @@ public class MainActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-
         return super.onOptionsItemSelected(item);
     }
-
 }

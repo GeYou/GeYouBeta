@@ -18,5 +18,4 @@ public class PartyInfoActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_party_info);
     }
-
 }
