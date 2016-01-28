@@ -42,7 +42,7 @@ public class UserInfoActivity extends ActionBarActivity {
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
         setSupportActionBar(toolbar);                   // Setting toolbar as the ActionBar with setSupportActionBar() call
-        toolbar.setTitle("Flux");
+        toolbar.setTitle("GeYou");
 
         mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView); // Assigning the RecyclerView Object to the xml View
 
