@@ -24,12 +24,97 @@
             android:id="@+id/tool_bar"
             layout="@layout/tool_bar" />
 
-        <TextView
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="90dp" />
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create Party"
-            android:id="@+id/textView6"
-            android:layout_gravity="center" />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal" >
+
+            <TextView
+                android:id="@+id/textViewPartyName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PARTY NAME:"
+                android:textColor="#000000"
+                android:textSize="17sp" />
+
+            <EditText
+                android:id="@+id/editTextPartyName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/textViewStartTimeStamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="START DATE AND TIME:"
+                android:textColor="#000000"
+                android:textSize="17sp" />
+
+            <EditText
+                android:id="@+id/editTextStartTimeStamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/textViewEndTimeStamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="END DATE AND TIME:"
+                android:textColor="#000000"
+                android:textSize="17sp" />
+
+            <EditText
+                android:id="@+id/editTextEndTimeStamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textEmailAddress"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/textViewDestination"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DESTINATION:"
+                android:textColor="#000000"
+                android:textSize="17sp" />
+
+            <EditText
+                android:id="@+id/editTextDestination"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPassword"
+                android:textSize="17sp" />
+
+            <Button
+                android:id="@+id/btnCreateParty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CREATE PARTY"
+                android:layout_gravity="center_horizontal" />
+
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CANCEL"
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
 
 
     </LinearLayout>
