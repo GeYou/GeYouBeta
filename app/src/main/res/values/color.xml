@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~  Unauthorized copying of this file, via any medium is strictly prohibited
   ~  Proprietary and confidential
@@ -5,10 +6,6 @@
   -->
 
 <resources>
-
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-    </style>
-
+    <color name="ColorPrimary">#2d4a8f</color>
+    <color name="ColorPrimaryDark">#29417a</color>
 </resources>

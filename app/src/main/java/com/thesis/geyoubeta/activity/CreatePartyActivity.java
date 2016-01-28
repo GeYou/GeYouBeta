@@ -18,19 +18,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
 
-public class LoginActivity extends ActionBarActivity {
-
-    Button btnLogin;
-    Button btnRegister;
-    EditText eTxtEmail;
-    EditText eTxtPassword;
+public class CreatePartyActivity extends ActionBarActivity {
 
     private Toolbar toolbar;
     String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "Logout"};
@@ -45,30 +38,7 @@ public class LoginActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
-        eTxtEmail = (EditText) findViewById(R.id.editTextEmailLogin);
-        eTxtPassword = (EditText) findViewById(R.id.editTextPasswordLogin);
-
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (checkLoginCredentials(eTxtEmail.getText().toString(), eTxtPassword.getText().toString())) {
-                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(i);
-                }
-            }
-        });
-        btnRegister = (Button) findViewById(R.id.btnRegisterLogin);
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
-                startActivity(i);
-            }
-        });
+        setContentView(R.layout.activity_create_party);
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
         setSupportActionBar(toolbar);                   // Setting toolbar as the ActionBar with setSupportActionBar() call
@@ -88,7 +58,6 @@ public class LoginActivity extends ActionBarActivity {
             public boolean onSingleTapUp(MotionEvent e) {
                 return true;
             }
-
         });
 
         mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
@@ -161,11 +130,6 @@ public class LoginActivity extends ActionBarActivity {
         menu.setDisplayShowHomeEnabled(true);
         menu.setDisplayUseLogoEnabled(true);
         menu.setTitle(" ");
-    }
-
-    public boolean checkLoginCredentials(String email, String password) {
-
-        return true;
     }
 
     @Override

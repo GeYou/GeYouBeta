@@ -2,8 +2,7 @@
   ~  Unauthorized copying of this file, via any medium is strictly prohibited
   ~  Proprietary and confidential
   ~  Copyright (C) 2015 Ivan Wesley Chua and Jethro Divino
-  -->
-
+-->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.thesis.geyoubeta">
 
@@ -14,22 +13,34 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.LoginActivity"
-            android:label="@string/title_activity_login"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="@string/title_activity_login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        </intent-filter>
         </activity>
         <activity
             android:name=".activity.MainActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_main" />
         <activity
             android:name=".activity.RegisterActivity"
-            android:label="@string/title_activity_register"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/title_activity_register" />
+        <activity
+            android:name=".activity.UserInfoActivity"
+            android:label="@string/title_activity_user_info_edit" />
+        <activity
+            android:name=".activity.CreatePartyActivity"
+            android:label="@string/title_activity_create_party" />
+        <activity
+            android:name=".activity.PartyInfoActivity"
+            android:label="@string/title_activity_party_info" />
+        <activity
+            android:name=".activity.MessagesActivity"
+            android:label="@string/title_activity_messages" />
+        <activity
+            android:name=".activity.MapActivity"
+            android:label="@string/title_activity_map" />
     </application>
 
 </manifest>

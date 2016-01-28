@@ -45,14 +45,13 @@ public class RestServiceFactory {
         String url = "http://10.0.3.2:8080/geyou/user/create";
 
 
-
     }
 
     private class GeYouRest extends AsyncTask<String, Void, Object> {
 
         private RestCallback delegate;
 
-        public void setDelegate(RestCallback delegate){
+        public void setDelegate(RestCallback delegate) {
             this.delegate = delegate;
         }
 
@@ -66,7 +65,7 @@ public class RestServiceFactory {
             InputStream in = null;
 
             User u = null;
-            try{
+            try {
                 URL url = new URL(params[0]);
                 URLConnection connection = url.openConnection();
 
@@ -87,8 +86,8 @@ public class RestServiceFactory {
                 Log.e("Rest service", "Error: IOe");
                 e.printStackTrace();
             } finally {
-                try{
-                    if(in != null){
+                try {
+                    if (in != null) {
                         in.close();
                     }
                 } catch (IOException e) {
