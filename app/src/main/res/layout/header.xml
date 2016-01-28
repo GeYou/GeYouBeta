@@ -4,8 +4,8 @@
     android:layout_height="178dp"
     android:orientation="vertical"
     android:weightSum="1"
-    android:id="@+id/sidebar"
-    android:background="@drawable/sidebar">
+    android:id="@+id/sidebar">
+    //android:background="@drawable/sidebar">
 
 
 
