@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.thesis.geyoubeta.R;
@@ -26,7 +25,7 @@ public class NavDrawerAdapter extends RecyclerView.Adapter<NavDrawerAdapter.View
     private static final int TYPE_ITEM = 1;
 
     private String mNavTitles[]; // String Array to store the passed titles Value from MainActivity.java
-    private int mIcons[];
+    //private int mIcons[];
     Context contxt;// Int Array to store the passed icons resource value from MainActivity.java
 
     // Creating a ViewHolder which extends the RecyclerView View Holder
@@ -36,7 +35,7 @@ public class NavDrawerAdapter extends RecyclerView.Adapter<NavDrawerAdapter.View
         int Holderid;
 
         TextView textView;
-        ImageView imageView;
+        //ImageView imageView;
 
         public ViewHolder(View itemView, int ViewType) {                 // Creating ViewHolder Constructor with View and viewType As a parameter
             super(itemView);
@@ -45,7 +44,7 @@ public class NavDrawerAdapter extends RecyclerView.Adapter<NavDrawerAdapter.View
 
             if (ViewType == TYPE_ITEM) {
                 textView = (TextView) itemView.findViewById(R.id.rowText); // Creating TextView object with the id of textView from item_row.xml
-                imageView = (ImageView) itemView.findViewById(R.id.rowIcon);// Creating ImageView object with the id of ImageView from item_row.xml
+                //imageView = (ImageView) itemView.findViewById(R.id.rowIcon);// Creating ImageView object with the id of ImageView from item_row.xml
                 Holderid = 1;                                               // setting holder id as 1 as the object being populated are of type item row
             } else {
                 Holderid = 0;                                                // Setting holder id = 0 as the object being populated are of type header view
@@ -53,10 +52,10 @@ public class NavDrawerAdapter extends RecyclerView.Adapter<NavDrawerAdapter.View
         }
     }
 
-    public NavDrawerAdapter(String Titles[], int Icons[]) { // MyAdapter Constructor with titles and icons parameter
+    public NavDrawerAdapter(String Titles[]) { // MyAdapter Constructor with titles and icons parameter
         // titles, icons, name, email, profile pic are passed from the main activity as we
         mNavTitles = Titles;                //have seen earlier
-        mIcons = Icons;
+        //mIcons = Icons;
     }
 
     //Below first we ovverride the method onCreateViewHolder which is called when the ViewHolder is
@@ -94,7 +93,7 @@ public class NavDrawerAdapter extends RecyclerView.Adapter<NavDrawerAdapter.View
         if (holder.Holderid == 1) {                              // as the list view is going to be called after the header view so we decrement the
             // position by 1 and pass it to the holder while setting the text and image
             holder.textView.setText(mNavTitles[position - 1]); // Setting the Text with the array of our Titles
-            holder.imageView.setImageResource(mIcons[position - 1]);// Settimg the image with array of our icons
+            //holder.imageView.setImageResource(mIcons[position - 1]);// Settimg the image with array of our icons
         } else {
 
             //  holder.profile.setImageResource(profile);           // Similarly we set the resources for header view

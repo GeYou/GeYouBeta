@@ -26,8 +26,7 @@ import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
 public class MainActivity extends ActionBarActivity {
 
     private Toolbar toolbar;
-    String TITLES[] = {"Main", "Create Party", "Map"};
-    int ICONS[] = {R.drawable.traffic_light_50, R.drawable.heart_monitor_50, R.drawable.info_filled_50};
+    String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "Logout"};
 
     RecyclerView mRecyclerView;                           // Declaring RecyclerView
     RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
@@ -43,13 +42,13 @@ public class MainActivity extends ActionBarActivity {
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
         setSupportActionBar(toolbar);                   // Setting toolbar as the ActionBar with setSupportActionBar() call
-        toolbar.setTitle("Flux");
+        toolbar.setTitle("GeYou");
 
         mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView); // Assigning the RecyclerView Object to the xml View
 
         mRecyclerView.setHasFixedSize(true);                            // Letting the system know that the list objects are of fixed size
 
-        mAdapter = new NavDrawerAdapter(TITLES, ICONS);
+        mAdapter = new NavDrawerAdapter(TITLES);
 
         mRecyclerView.setAdapter(mAdapter);                              // Setting the adapter to RecyclerView
 
@@ -73,15 +72,23 @@ public class MainActivity extends ActionBarActivity {
 
                     if (recyclerView.getChildPosition(child) == 1) {
                         Intent intent;
-                        intent = new Intent(MainActivity.this, MainActivity.class);
+                        intent = new Intent(getApplicationContext(), UserInfoActivity.class);
                         startActivity(intent);
                     } else if (recyclerView.getChildPosition(child) == 2) {
                         Intent intent;
-                        intent = new Intent(MainActivity.this, CreatePartyActivity.class);
+                        intent = new Intent(getApplicationContext(), CreatePartyActivity.class);
                         startActivity(intent);
                     } else if (recyclerView.getChildPosition(child) == 3) {
                         Intent intent;
-                        intent = new Intent(MainActivity.this, MapActivity.class);
+                        intent = new Intent(getApplicationContext(), MapActivity.class);
+                        startActivity(intent);
+                    } else if (recyclerView.getChildPosition(child) == 4) {
+                        Intent intent;
+                        intent = new Intent(getApplicationContext(), MessagesActivity.class);
+                        startActivity(intent);
+                    } else if (recyclerView.getChildPosition(child) == 5) {
+                        Intent intent;
+                        intent = new Intent(getApplicationContext(), PartyInfoActivity.class);
                         startActivity(intent);
                     }
 
@@ -122,7 +129,6 @@ public class MainActivity extends ActionBarActivity {
 
         android.support.v7.app.ActionBar menu = getSupportActionBar();
         menu.setDisplayShowHomeEnabled(true);
-        menu.setLogo(R.drawable.flux_100px);
         menu.setDisplayUseLogoEnabled(true);
         menu.setTitle(" ");
     }

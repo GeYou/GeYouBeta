@@ -6,15 +6,6 @@
     android:orientation="horizontal"
     android:padding="15dp">
 
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/rowIcon"
-        android:paddingLeft="20dp"
-        android:src="@drawable/ic_launcher"
-        android:scaleType="center" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
