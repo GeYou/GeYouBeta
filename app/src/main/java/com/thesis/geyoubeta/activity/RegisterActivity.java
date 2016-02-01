@@ -6,7 +6,6 @@
 
 package com.thesis.geyoubeta.activity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -25,11 +24,16 @@ import android.widget.Toast;
 
 import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
-import com.thesis.geyoubeta.callback.RestCallback;
 import com.thesis.geyoubeta.entity.User;
-import com.thesis.geyoubeta.factory.RestServiceFactory;
+import com.thesis.geyoubeta.service.GeYouService;
 
-public class RegisterActivity extends ActionBarActivity implements RestCallback {
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.converter.JacksonConverter;
+
+public class RegisterActivity extends ActionBarActivity {
 
     Button btnRegister;
     EditText eTxtFName;
@@ -37,7 +41,10 @@ public class RegisterActivity extends ActionBarActivity implements RestCallback 
     EditText eTxtEmail;
     EditText eTxtPassword;
     EditText eTxtConfirmPass;
-    RestServiceFactory restServiceFactory;
+
+    RestAdapter restAdapter;
+    GeYouService geYouService;
+    private static final String BASE_URL = "http://10.0.3.2:8080/geyou";
 
     private Toolbar toolbar;
     String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "Logout"};
@@ -54,9 +61,6 @@ public class RegisterActivity extends ActionBarActivity implements RestCallback 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        //init restServiceFactory
-        restServiceFactory = RestServiceFactory.getInstance();
-
         eTxtFName = (EditText) findViewById(R.id.editTextFirstName);
         eTxtLName = (EditText) findViewById(R.id.editTextLastName);
         eTxtEmail = (EditText) findViewById(R.id.editTextEmailReg);
@@ -65,7 +69,25 @@ public class RegisterActivity extends ActionBarActivity implements RestCallback 
 
         btnRegister = (Button) findViewById(R.id.btnRegisterReg);
 
-        restServiceFactory.sendGetRequest(this);
+        restAdapter = new RestAdapter.Builder()
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setEndpoint(BASE_URL)
+                .setConverter(new JacksonConverter())
+                .build();
+
+        geYouService = restAdapter.create(GeYouService.class);
+
+        geYouService.getUserById(1, new Callback<User>() {
+            @Override
+            public void success(User user, Response response) {
+                Toast.makeText(RegisterActivity.this, "data here : " +user.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(RegisterActivity.this, "unsuccessful", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,9 +97,9 @@ public class RegisterActivity extends ActionBarActivity implements RestCallback 
                     User nUser = new User();
 
                     nUser.setfName(eTxtFName.getText().toString());
-                    nUser.setfName(eTxtLName.getText().toString());
-                    nUser.setfName(eTxtEmail.getText().toString());
-                    nUser.setfName(eTxtPassword.getText().toString());
+                    nUser.setlName(eTxtLName.getText().toString());
+                    nUser.setEmail(eTxtEmail.getText().toString());
+                    nUser.setPassword(eTxtPassword.getText().toString());
                     registerCredentials(nUser);
                 } else {
                     eTxtPassword.setText("");
@@ -198,18 +220,16 @@ public class RegisterActivity extends ActionBarActivity implements RestCallback 
     }
 
     public void registerCredentials(User u) {
+        geYouService.createUser(u, new Callback<User>() {
+            @Override
+            public void success(User user, Response response) {
+                Toast.makeText(RegisterActivity.this, "Successfully created user.", Toast.LENGTH_LONG).show();
+            }
 
-    }
-
-    @SuppressLint("LongLogTag")
-    @Override
-    public void onRestFinish(Object data) {
-        //Log.v("REGISTER ACITIVTY CALLBACK", data.toString());
-
-        if (data != null) {
-            Toast.makeText(getApplicationContext(), data.toString(), Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(getApplicationContext(), "data is null", Toast.LENGTH_LONG).show();
-        }
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(RegisterActivity.this, "Unsuccessfully created user.", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
