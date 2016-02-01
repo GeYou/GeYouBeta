@@ -41,10 +41,12 @@ public class RestServiceFactory {
         task.execute(url);
     }
 
-    public void createUser() {
+    public void createUser(RestCallback delegate) {
         String url = "http://10.0.3.2:8080/geyou/user/create";
 
-
+        GeYouRest task = new GeYouRest();
+        task.setDelegate(delegate);
+        task.execute(url);
     }
 
     private class GeYouRest extends AsyncTask<String, Void, Object> {

@@ -37,7 +37,7 @@ public class RegisterActivity extends ActionBarActivity implements RestCallback 
     EditText eTxtEmail;
     EditText eTxtPassword;
     EditText eTxtConfirmPass;
-    RestServiceFactory factory;
+    RestServiceFactory restServiceFactory;
 
     private Toolbar toolbar;
     String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "Logout"};
@@ -54,8 +54,8 @@ public class RegisterActivity extends ActionBarActivity implements RestCallback 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        //init factory
-        factory = RestServiceFactory.getInstance();
+        //init restServiceFactory
+        restServiceFactory = RestServiceFactory.getInstance();
 
         eTxtFName = (EditText) findViewById(R.id.editTextFirstName);
         eTxtLName = (EditText) findViewById(R.id.editTextLastName);
@@ -65,7 +65,7 @@ public class RegisterActivity extends ActionBarActivity implements RestCallback 
 
         btnRegister = (Button) findViewById(R.id.btnRegisterReg);
 
-        factory.sendGetRequest(this);
+        restServiceFactory.sendGetRequest(this);
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,7 +182,7 @@ public class RegisterActivity extends ActionBarActivity implements RestCallback 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Inate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
