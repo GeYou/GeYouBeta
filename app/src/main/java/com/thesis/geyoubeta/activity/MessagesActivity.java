@@ -100,25 +100,23 @@ public class MessagesActivity extends ActionBarActivity {
                     Drawer.closeDrawers();
                     Toast.makeText(getApplicationContext(), "The Item Clicked is: " + recyclerView.getChildPosition(child), Toast.LENGTH_SHORT).show();
 
+                    Intent intent = null;
                     if (recyclerView.getChildPosition(child) == 1) {
-                        Intent intent;
                         intent = new Intent(getApplicationContext(), UserInfoActivity.class);
-                        startActivity(intent);
                     } else if (recyclerView.getChildPosition(child) == 2) {
-                        Intent intent;
                         intent = new Intent(getApplicationContext(), CreatePartyActivity.class);
-                        startActivity(intent);
                     } else if (recyclerView.getChildPosition(child) == 3) {
-                        Intent intent;
                         intent = new Intent(getApplicationContext(), MapActivity.class);
-                        startActivity(intent);
                     } else if (recyclerView.getChildPosition(child) == 4) {
-                        Intent intent;
                         intent = new Intent(getApplicationContext(), MessagesActivity.class);
-                        startActivity(intent);
                     } else if (recyclerView.getChildPosition(child) == 5) {
-                        Intent intent;
                         intent = new Intent(getApplicationContext(), PartyInfoActivity.class);
+                    } else if (recyclerView.getChildPosition(child) == 6) {
+                        intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    }
+
+                    if (intent != null) {
                         startActivity(intent);
                     }
 
