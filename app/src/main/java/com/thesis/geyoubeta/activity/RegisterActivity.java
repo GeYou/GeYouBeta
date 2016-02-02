@@ -69,13 +69,7 @@ public class RegisterActivity extends ActionBarActivity {
 
         btnRegister = (Button) findViewById(R.id.btnRegisterReg);
 
-        restAdapter = new RestAdapter.Builder()
-                .setLogLevel(RestAdapter.LogLevel.FULL)
-                .setEndpoint(BASE_URL)
-                .setConverter(new JacksonConverter())
-                .build();
-
-        geYouService = restAdapter.create(GeYouService.class);
+        initializeRest();
 
         geYouService.getUserById(1, new Callback<User>() {
             @Override
@@ -217,6 +211,16 @@ public class RegisterActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void initializeRest() {
+        restAdapter = new RestAdapter.Builder()
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setEndpoint(BASE_URL)
+                .setConverter(new JacksonConverter())
+                .build();
+
+        geYouService = restAdapter.create(GeYouService.class);
     }
 
     public void registerCredentials(User u) {

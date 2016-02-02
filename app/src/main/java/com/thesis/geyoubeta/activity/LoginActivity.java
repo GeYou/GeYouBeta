@@ -24,6 +24,13 @@ import android.widget.Toast;
 
 import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
+import com.thesis.geyoubeta.service.GeYouService;
+
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.converter.JacksonConverter;
 
 public class LoginActivity extends ActionBarActivity {
 
@@ -31,6 +38,10 @@ public class LoginActivity extends ActionBarActivity {
     Button btnRegister;
     EditText eTxtEmail;
     EditText eTxtPassword;
+
+    RestAdapter restAdapter;
+    GeYouService geYouService;
+    private static final String BASE_URL = "http://10.0.3.2:8080/geyou";
 
     private Toolbar toolbar;
     String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "Logout"};
@@ -51,13 +62,28 @@ public class LoginActivity extends ActionBarActivity {
         eTxtPassword = (EditText) findViewById(R.id.editTextPasswordLogin);
 
         btnLogin = (Button) findViewById(R.id.btnLogin);
+
+        initializeRest();
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkLoginCredentials(eTxtEmail.getText().toString(), eTxtPassword.getText().toString())) {
-                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(i);
-                }
+                geYouService.checkCredentials(eTxtEmail.getText().toString(), eTxtPassword.getText().toString(), new Callback<Boolean>() {
+                    @Override
+                    public void success(Boolean aBoolean, Response response) {
+                        if (aBoolean) {
+                            Intent i = new Intent(getApplicationContext(), MapActivity.class);
+                            startActivity(i);
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Not valid credentials.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+
+                    }
+                });
             }
         });
         btnRegister = (Button) findViewById(R.id.btnRegisterLogin);
@@ -163,11 +189,6 @@ public class LoginActivity extends ActionBarActivity {
         menu.setTitle(" ");
     }
 
-    public boolean checkLoginCredentials(String email, String password) {
-
-        return true;
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -184,4 +205,15 @@ public class LoginActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void initializeRest() {
+        restAdapter = new RestAdapter.Builder()
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setEndpoint(BASE_URL)
+                .setConverter(new JacksonConverter())
+                .build();
+
+        geYouService = restAdapter.create(GeYouService.class);
+    }
+
 }

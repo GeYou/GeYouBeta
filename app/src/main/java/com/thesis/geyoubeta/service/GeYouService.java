@@ -11,20 +11,28 @@ import com.thesis.geyoubeta.entity.User;
 
 import retrofit.Callback;
 import retrofit.http.Body;
-import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.POST;
 import retrofit.http.Path;
+import retrofit.http.Query;
 
 /**
  * Created by ivanwesleychua on 01/02/2016.
  */
 public interface GeYouService {
 
-    //@FormUrlEncoded
+    //USERS
+
     @POST("/user/create")
     void createUser(@Body User user, Callback<User> callback);
 
     @GET("/user/get/{id}")
     void getUserById(@Path("id") Integer id, Callback<User> callback);
+
+    @GET("/user/login")
+    void checkCredentials(@Query("email") String email, @Query("password") String password, Callback<Boolean> callback);
+
+    //PARTY
+
+    @POST("/party/create")
 }
