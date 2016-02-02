@@ -35,14 +35,16 @@ dependencies {
 
     //android
     testCompile 'junit:junit:4.12'
-
-    //drawer
-
-    //jackson
     compile 'com.android.support:support-v4:21.0.3'
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'de.hdodenhof:circleimageview:1.2.1'
     compile 'com.android.support:recyclerview-v7:21.0.3'
+
+    //jackson
     compile 'com.fasterxml.jackson.core:jackson-databind:2.6.4'
     compile 'com.fasterxml.jackson.core:jackson-core:2.6.4'
+
+    //rest
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
+    compile 'com.squareup.retrofit:converter-jackson:1.9.0'
 }
