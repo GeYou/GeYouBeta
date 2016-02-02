@@ -29,7 +29,7 @@ public interface GeYouService {
     //USERS
 
     @POST("/user/create")
-    void createUser(@Body User user, Callback callback);
+    void createUser(@Body User user, Callback<User> callback);
 
     @GET("/user/get/{id}")
     void getUserById(@Path("id") Integer id, Callback<User> callback);
@@ -44,7 +44,7 @@ public interface GeYouService {
     void checkCredentials(@Query("email") String email, @Query("password") String password, Callback<Boolean> callback);
 
     @PUT("/user/update")
-    void updateUser(@Body User user, Callback callback);
+    void updateUser(@Body User user, Callback<User> callback);
 
     @GET("/user/validateEmail")
     void validateEmail(@Query("email") String email, Callback<Boolean> callback);
@@ -67,5 +67,5 @@ public interface GeYouService {
     void validateName(@Query("name") String name, Callback<Boolean> callback);
 
     @PUT("/party/update")
-    void updateParty(@Body Party party, Callback callback);
+    void updateParty(@Body Party party, Callback<Party> callback);
 }

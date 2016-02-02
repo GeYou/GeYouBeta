@@ -58,12 +58,13 @@ public class LoginActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        initializeDrawer();
+        initializeRest();
+
         eTxtEmail = (EditText) findViewById(R.id.editTextEmailLogin);
         eTxtPassword = (EditText) findViewById(R.id.editTextPasswordLogin);
 
         btnLogin = (Button) findViewById(R.id.btnLogin);
-
-        initializeRest();
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +96,26 @@ public class LoginActivity extends ActionBarActivity {
                 startActivity(i);
             }
         });
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void initializeDrawer() {
         toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
         setSupportActionBar(toolbar);                   // Setting toolbar as the ActionBar with setSupportActionBar() call
         toolbar.setTitle("GeYou");
@@ -188,24 +208,6 @@ public class LoginActivity extends ActionBarActivity {
         menu.setDisplayUseLogoEnabled(true);
         menu.setTitle(" ");
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        return super.onOptionsItemSelected(item);
-    }
-
     public void initializeRest() {
         restAdapter = new RestAdapter.Builder()
                 .setLogLevel(RestAdapter.LogLevel.FULL)

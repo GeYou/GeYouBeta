@@ -61,6 +61,9 @@ public class RegisterActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        initializeDrawer();
+        initializeRest();
+
         eTxtFName = (EditText) findViewById(R.id.editTextFirstName);
         eTxtLName = (EditText) findViewById(R.id.editTextLastName);
         eTxtEmail = (EditText) findViewById(R.id.editTextEmailReg);
@@ -68,8 +71,6 @@ public class RegisterActivity extends ActionBarActivity {
         eTxtConfirmPass = (EditText) findViewById(R.id.editTextConfirmPassReg);
 
         btnRegister = (Button) findViewById(R.id.btnRegisterReg);
-
-        initializeRest();
 
         geYouService.getUserById(1, new Callback<User>() {
             @Override
@@ -102,7 +103,26 @@ public class RegisterActivity extends ActionBarActivity {
                 }
             }
         });
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void initializeDrawer() {
         toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
         setSupportActionBar(toolbar);                   // Setting toolbar as the ActionBar with setSupportActionBar() call
         toolbar.setTitle("GeYou");
@@ -196,23 +216,6 @@ public class RegisterActivity extends ActionBarActivity {
         menu.setTitle(" ");
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        return super.onOptionsItemSelected(item);
-    }
-
     public void initializeRest() {
         restAdapter = new RestAdapter.Builder()
                 .setLogLevel(RestAdapter.LogLevel.FULL)
@@ -227,7 +230,7 @@ public class RegisterActivity extends ActionBarActivity {
         geYouService.createUser(u, new Callback<User>() {
             @Override
             public void success(User user, Response response) {
-                Toast.makeText(RegisterActivity.this, "Successfully created user.", Toast.LENGTH_LONG).show();
+                Toast.makeText(RegisterActivity.this, "Successfully created user:" +user.toString(), Toast.LENGTH_LONG).show();
             }
 
             @Override

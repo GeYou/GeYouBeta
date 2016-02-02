@@ -18,12 +18,29 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
+import com.thesis.geyoubeta.service.GeYouService;
+
+import retrofit.RestAdapter;
+import retrofit.converter.JacksonConverter;
 
 public class CreatePartyActivity extends ActionBarActivity {
+
+    Button btnCreate;
+    Button btnCancel;
+    EditText eTxtName;
+    EditText eTxtStartTimeStamp;
+    EditText eTxtEndTimeStamp;
+    EditText eTxtDestination;
+
+    RestAdapter restAdapter;
+    GeYouService geYouService;
+    private static final String BASE_URL = "http://10.0.3.2:8080/geyou";
 
     private Toolbar toolbar;
     String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "Logout"};
@@ -40,6 +57,29 @@ public class CreatePartyActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_party);
 
+        initializeDrawer();
+        initializeRest();
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void initializeDrawer() {
         toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
         setSupportActionBar(toolbar);                   // Setting toolbar as the ActionBar with setSupportActionBar() call
         toolbar.setTitle("GeYou");
@@ -132,20 +172,20 @@ public class CreatePartyActivity extends ActionBarActivity {
         menu.setTitle(" ");
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    public void initializeRest() {
+        restAdapter = new RestAdapter.Builder()
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setEndpoint(BASE_URL)
+                .setConverter(new JacksonConverter())
+                .build();
+
+        geYouService = restAdapter.create(GeYouService.class);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        return super.onOptionsItemSelected(item);
+    public void clearInput() {
+        eTxtName.setText("");
+        eTxtStartTimeStamp.setText("");
+        eTxtEndTimeStamp.setText("");
+        eTxtDestination.setText("");
     }
 }

@@ -64,6 +64,7 @@ public class User {
                 + "] [ fName : " + getfName()
                 + "] [ lName : " + getlName()
                 + "] [ email : " + getEmail()
-                + "] [ password : " + getPassword();
+                + "] [ password : " + getPassword()
+                + "]";
     }
 }
