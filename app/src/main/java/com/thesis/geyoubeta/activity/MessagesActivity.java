@@ -22,8 +22,16 @@ import android.widget.Toast;
 
 import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
+import com.thesis.geyoubeta.service.GeYouService;
+
+import retrofit.RestAdapter;
+import retrofit.converter.JacksonConverter;
 
 public class MessagesActivity extends ActionBarActivity {
+
+    RestAdapter restAdapter;
+    GeYouService geYouService;
+    private static final String BASE_URL = "http://10.0.3.2:8080/geyou";
 
     private Toolbar toolbar;
     String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "Logout"};
@@ -41,7 +49,7 @@ public class MessagesActivity extends ActionBarActivity {
         setContentView(R.layout.activity_messages);
 
         initializeDrawer();
-
+        initializeRest();
     }
 
     @Override
@@ -153,5 +161,15 @@ public class MessagesActivity extends ActionBarActivity {
         menu.setDisplayShowHomeEnabled(true);
         menu.setDisplayUseLogoEnabled(true);
         menu.setTitle(" ");
+    }
+
+    public void initializeRest() {
+        restAdapter = new RestAdapter.Builder()
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setEndpoint(BASE_URL)
+                .setConverter(new JacksonConverter())
+                .build();
+
+        geYouService = restAdapter.create(GeYouService.class);
     }
 }

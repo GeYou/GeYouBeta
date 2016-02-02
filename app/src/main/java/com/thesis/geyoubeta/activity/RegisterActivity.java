@@ -36,6 +36,7 @@ import retrofit.converter.JacksonConverter;
 public class RegisterActivity extends ActionBarActivity {
 
     Button btnRegister;
+    Button btnCancel;
     EditText eTxtFName;
     EditText eTxtLName;
     EditText eTxtEmail;
@@ -63,46 +64,7 @@ public class RegisterActivity extends ActionBarActivity {
 
         initializeDrawer();
         initializeRest();
-
-        eTxtFName = (EditText) findViewById(R.id.editTextFirstName);
-        eTxtLName = (EditText) findViewById(R.id.editTextLastName);
-        eTxtEmail = (EditText) findViewById(R.id.editTextEmailReg);
-        eTxtPassword = (EditText) findViewById(R.id.editTextPasswordReg);
-        eTxtConfirmPass = (EditText) findViewById(R.id.editTextConfirmPassReg);
-
-        btnRegister = (Button) findViewById(R.id.btnRegisterReg);
-
-        geYouService.getUserById(1, new Callback<User>() {
-            @Override
-            public void success(User user, Response response) {
-                Toast.makeText(RegisterActivity.this, "data here : " +user.toString(), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Toast.makeText(RegisterActivity.this, "unsuccessful", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (eTxtConfirmPass.getText().toString().equals(eTxtPassword.getText().toString())) {
-                    Toast.makeText(getApplicationContext(), "Passwords match!", Toast.LENGTH_SHORT).show();
-                    User nUser = new User();
-
-                    nUser.setfName(eTxtFName.getText().toString());
-                    nUser.setlName(eTxtLName.getText().toString());
-                    nUser.setEmail(eTxtEmail.getText().toString());
-                    nUser.setPassword(eTxtPassword.getText().toString());
-                    registerCredentials(nUser);
-                } else {
-                    eTxtPassword.setText("");
-                    eTxtConfirmPass.setText("");
-                    Toast.makeText(getApplicationContext(), "Passwords do not match!", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        initializeComponents();
     }
 
     @Override
@@ -226,11 +188,59 @@ public class RegisterActivity extends ActionBarActivity {
         geYouService = restAdapter.create(GeYouService.class);
     }
 
+    public void initializeComponents() {
+        eTxtFName = (EditText) findViewById(R.id.editTextFirstName);
+        eTxtLName = (EditText) findViewById(R.id.editTextLastName);
+        eTxtEmail = (EditText) findViewById(R.id.editTextEmailReg);
+        eTxtPassword = (EditText) findViewById(R.id.editTextPasswordReg);
+        eTxtConfirmPass = (EditText) findViewById(R.id.editTextConfirmPassReg);
+
+        btnRegister = (Button) findViewById(R.id.btnRegisterReg);
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (eTxtConfirmPass.getText().toString().equals(eTxtPassword.getText().toString())) {
+                    Toast.makeText(getApplicationContext(), "Passwords match!", Toast.LENGTH_SHORT).show();
+                    User nUser = new User();
+
+                    nUser.setfName(eTxtFName.getText().toString());
+                    nUser.setlName(eTxtLName.getText().toString());
+                    nUser.setEmail(eTxtEmail.getText().toString());
+                    nUser.setPassword(eTxtPassword.getText().toString());
+                    registerCredentials(nUser);
+                } else {
+                    eTxtPassword.setText("");
+                    eTxtConfirmPass.setText("");
+                    Toast.makeText(getApplicationContext(), "Passwords do not match!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        btnCancel = (Button) findViewById(R.id.btnCancelRegister);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearInput();
+            }
+        });
+
+        geYouService.getUserById(1, new Callback<User>() {
+            @Override
+            public void success(User user, Response response) {
+                Toast.makeText(RegisterActivity.this, "data here : " + user.toString(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(RegisterActivity.this, "unsuccessful", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     public void registerCredentials(User u) {
         geYouService.createUser(u, new Callback<User>() {
             @Override
             public void success(User user, Response response) {
-                Toast.makeText(RegisterActivity.this, "Successfully created user:" +user.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(RegisterActivity.this, "Successfully created user:" + user.toString(), Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -238,5 +248,13 @@ public class RegisterActivity extends ActionBarActivity {
                 Toast.makeText(RegisterActivity.this, "Unsuccessfully created user.", Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public void clearInput() {
+        eTxtFName.setText("");
+        eTxtLName.setText("");
+        eTxtEmail.setText("");
+        eTxtPassword.setText("");
+        eTxtConfirmPass.setText("");
     }
 }

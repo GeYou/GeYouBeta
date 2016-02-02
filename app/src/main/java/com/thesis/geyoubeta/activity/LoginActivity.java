@@ -60,42 +60,7 @@ public class LoginActivity extends ActionBarActivity {
 
         initializeDrawer();
         initializeRest();
-
-        eTxtEmail = (EditText) findViewById(R.id.editTextEmailLogin);
-        eTxtPassword = (EditText) findViewById(R.id.editTextPasswordLogin);
-
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                geYouService.checkCredentials(eTxtEmail.getText().toString(), eTxtPassword.getText().toString(), new Callback<Boolean>() {
-                    @Override
-                    public void success(Boolean aBoolean, Response response) {
-                        if (aBoolean) {
-                            Intent i = new Intent(getApplicationContext(), MapActivity.class);
-                            startActivity(i);
-                        } else {
-                            Toast.makeText(LoginActivity.this, "Not valid credentials.", Toast.LENGTH_LONG).show();
-                        }
-                    }
-
-                    @Override
-                    public void failure(RetrofitError error) {
-
-                    }
-                });
-            }
-        });
-        btnRegister = (Button) findViewById(R.id.btnRegisterLogin);
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
-                startActivity(i);
-            }
-        });
+        initializeComponents();
     }
 
     @Override
@@ -218,4 +183,41 @@ public class LoginActivity extends ActionBarActivity {
         geYouService = restAdapter.create(GeYouService.class);
     }
 
+    public void initializeComponents() {
+        eTxtEmail = (EditText) findViewById(R.id.editTextEmailLogin);
+        eTxtPassword = (EditText) findViewById(R.id.editTextPasswordLogin);
+
+        btnLogin = (Button) findViewById(R.id.btnLogin);
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                geYouService.checkCredentials(eTxtEmail.getText().toString(), eTxtPassword.getText().toString(), new Callback<Boolean>() {
+                    @Override
+                    public void success(Boolean aBoolean, Response response) {
+                        if (aBoolean) {
+                            Intent i = new Intent(getApplicationContext(), MapActivity.class);
+                            startActivity(i);
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Not valid credentials.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+
+                    }
+                });
+            }
+        });
+
+        btnRegister = (Button) findViewById(R.id.btnRegisterLogin);
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
+                startActivity(i);
+            }
+        });
+    }
 }

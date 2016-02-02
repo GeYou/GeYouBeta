@@ -24,9 +24,13 @@ import android.widget.Toast;
 
 import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
+import com.thesis.geyoubeta.entity.Party;
 import com.thesis.geyoubeta.service.GeYouService;
 
+import retrofit.Callback;
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import retrofit.converter.JacksonConverter;
 
 public class CreatePartyActivity extends ActionBarActivity {
@@ -59,7 +63,7 @@ public class CreatePartyActivity extends ActionBarActivity {
 
         initializeDrawer();
         initializeRest();
-
+        initializeComponents();
     }
 
     @Override
@@ -180,6 +184,49 @@ public class CreatePartyActivity extends ActionBarActivity {
                 .build();
 
         geYouService = restAdapter.create(GeYouService.class);
+    }
+
+    public void initializeComponents() {
+        eTxtName = (EditText) findViewById(R.id.editTextPartyName);
+        eTxtStartTimeStamp = (EditText) findViewById(R.id.editTextStartTimeStamp);
+        eTxtEndTimeStamp = (EditText) findViewById(R.id.editTextEndTimeStamp);
+        eTxtDestination = (EditText) findViewById(R.id.editTextDestination);
+
+        btnCreate = (Button) findViewById(R.id.btnCreateParty);
+        btnCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Party nParty = new Party();
+
+                nParty.setName(eTxtName.getText().toString());
+                nParty.setStartDateTime(eTxtStartTimeStamp.getText().toString());
+                nParty.setEndDateTime(eTxtEndTimeStamp.getText().toString());
+                nParty.setDestination(eTxtDestination.getText().toString());
+
+                createParty(nParty);
+            }
+        });
+        btnCancel = (Button) findViewById(R.id.btnCancelParty);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearInput();
+            }
+        });
+    }
+
+    public void createParty(Party party) {
+        geYouService.createParty(party, new Callback<Party>() {
+            @Override
+            public void success(Party party, Response response) {
+                Toast.makeText(CreatePartyActivity.this, "Successfully created party: " + party.toString(), Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(CreatePartyActivity.this, "Unsuccessfully created party!", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     public void clearInput() {
