@@ -18,6 +18,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.thesis.geyoubeta.R;
@@ -28,6 +30,14 @@ import retrofit.RestAdapter;
 import retrofit.converter.JacksonConverter;
 
 public class PartyInfoActivity extends ActionBarActivity {
+
+    EditText eTxtName;
+    EditText eTxtStartTimeStamp;
+    EditText eTxtEndTimeStamp;
+    EditText eTxtDestination;
+    Button btnEdit;
+    Button btnSave;
+    Button btnCancel;
 
     RestAdapter restAdapter;
     GeYouService geYouService;
@@ -50,6 +60,7 @@ public class PartyInfoActivity extends ActionBarActivity {
 
         initializeDrawer();
         initializeRest();
+        initializeComponents();
     }
 
     @Override
@@ -171,5 +182,34 @@ public class PartyInfoActivity extends ActionBarActivity {
                 .build();
 
         geYouService = restAdapter.create(GeYouService.class);
+    }
+
+    public void initializeComponents() {
+        eTxtName = (EditText) findViewById(R.id.editTextPartyNameInfo);
+        eTxtStartTimeStamp = (EditText) findViewById(R.id.editTextStartTimeStampInfo);
+        eTxtEndTimeStamp = (EditText) findViewById(R.id.editTextEndTimeStampInfo);
+        eTxtDestination = (EditText) findViewById(R.id.editTextDestinationInfo);
+
+        btnEdit = (Button) findViewById(R.id.btnEditUserInfo);
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        btnSave = (Button) findViewById(R.id.btnSaveUserInfo);
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        btnCancel = (Button) findViewById(R.id.btnCanceluserInfo);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 }

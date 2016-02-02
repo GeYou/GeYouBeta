@@ -18,6 +18,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.thesis.geyoubeta.R;
@@ -28,6 +30,15 @@ import retrofit.RestAdapter;
 import retrofit.converter.JacksonConverter;
 
 public class UserInfoActivity extends ActionBarActivity {
+
+    EditText eTxtFName;
+    EditText eTxtLName;
+    EditText eTxtEmail;
+    EditText eTxtPassword;
+    EditText eTxtConfPass;
+    Button btnEdit;
+    Button btnSave;
+    Button btnCancel;
 
     RestAdapter restAdapter;
     GeYouService geYouService;
@@ -50,6 +61,7 @@ public class UserInfoActivity extends ActionBarActivity {
 
         initializeDrawer();
         initializeRest();
+        initializeComponents();
     }
 
     @Override
@@ -171,5 +183,35 @@ public class UserInfoActivity extends ActionBarActivity {
                 .build();
 
         geYouService = restAdapter.create(GeYouService.class);
+    }
+
+    public void initializeComponents() {
+        eTxtFName = (EditText) findViewById(R.id.editTextFNameInfo);
+        eTxtLName = (EditText) findViewById(R.id.editTextLNameInfo);
+        eTxtEmail = (EditText) findViewById(R.id.editTextEmailInfo);
+        eTxtPassword = (EditText) findViewById(R.id.editTextPasswordInfo);
+        eTxtConfPass = (EditText) findViewById(R.id.editTextConfirmPassInfo);
+
+        btnEdit = (Button) findViewById(R.id.btnEditUserInfo);
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        btnSave = (Button) findViewById(R.id.btnSaveUserInfo);
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        btnCancel = (Button) findViewById(R.id.btnCanceluserInfo);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 }
