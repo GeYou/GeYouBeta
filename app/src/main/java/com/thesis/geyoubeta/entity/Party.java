@@ -67,6 +67,7 @@ public class Party {
                 + "] [ name : " + getName()
                 + "] [ startDateTime : " + getStartDateTime()
                 + "] [ endDateTime : " + getEndDateTime()
-                + "] [ destination : " + getDestination();
+                + "] [ destination : " + getDestination()
+                + "]";
     }
 }

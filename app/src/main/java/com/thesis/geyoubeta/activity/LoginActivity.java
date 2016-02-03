@@ -58,44 +58,29 @@ public class LoginActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        eTxtEmail = (EditText) findViewById(R.id.editTextEmailLogin);
-        eTxtPassword = (EditText) findViewById(R.id.editTextPasswordLogin);
-
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-
+        initializeDrawer();
         initializeRest();
+        initializeComponents();
+    }
 
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                geYouService.checkCredentials(eTxtEmail.getText().toString(), eTxtPassword.getText().toString(), new Callback<Boolean>() {
-                    @Override
-                    public void success(Boolean aBoolean, Response response) {
-                        if (aBoolean) {
-                            Intent i = new Intent(getApplicationContext(), MapActivity.class);
-                            startActivity(i);
-                        } else {
-                            Toast.makeText(LoginActivity.this, "Not valid credentials.", Toast.LENGTH_LONG).show();
-                        }
-                    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
 
-                    @Override
-                    public void failure(RetrofitError error) {
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
 
-                    }
-                });
-            }
-        });
-        btnRegister = (Button) findViewById(R.id.btnRegisterLogin);
-        btnRegister.setOnClickListener(new View.OnClickListener() {
+        return super.onOptionsItemSelected(item);
+    }
 
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
-                startActivity(i);
-            }
-        });
-
+    private void initializeDrawer() {
         toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
         setSupportActionBar(toolbar);                   // Setting toolbar as the ActionBar with setSupportActionBar() call
         toolbar.setTitle("GeYou");
@@ -126,25 +111,23 @@ public class LoginActivity extends ActionBarActivity {
                     Drawer.closeDrawers();
                     Toast.makeText(getApplicationContext(), "The Item Clicked is: " + recyclerView.getChildPosition(child), Toast.LENGTH_SHORT).show();
 
+                    Intent intent = null;
                     if (recyclerView.getChildPosition(child) == 1) {
-                        Intent intent;
                         intent = new Intent(getApplicationContext(), UserInfoActivity.class);
-                        startActivity(intent);
                     } else if (recyclerView.getChildPosition(child) == 2) {
-                        Intent intent;
                         intent = new Intent(getApplicationContext(), CreatePartyActivity.class);
-                        startActivity(intent);
                     } else if (recyclerView.getChildPosition(child) == 3) {
-                        Intent intent;
                         intent = new Intent(getApplicationContext(), MapActivity.class);
-                        startActivity(intent);
                     } else if (recyclerView.getChildPosition(child) == 4) {
-                        Intent intent;
                         intent = new Intent(getApplicationContext(), MessagesActivity.class);
-                        startActivity(intent);
                     } else if (recyclerView.getChildPosition(child) == 5) {
-                        Intent intent;
                         intent = new Intent(getApplicationContext(), PartyInfoActivity.class);
+                    } else if (recyclerView.getChildPosition(child) == 6) {
+                        intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    }
+
+                    if (intent != null) {
                         startActivity(intent);
                     }
 
@@ -188,24 +171,6 @@ public class LoginActivity extends ActionBarActivity {
         menu.setDisplayUseLogoEnabled(true);
         menu.setTitle(" ");
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        return super.onOptionsItemSelected(item);
-    }
-
     public void initializeRest() {
         restAdapter = new RestAdapter.Builder()
                 .setLogLevel(RestAdapter.LogLevel.FULL)
@@ -216,4 +181,41 @@ public class LoginActivity extends ActionBarActivity {
         geYouService = restAdapter.create(GeYouService.class);
     }
 
+    public void initializeComponents() {
+        eTxtEmail = (EditText) findViewById(R.id.editTextEmailLogin);
+        eTxtPassword = (EditText) findViewById(R.id.editTextPasswordLogin);
+
+        btnLogin = (Button) findViewById(R.id.btnLogin);
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                geYouService.checkCredentials(eTxtEmail.getText().toString(), eTxtPassword.getText().toString(), new Callback<Boolean>() {
+                    @Override
+                    public void success(Boolean aBoolean, Response response) {
+                        if (aBoolean) {
+                            Intent i = new Intent(getApplicationContext(), MapActivity.class);
+                            startActivity(i);
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Not valid credentials.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+
+                    }
+                });
+            }
+        });
+
+        btnRegister = (Button) findViewById(R.id.btnRegisterLogin);
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
+                startActivity(i);
+            }
+        });
+    }
 }

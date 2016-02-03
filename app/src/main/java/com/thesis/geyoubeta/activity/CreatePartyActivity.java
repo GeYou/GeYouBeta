@@ -18,12 +18,33 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
+import com.thesis.geyoubeta.entity.Party;
+import com.thesis.geyoubeta.service.GeYouService;
+
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.converter.JacksonConverter;
 
 public class CreatePartyActivity extends ActionBarActivity {
+
+    Button btnCreate;
+    Button btnCancel;
+    EditText eTxtName;
+    EditText eTxtStartTimeStamp;
+    EditText eTxtEndTimeStamp;
+    EditText eTxtDestination;
+
+    RestAdapter restAdapter;
+    GeYouService geYouService;
+    private static final String BASE_URL = "http://10.0.3.2:8080/geyou";
 
     private Toolbar toolbar;
     String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "Logout"};
@@ -40,6 +61,29 @@ public class CreatePartyActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_party);
 
+        initializeDrawer();
+        initializeRest();
+        initializeComponents();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void initializeDrawer() {
         toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
         setSupportActionBar(toolbar);                   // Setting toolbar as the ActionBar with setSupportActionBar() call
         toolbar.setTitle("GeYou");
@@ -69,25 +113,23 @@ public class CreatePartyActivity extends ActionBarActivity {
                     Drawer.closeDrawers();
                     Toast.makeText(getApplicationContext(), "The Item Clicked is: " + recyclerView.getChildPosition(child), Toast.LENGTH_SHORT).show();
 
+                    Intent intent = null;
                     if (recyclerView.getChildPosition(child) == 1) {
-                        Intent intent;
                         intent = new Intent(getApplicationContext(), UserInfoActivity.class);
-                        startActivity(intent);
                     } else if (recyclerView.getChildPosition(child) == 2) {
-                        Intent intent;
                         intent = new Intent(getApplicationContext(), CreatePartyActivity.class);
-                        startActivity(intent);
                     } else if (recyclerView.getChildPosition(child) == 3) {
-                        Intent intent;
                         intent = new Intent(getApplicationContext(), MapActivity.class);
-                        startActivity(intent);
                     } else if (recyclerView.getChildPosition(child) == 4) {
-                        Intent intent;
                         intent = new Intent(getApplicationContext(), MessagesActivity.class);
-                        startActivity(intent);
                     } else if (recyclerView.getChildPosition(child) == 5) {
-                        Intent intent;
                         intent = new Intent(getApplicationContext(), PartyInfoActivity.class);
+                    } else if (recyclerView.getChildPosition(child) == 6) {
+                        intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    }
+
+                    if (intent != null) {
                         startActivity(intent);
                     }
 
@@ -132,20 +174,63 @@ public class CreatePartyActivity extends ActionBarActivity {
         menu.setTitle(" ");
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    public void initializeRest() {
+        restAdapter = new RestAdapter.Builder()
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setEndpoint(BASE_URL)
+                .setConverter(new JacksonConverter())
+                .build();
+
+        geYouService = restAdapter.create(GeYouService.class);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    public void initializeComponents() {
+        eTxtName = (EditText) findViewById(R.id.editTextPartyName);
+        eTxtStartTimeStamp = (EditText) findViewById(R.id.editTextStartTimeStamp);
+        eTxtEndTimeStamp = (EditText) findViewById(R.id.editTextEndTimeStamp);
+        eTxtDestination = (EditText) findViewById(R.id.editTextDestination);
 
-        return super.onOptionsItemSelected(item);
+        btnCreate = (Button) findViewById(R.id.btnCreateParty);
+        btnCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Party nParty = new Party();
+
+                nParty.setName(eTxtName.getText().toString());
+                nParty.setStartDateTime(eTxtStartTimeStamp.getText().toString());
+                nParty.setEndDateTime(eTxtEndTimeStamp.getText().toString());
+                nParty.setDestination(eTxtDestination.getText().toString());
+
+                createParty(nParty);
+            }
+        });
+        btnCancel = (Button) findViewById(R.id.btnCancelParty);
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearInput();
+            }
+        });
+    }
+
+    public void createParty(Party party) {
+        geYouService.createParty(party, new Callback<Party>() {
+            @Override
+            public void success(Party party, Response response) {
+                Toast.makeText(CreatePartyActivity.this, "Successfully created party: " + party.toString(), Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(CreatePartyActivity.this, "Unsuccessfully created party!", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public void clearInput() {
+        eTxtName.setText("");
+        eTxtStartTimeStamp.setText("");
+        eTxtEndTimeStamp.setText("");
+        eTxtDestination.setText("");
     }
 }
