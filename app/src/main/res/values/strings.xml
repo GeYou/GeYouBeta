@@ -1,0 +1,46 @@
+<!--
+  ~  Unauthorized copying of this file, via any medium is strictly prohibited
+  ~  Proprietary and confidential
+  ~  Copyright (C) 2015 Ivan Wesley Chua and Jethro Divino
+  -->
+
+<resources>
+    <string name="app_name">GeYouBeta</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="title_activity_test_drawer">TestDrawerActivity</string>
+
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_example">Example action</string>
+    <string name="title_activity_user_info_edit">UserInfoEditActivity</string>
+    <string name="title_activity_create_party">CreatePartyActivity</string>
+    <string name="title_activity_party_info">PartyInfoActivity</string>
+    <string name="title_activity_messages">MessagesActivity</string>
+    <string name="title_activity_map">MapActivity</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <!-- Nav Drawer Menu Items -->
+    <string-array name="nav_drawer_items">
+        <item>User Info</item>
+        <item>Create Party</item>
+        <item>Map</item>
+        <item>Messages</item>
+        <item>Party Info</item>
+        <item>Logout</item>
+    </string-array>
+
+</resources>
