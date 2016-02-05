@@ -189,22 +189,26 @@ public class LoginActivity extends ActionBarActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                geYouService.checkCredentials(eTxtEmail.getText().toString(), eTxtPassword.getText().toString(), new Callback<Boolean>() {
-                    @Override
-                    public void success(Boolean aBoolean, Response response) {
-                        if (aBoolean) {
-                            Intent i = new Intent(getApplicationContext(), MapActivity.class);
-                            startActivity(i);
-                        } else {
-                            Toast.makeText(LoginActivity.this, "Not valid credentials.", Toast.LENGTH_LONG).show();
-                        }
-                    }
 
-                    @Override
-                    public void failure(RetrofitError error) {
+                Intent i = new Intent(getApplicationContext(), MapActivity.class);
+                startActivity(i);
 
-                    }
-                });
+//                geYouService.checkCredentials(eTxtEmail.getText().toString(), eTxtPassword.getText().toString(), new Callback<Boolean>() {
+//                    @Override
+//                    public void success(Boolean aBoolean, Response response) {
+//                        if (aBoolean) {
+//                            Intent i = new Intent(getApplicationContext(), MapActivity.class);
+//                            startActivity(i);
+//                        } else {
+//                            Toast.makeText(LoginActivity.this, "Not valid credentials.", Toast.LENGTH_LONG).show();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void failure(RetrofitError error) {
+//
+//                    }
+//                });
             }
         });
 
