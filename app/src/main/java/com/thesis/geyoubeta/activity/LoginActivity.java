@@ -222,8 +222,4 @@ public class LoginActivity extends ActionBarActivity {
             }
         });
     }
-
-    public Boolean dummyLogin() {
-        return true;
-    }
 }
