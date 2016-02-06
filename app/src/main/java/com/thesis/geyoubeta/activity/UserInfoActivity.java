@@ -213,22 +213,13 @@ public class UserInfoActivity extends ActionBarActivity {
             }
         });
 
-        eTxtConfPass.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if ((eTxtPassword.getText().toString()).equals(eTxtConfPass.getText().toString())) {
-                    btnSave.setEnabled(true);
-                }
-
-                return false;
-            }
-        });
-
         btnEdit = (Button) findViewById(R.id.btnEditUserInfo);
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 makeInputsEnabled();
+                btnSave.setEnabled(true);
+                btnCancel.setEnabled(true);
             }
         });
         btnSave = (Button) findViewById(R.id.btnSaveUserInfo);
@@ -258,6 +249,7 @@ public class UserInfoActivity extends ActionBarActivity {
             public void onClick(View v) {
                 resetInputs();
                 btnSave.setEnabled(false);
+                btnCancel.setEnabled(false);
             }
         });
     }
@@ -273,7 +265,7 @@ public class UserInfoActivity extends ActionBarActivity {
     public void makeInputsEnabled() {
         eTxtFName.setEnabled(true);
         eTxtLName.setEnabled(true);
-        eTxtEmail.setEnabled(true);
+        //eTxtEmail.setEnabled(true);
         eTxtPassword.setEnabled(true);
         eTxtConfPass.setEnabled(true);
     }
@@ -293,6 +285,9 @@ public class UserInfoActivity extends ActionBarActivity {
             public void success(User user, Response response) {
                 Toast.makeText(UserInfoActivity.this, "Successfully updated user: " +user.toString(), Toast.LENGTH_LONG).show();
                 session.updateLoginCredentials(user);
+                resetInputs();
+                btnSave.setEnabled(false);
+                btnCancel.setEnabled(false);
             }
 
             @Override
