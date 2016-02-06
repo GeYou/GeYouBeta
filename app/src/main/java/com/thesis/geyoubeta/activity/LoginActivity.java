@@ -40,6 +40,7 @@ public class LoginActivity extends ActionBarActivity {
 
     Button btnLogin;
     Button btnRegister;
+    Button btnChangeIP;
     EditText eTxtEmail;
     EditText eTxtPassword;
 
@@ -194,6 +195,13 @@ public class LoginActivity extends ActionBarActivity {
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
                 startActivity(i);
+            }
+        });
+        btnChangeIP = (Button) findViewById(R.id.btnChangeIPLogin);
+        btnChangeIP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), IPSettingsActivity.class));
             }
         });
     }
