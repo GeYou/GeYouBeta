@@ -34,7 +34,6 @@ public class HistoryActivity extends ActionBarActivity {
 
     RestAdapter restAdapter;
     GeYouService geYouService;
-    private static final String BASE_URL = "http://10.0.3.2:8080/geyou";
 
     private Toolbar toolbar;
     String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings",  "Logout"};
@@ -173,7 +172,7 @@ public class HistoryActivity extends ActionBarActivity {
     public void initializeRest() {
         restAdapter = new RestAdapter.Builder()
                 .setLogLevel(RestAdapter.LogLevel.FULL)
-                .setEndpoint(BASE_URL)
+                .setEndpoint(session.getBaseURL())
                 .setConverter(new JacksonConverter())
                 .build();
 
