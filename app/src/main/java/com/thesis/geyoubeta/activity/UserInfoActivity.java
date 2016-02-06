@@ -293,7 +293,6 @@ public class UserInfoActivity extends ActionBarActivity {
             public void success(User user, Response response) {
                 Toast.makeText(UserInfoActivity.this, "Successfully updated user: " +user.toString(), Toast.LENGTH_LONG).show();
                 session.updateLoginCredentials(user);
-
             }
 
             @Override
