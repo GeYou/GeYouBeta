@@ -18,6 +18,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.thesis.geyoubeta.R;
@@ -28,12 +30,12 @@ import com.thesis.geyoubeta.service.SessionManager;
 import retrofit.RestAdapter;
 import retrofit.converter.JacksonConverter;
 
-public class MapActivity extends ActionBarActivity {
+public class IPSettingsActivity extends ActionBarActivity {
 
     SessionManager session;
 
-    RestAdapter restAdapter;
-    GeYouService geYouService;
+    EditText eTxtIP;
+    Button btnChange;
 
     private Toolbar toolbar;
     String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings",  "Logout"};
@@ -48,13 +50,12 @@ public class MapActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
+        setContentView(R.layout.activity_ipsettings);
 
         session = new SessionManager(getApplicationContext());
-        session.checkLogin();
 
         initializeDrawer();
-        initializeRest();
+        initializeComponents();
     }
 
     @Override
@@ -169,13 +170,14 @@ public class MapActivity extends ActionBarActivity {
         menu.setTitle(" ");
     }
 
-    public void initializeRest() {
-        restAdapter = new RestAdapter.Builder()
-                .setLogLevel(RestAdapter.LogLevel.FULL)
-                .setEndpoint(session.getBaseURL())
-                .setConverter(new JacksonConverter())
-                .build();
-
-        geYouService = restAdapter.create(GeYouService.class);
+    public void initializeComponents() {
+        eTxtIP = (EditText) findViewById(R.id.editTextIPS);
+        btnChange = (Button) findViewById(R.id.btnChangeIPS);
+        btnChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                session.changeIPAddress(eTxtIP.getText().toString());
+            }
+        });
     }
 }

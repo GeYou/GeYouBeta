@@ -18,7 +18,7 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+            </intent-filter>
         </activity>
         <activity
             android:name=".activity.MainActivity"
@@ -41,6 +41,12 @@
         <activity
             android:name=".activity.MapActivity"
             android:label="@string/title_activity_map" />
+        <activity
+            android:name=".activity.IPSettingsActivity"
+            android:label="@string/title_activity_ipsettings" />
+        <activity
+            android:name=".activity.HistoryActivity"
+            android:label="@string/title_activity_history"></activity>
     </application>
 
 </manifest>

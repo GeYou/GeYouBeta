@@ -9,6 +9,7 @@ package com.thesis.geyoubeta.service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import com.thesis.geyoubeta.activity.LoginActivity;
 
@@ -58,6 +59,7 @@ public class SessionManager {
         editor.putString(KEY_BASE_URL, "http://" + ip + ":8080/geyou");
 
         editor.commit();
+        Toast.makeText(_context, "New URL is: " +pref.getString(KEY_BASE_URL, "not changed"), Toast.LENGTH_LONG).show();
     }
 
     public String getBaseURL() {
