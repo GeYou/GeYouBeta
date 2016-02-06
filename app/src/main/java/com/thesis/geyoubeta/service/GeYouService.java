@@ -41,7 +41,7 @@ public interface GeYouService {
     void deleteUser(@Path("id") Integer id, Callback<Integer> callback);
 
     @GET("/user/login")
-    void checkCredentials(@Query("email") String email, @Query("password") String password, Callback<Boolean> callback);
+    void checkCredentials(@Query("email") String email, @Query("password") String password, Callback<User> callback);
 
     @PUT("/user/update")
     void updateUser(@Body User user, Callback<User> callback);

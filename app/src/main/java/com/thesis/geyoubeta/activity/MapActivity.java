@@ -23,18 +23,21 @@ import android.widget.Toast;
 import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
 import com.thesis.geyoubeta.service.GeYouService;
+import com.thesis.geyoubeta.service.SessionManager;
 
 import retrofit.RestAdapter;
 import retrofit.converter.JacksonConverter;
 
 public class MapActivity extends ActionBarActivity {
 
+    SessionManager session;
+
     RestAdapter restAdapter;
     GeYouService geYouService;
     private static final String BASE_URL = "http://10.0.3.2:8080/geyou";
 
     private Toolbar toolbar;
-    String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "Logout"};
+    String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings",  "Logout"};
 
     RecyclerView mRecyclerView;                           // Declaring RecyclerView
     RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
@@ -47,6 +50,9 @@ public class MapActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
+        session = new SessionManager(getApplicationContext());
+        session.checkLogin();
 
         initializeDrawer();
         initializeRest();
@@ -112,8 +118,11 @@ public class MapActivity extends ActionBarActivity {
                     } else if (recyclerView.getChildPosition(child) == 5) {
                         intent = new Intent(getApplicationContext(), PartyInfoActivity.class);
                     } else if (recyclerView.getChildPosition(child) == 6) {
-                        intent = new Intent(getApplicationContext(), LoginActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent = new Intent(getApplicationContext(), HistoryActivity.class);
+                    } else if (recyclerView.getChildPosition(child) == 7) {
+                        intent = new Intent(getApplicationContext(), IPSettingsActivity.class);
+                    } else if (recyclerView.getChildPosition(child) == 8) {
+                        session.logoutUser();
                     }
 
                     if (intent != null) {

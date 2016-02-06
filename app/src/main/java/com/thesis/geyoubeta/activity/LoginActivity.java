@@ -24,7 +24,9 @@ import android.widget.Toast;
 
 import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
+import com.thesis.geyoubeta.entity.User;
 import com.thesis.geyoubeta.service.GeYouService;
+import com.thesis.geyoubeta.service.SessionManager;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -33,6 +35,8 @@ import retrofit.client.Response;
 import retrofit.converter.JacksonConverter;
 
 public class LoginActivity extends ActionBarActivity {
+
+    SessionManager session;
 
     Button btnLogin;
     Button btnRegister;
@@ -44,7 +48,7 @@ public class LoginActivity extends ActionBarActivity {
     private static final String BASE_URL = "http://10.0.3.2:8080/geyou";
 
     private Toolbar toolbar;
-    String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "Logout"};
+    String TITLES[] = {"IP Settings"};
 
     RecyclerView mRecyclerView;                           // Declaring RecyclerView
     RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
@@ -57,6 +61,8 @@ public class LoginActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        session = new SessionManager(getApplicationContext());
 
         initializeDrawer();
         initializeRest();
@@ -113,18 +119,7 @@ public class LoginActivity extends ActionBarActivity {
 
                     Intent intent = null;
                     if (recyclerView.getChildPosition(child) == 1) {
-                        intent = new Intent(getApplicationContext(), UserInfoActivity.class);
-                    } else if (recyclerView.getChildPosition(child) == 2) {
-                        intent = new Intent(getApplicationContext(), CreatePartyActivity.class);
-                    } else if (recyclerView.getChildPosition(child) == 3) {
-                        intent = new Intent(getApplicationContext(), MapActivity.class);
-                    } else if (recyclerView.getChildPosition(child) == 4) {
-                        intent = new Intent(getApplicationContext(), MessagesActivity.class);
-                    } else if (recyclerView.getChildPosition(child) == 5) {
-                        intent = new Intent(getApplicationContext(), PartyInfoActivity.class);
-                    } else if (recyclerView.getChildPosition(child) == 6) {
-                        intent = new Intent(getApplicationContext(), LoginActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent = new Intent(getApplicationContext(), IPSettingsActivity.class);
                     }
 
                     if (intent != null) {
@@ -189,26 +184,7 @@ public class LoginActivity extends ActionBarActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Intent i = new Intent(getApplicationContext(), MapActivity.class);
-                startActivity(i);
-
-//                geYouService.checkCredentials(eTxtEmail.getText().toString(), eTxtPassword.getText().toString(), new Callback<Boolean>() {
-//                    @Override
-//                    public void success(Boolean aBoolean, Response response) {
-//                        if (aBoolean) {
-//                            Intent i = new Intent(getApplicationContext(), MapActivity.class);
-//                            startActivity(i);
-//                        } else {
-//                            Toast.makeText(LoginActivity.this, "Not valid credentials.", Toast.LENGTH_LONG).show();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void failure(RetrofitError error) {
-//
-//                    }
-//                });
+                dummyLogin();
             }
         });
 
@@ -219,6 +195,32 @@ public class LoginActivity extends ActionBarActivity {
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
                 startActivity(i);
+            }
+        });
+    }
+
+    public void dummyLogin() {
+        session.createLoginSession(1, "Fname", "Lname", "Email", "password");
+        Intent i = new Intent(getApplicationContext(), MapActivity.class);
+        startActivity(i);
+    }
+
+    public void login() {
+        geYouService.checkCredentials(eTxtEmail.getText().toString(), eTxtPassword.getText().toString(), new Callback<User>() {
+            @Override
+            public void success(User user, Response response) {
+                if (user != null) {
+                    session.createLoginSession(user.getId(), user.getfName(), user.getlName(), user.getEmail(), user.getPassword());
+                    Intent i = new Intent(getApplicationContext(), MapActivity.class);
+                    startActivity(i);
+                } else {
+                    Toast.makeText(LoginActivity.this, "Not valid credentials.", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
             }
         });
     }
