@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import com.thesis.geyoubeta.activity.LoginActivity;
+import com.thesis.geyoubeta.entity.User;
 
 import java.util.HashMap;
 
@@ -43,14 +44,14 @@ public class SessionManager {
         editor = pref.edit();
     }
 
-    public void createLoginSession(Integer id, String fName, String lName, String email, String password) {
+    public void createLoginSession(User u) {
 
         editor.putBoolean(IS_LOGIN, true);
-        editor.putInt(KEY_ID, id);
-        editor.putString(KEY_FNAME, fName);
-        editor.putString(KEY_LNAME, lName);
-        editor.putString(KEY_EMAIL, email);
-        editor.putString(KEY_PASSWORD, password);
+        editor.putInt(KEY_ID, u.getId());
+        editor.putString(KEY_FNAME, u.getfName());
+        editor.putString(KEY_LNAME, u.getlName());
+        editor.putString(KEY_EMAIL, u.getEmail());
+        editor.putString(KEY_PASSWORD, u.getPassword());
 
         editor.commit();
     }
@@ -87,6 +88,36 @@ public class SessionManager {
         user.put(KEY_PASSWORD, pref.getString(KEY_PASSWORD, null));
 
         return user;
+    }
+
+    public void updateLoginCredentials(User u) {
+        editor.putInt(KEY_ID, u.getId());
+        editor.putString(KEY_FNAME, u.getfName());
+        editor.putString(KEY_LNAME, u.getlName());
+        editor.putString(KEY_EMAIL, u.getEmail());
+        editor.putString(KEY_PASSWORD, u.getPassword());
+
+        editor.commit();
+    }
+
+    public Integer getId() {
+        return pref.getInt(KEY_ID, -1);
+    }
+
+    public String getFName() {
+        return pref.getString(KEY_FNAME, "fName");
+    }
+
+    public String getLName() {
+        return pref.getString(KEY_LNAME, "lName");
+    }
+
+    public String getEmail() {
+        return pref.getString(KEY_EMAIL, "email");
+    }
+
+    public String getPassword() {
+        return pref.getString(KEY_PASSWORD, "password");
     }
 
     public void logoutUser(){

@@ -224,7 +224,7 @@ public class RegisterActivity extends ActionBarActivity {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clearInput();
+                clearInputs();
             }
         });
 
@@ -246,6 +246,7 @@ public class RegisterActivity extends ActionBarActivity {
             @Override
             public void success(User user, Response response) {
                 Toast.makeText(RegisterActivity.this, "Successfully created user:" + user.toString(), Toast.LENGTH_LONG).show();
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
             }
 
             @Override
@@ -255,7 +256,7 @@ public class RegisterActivity extends ActionBarActivity {
         });
     }
 
-    public void clearInput() {
+    public void clearInputs() {
         eTxtFName.setText("");
         eTxtLName.setText("");
         eTxtEmail.setText("");
