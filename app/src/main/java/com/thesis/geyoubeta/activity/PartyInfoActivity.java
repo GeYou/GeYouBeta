@@ -196,21 +196,21 @@ public class PartyInfoActivity extends ActionBarActivity {
         eTxtEndTimeStamp = (EditText) findViewById(R.id.editTextEndTimeStampInfo);
         eTxtDestination = (EditText) findViewById(R.id.editTextDestinationInfo);
 
-        btnEdit = (Button) findViewById(R.id.btnEditUserInfo);
+        btnEdit = (Button) findViewById(R.id.btnEditPartyInfo);
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
-        btnSave = (Button) findViewById(R.id.btnSaveUserInfo);
+        btnSave = (Button) findViewById(R.id.btnSavePartyInfo);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
-        btnCancel = (Button) findViewById(R.id.btnCanceluserInfo);
+        btnCancel = (Button) findViewById(R.id.btnCancelPartyInfo);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

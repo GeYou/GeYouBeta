@@ -65,7 +65,6 @@ public class RegisterActivity extends ActionBarActivity {
         setContentView(R.layout.activity_register);
 
         session = new SessionManager(getApplicationContext());
-        session.checkLogin();
 
         initializeDrawer();
         initializeRest();

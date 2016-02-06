@@ -212,7 +212,7 @@ public class UserInfoActivity extends ActionBarActivity {
 
             }
         });
-        btnCancel = (Button) findViewById(R.id.btnCanceluserInfo);
+        btnCancel = (Button) findViewById(R.id.btnCancelUserInfo);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
