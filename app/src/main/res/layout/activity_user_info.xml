@@ -140,7 +140,7 @@
                 android:enabled="false" />
 
             <Button
-                android:id="@+id/btnCanceluserInfo"
+                android:id="@+id/btnCancelUserInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="CANCEL"

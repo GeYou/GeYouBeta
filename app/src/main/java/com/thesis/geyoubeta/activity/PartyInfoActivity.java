@@ -25,11 +25,14 @@ import android.widget.Toast;
 import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
 import com.thesis.geyoubeta.service.GeYouService;
+import com.thesis.geyoubeta.service.SessionManager;
 
 import retrofit.RestAdapter;
 import retrofit.converter.JacksonConverter;
 
 public class PartyInfoActivity extends ActionBarActivity {
+
+    SessionManager session;
 
     EditText eTxtName;
     EditText eTxtStartTimeStamp;
@@ -41,10 +44,9 @@ public class PartyInfoActivity extends ActionBarActivity {
 
     RestAdapter restAdapter;
     GeYouService geYouService;
-    private static final String BASE_URL = "http://10.0.3.2:8080/geyou";
 
     private Toolbar toolbar;
-    String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "Logout"};
+    String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings",  "Logout"};
 
     RecyclerView mRecyclerView;                           // Declaring RecyclerView
     RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
@@ -57,6 +59,9 @@ public class PartyInfoActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_party_info);
+
+        session = new SessionManager(getApplicationContext());
+        session.checkLogin();
 
         initializeDrawer();
         initializeRest();
@@ -123,8 +128,11 @@ public class PartyInfoActivity extends ActionBarActivity {
                     } else if (recyclerView.getChildPosition(child) == 5) {
                         intent = new Intent(getApplicationContext(), PartyInfoActivity.class);
                     } else if (recyclerView.getChildPosition(child) == 6) {
-                        intent = new Intent(getApplicationContext(), LoginActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent = new Intent(getApplicationContext(), HistoryActivity.class);
+                    } else if (recyclerView.getChildPosition(child) == 7) {
+                        intent = new Intent(getApplicationContext(), IPSettingsActivity.class);
+                    } else if (recyclerView.getChildPosition(child) == 8) {
+                        session.logoutUser();
                     }
 
                     if (intent != null) {
@@ -175,7 +183,7 @@ public class PartyInfoActivity extends ActionBarActivity {
     public void initializeRest() {
         restAdapter = new RestAdapter.Builder()
                 .setLogLevel(RestAdapter.LogLevel.FULL)
-                .setEndpoint(BASE_URL)
+                .setEndpoint(session.getBaseURL())
                 .setConverter(new JacksonConverter())
                 .build();
 
@@ -188,21 +196,21 @@ public class PartyInfoActivity extends ActionBarActivity {
         eTxtEndTimeStamp = (EditText) findViewById(R.id.editTextEndTimeStampInfo);
         eTxtDestination = (EditText) findViewById(R.id.editTextDestinationInfo);
 
-        btnEdit = (Button) findViewById(R.id.btnEditUserInfo);
+        btnEdit = (Button) findViewById(R.id.btnEditPartyInfo);
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
-        btnSave = (Button) findViewById(R.id.btnSaveUserInfo);
+        btnSave = (Button) findViewById(R.id.btnSavePartyInfo);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
-        btnCancel = (Button) findViewById(R.id.btnCanceluserInfo);
+        btnCancel = (Button) findViewById(R.id.btnCancelPartyInfo);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

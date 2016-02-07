@@ -26,6 +26,7 @@ import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
 import com.thesis.geyoubeta.entity.User;
 import com.thesis.geyoubeta.service.GeYouService;
+import com.thesis.geyoubeta.service.SessionManager;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -34,6 +35,8 @@ import retrofit.client.Response;
 import retrofit.converter.JacksonConverter;
 
 public class RegisterActivity extends ActionBarActivity {
+
+    SessionManager session;
 
     Button btnRegister;
     Button btnCancel;
@@ -45,10 +48,9 @@ public class RegisterActivity extends ActionBarActivity {
 
     RestAdapter restAdapter;
     GeYouService geYouService;
-    private static final String BASE_URL = "http://10.0.3.2:8080/geyou";
 
     private Toolbar toolbar;
-    String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "Logout"};
+    String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings",  "Logout"};
 
     RecyclerView mRecyclerView;                           // Declaring RecyclerView
     RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
@@ -61,6 +63,8 @@ public class RegisterActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        session = new SessionManager(getApplicationContext());
 
         initializeDrawer();
         initializeRest();
@@ -127,8 +131,11 @@ public class RegisterActivity extends ActionBarActivity {
                     } else if (recyclerView.getChildPosition(child) == 5) {
                         intent = new Intent(getApplicationContext(), PartyInfoActivity.class);
                     } else if (recyclerView.getChildPosition(child) == 6) {
-                        intent = new Intent(getApplicationContext(), LoginActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent = new Intent(getApplicationContext(), HistoryActivity.class);
+                    } else if (recyclerView.getChildPosition(child) == 7) {
+                        intent = new Intent(getApplicationContext(), IPSettingsActivity.class);
+                    } else if (recyclerView.getChildPosition(child) == 8) {
+                        session.logoutUser();
                     }
 
                     if (intent != null) {
@@ -179,7 +186,7 @@ public class RegisterActivity extends ActionBarActivity {
     public void initializeRest() {
         restAdapter = new RestAdapter.Builder()
                 .setLogLevel(RestAdapter.LogLevel.FULL)
-                .setEndpoint(BASE_URL)
+                .setEndpoint(session.getBaseURL())
                 .setConverter(new JacksonConverter())
                 .build();
 

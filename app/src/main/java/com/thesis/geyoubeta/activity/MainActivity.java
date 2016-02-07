@@ -22,11 +22,14 @@ import android.widget.Toast;
 
 import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
+import com.thesis.geyoubeta.service.SessionManager;
 
 public class MainActivity extends ActionBarActivity {
 
+    SessionManager session;
+
     private Toolbar toolbar;
-    String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "Logout"};
+    String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings",  "Logout"};
 
     RecyclerView mRecyclerView;                           // Declaring RecyclerView
     RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
@@ -82,8 +85,11 @@ public class MainActivity extends ActionBarActivity {
                     } else if (recyclerView.getChildPosition(child) == 5) {
                         intent = new Intent(getApplicationContext(), PartyInfoActivity.class);
                     } else if (recyclerView.getChildPosition(child) == 6) {
-                        intent = new Intent(getApplicationContext(), LoginActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent = new Intent(getApplicationContext(), HistoryActivity.class);
+                    } else if (recyclerView.getChildPosition(child) == 7) {
+                        intent = new Intent(getApplicationContext(), IPSettingsActivity.class);
+                    } else if (recyclerView.getChildPosition(child) == 8) {
+                        session.logoutUser();
                     }
 
                     if (intent != null) {

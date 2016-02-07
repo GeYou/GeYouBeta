@@ -42,5 +42,7 @@
         <item>Party Info</item>
         <item>Logout</item>
     </string-array>
+    <string name="title_activity_ipsettings">IPSettingsActivity</string>
+    <string name="title_activity_history">HistoryActivity</string>
 
 </resources>

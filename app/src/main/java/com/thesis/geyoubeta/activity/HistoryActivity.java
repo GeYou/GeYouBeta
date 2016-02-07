@@ -28,7 +28,7 @@ import com.thesis.geyoubeta.service.SessionManager;
 import retrofit.RestAdapter;
 import retrofit.converter.JacksonConverter;
 
-public class MapActivity extends ActionBarActivity {
+public class HistoryActivity extends ActionBarActivity {
 
     SessionManager session;
 
@@ -48,7 +48,7 @@ public class MapActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
+        setContentView(R.layout.activity_history);
 
         session = new SessionManager(getApplicationContext());
         session.checkLogin();

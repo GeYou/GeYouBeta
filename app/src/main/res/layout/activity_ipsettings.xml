@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~  Unauthorized copying of this file, via any medium is strictly prohibited
   ~  Proprietary and confidential
   ~  Copyright (C) 2015 Ivan Wesley Chua and Jethro Divino
@@ -27,7 +28,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="90dp"
-            android:text="LOGIN"
+            android:text="IP Settings"
             android:id="@+id/textView13"
             android:gravity="center" />
 
@@ -38,56 +39,28 @@
             android:layout_gravity="center_horizontal">
 
             <TextView
-                android:id="@+id/textViewEmailLogin"
+                android:id="@+id/textViewIPS"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="EMAIL:"
+                android:text="IP Address:"
                 android:textColor="#000000"
                 android:textSize="17sp" />
 
             <EditText
-                android:id="@+id/editTextEmailLogin"
+                android:id="@+id/editTextIPS"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textEmailAddress"
-                android:textSize="17sp" />
-
-            <TextView
-                android:id="@+id/textViewPasswordLogin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="PASSWORD:"
-                android:textColor="#000000"
-                android:textSize="17sp" />
-
-            <EditText
-                android:id="@+id/editTextPasswordLogin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPassword"
+                android:inputType="text"
                 android:textSize="17sp" />
 
             <Button
-                android:id="@+id/btnLogin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="LOGIN"
-                android:layout_gravity="center_horizontal" />
-
-            <Button
-                android:id="@+id/btnRegisterLogin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="REGISTER"
-                android:layout_gravity="center_horizontal" />
-            <Button
-                android:id="@+id/btnChangeIPLogin"
+                android:id="@+id/btnChangeIPS"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="CHANGE IP"
                 android:layout_gravity="center_horizontal" />
+
         </LinearLayout>
 
     </LinearLayout>
