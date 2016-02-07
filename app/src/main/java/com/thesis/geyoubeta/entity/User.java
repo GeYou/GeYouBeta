@@ -6,6 +6,9 @@
 
 package com.thesis.geyoubeta.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class User {
 
     private Integer id;
@@ -17,6 +20,8 @@ public class User {
     private String email;
 
     private String password;
+
+    private Set<PartyMember> partyMembers = new HashSet<PartyMember>(0);
 
     public Integer getId() {
         return id;
@@ -56,6 +61,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<PartyMember> getPartyMembers() {
+        return partyMembers;
+    }
+
+    public void setPartyMembers(Set<PartyMember> partyMembers) {
+        this.partyMembers = partyMembers;
     }
 
     @Override

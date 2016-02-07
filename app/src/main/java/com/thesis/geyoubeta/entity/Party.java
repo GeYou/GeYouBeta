@@ -6,6 +6,9 @@
 
 package com.thesis.geyoubeta.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by ivanwesleychua on 01/02/2016.
  */
@@ -20,6 +23,8 @@ public class Party {
     private String endDateTime;
 
     private String destination;
+
+    private Set<PartyMember> partyMembers = new HashSet<PartyMember>(0);
 
     public Integer getId() {
         return id;
@@ -59,6 +64,14 @@ public class Party {
 
     public void setDestination(String destination) {
         this.destination = destination;
+    }
+
+    public Set<PartyMember> getPartyMembers() {
+        return partyMembers;
+    }
+
+    public void setPartyMembers(Set<PartyMember> partyMembers) {
+        this.partyMembers = partyMembers;
     }
 
     @Override

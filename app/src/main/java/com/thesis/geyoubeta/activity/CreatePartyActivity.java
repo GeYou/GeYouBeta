@@ -222,7 +222,7 @@ public class CreatePartyActivity extends ActionBarActivity {
     }
 
     public void createParty(Party party) {
-        geYouService.createParty(party, new Callback<Party>() {
+        geYouService.createParty(party, session.getId(), new Callback<Party>() {
             @Override
             public void success(Party party, Response response) {
                 Toast.makeText(CreatePartyActivity.this, "Successfully created party: " + party.toString(), Toast.LENGTH_LONG).show();
