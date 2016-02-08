@@ -6,6 +6,7 @@
 
 package com.thesis.geyoubeta.entity;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,6 +24,8 @@ public class Party {
     private String endDateTime;
 
     private String destination;
+
+    private Date createdDate;
 
     private Set<PartyMember> partyMembers = new HashSet<PartyMember>(0);
 
@@ -66,6 +69,14 @@ public class Party {
         this.destination = destination;
     }
 
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
     public Set<PartyMember> getPartyMembers() {
         return partyMembers;
     }
@@ -81,6 +92,7 @@ public class Party {
                 + "] [ startDateTime : " + getStartDateTime()
                 + "] [ endDateTime : " + getEndDateTime()
                 + "] [ destination : " + getDestination()
+                + "] [createdDate : " + getCreatedDate()
                 + "]";
     }
 }
