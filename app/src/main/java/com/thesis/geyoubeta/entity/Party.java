@@ -25,7 +25,15 @@ public class Party {
 
     private String destination;
 
+    private Float destLong;
+
+    private Float destLat;
+
+    private String status;
+
     private Date createdDate;
+
+    private User createdBy;
 
     private Set<PartyMember> partyMembers = new HashSet<PartyMember>(0);
 
@@ -69,12 +77,44 @@ public class Party {
         this.destination = destination;
     }
 
+    public Float getDestLong() {
+        return destLong;
+    }
+
+    public void setDestLong(Float destLong) {
+        this.destLong = destLong;
+    }
+
+    public Float getDestLat() {
+        return destLat;
+    }
+
+    public void setDestLat(Float destLat) {
+        this.destLat = destLat;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public Date getCreatedDate() {
         return createdDate;
     }
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
     }
 
     public Set<PartyMember> getPartyMembers() {
@@ -92,7 +132,11 @@ public class Party {
                 + "] [ startDateTime : " + getStartDateTime()
                 + "] [ endDateTime : " + getEndDateTime()
                 + "] [ destination : " + getDestination()
-                + "] [createdDate : " + getCreatedDate()
+                + "] [ destLong : " + getDestLong()
+                + "] [ destLat : " + getDestLat()
+                + "] [ status : " + getStatus()
+                + "] [ createdDate : " + getCreatedDate()
+                + "] [ createdBy : " + getCreatedBy()
                 + "]";
     }
 }

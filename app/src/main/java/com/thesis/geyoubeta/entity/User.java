@@ -89,7 +89,7 @@ public class User {
                 + "] [ lName : " + getlName()
                 + "] [ email : " + getEmail()
                 + "] [ password : " + getPassword()
-                + "] [createdDate : " + getCreatedDate()
+                + "] [ createdDate : " + getCreatedDate()
                 + "]";
     }
 }

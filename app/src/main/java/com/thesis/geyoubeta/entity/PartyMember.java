@@ -6,11 +6,16 @@
 
 package com.thesis.geyoubeta.entity;
 
+import java.util.Date;
+
 /**
  * Created by ivanwesleychua on 07/02/2016.
  */
 public class PartyMember {
+
     private PartyMemberId pk = new PartyMemberId();
+
+    private Date joinDate;
 
     public PartyMemberId getPk() {
         return pk;
@@ -34,5 +39,13 @@ public class PartyMember {
 
     public void setParty(Party party) {
         getPk().setParty(party);
+    }
+
+    public Date getJoinDate() {
+        return joinDate;
+    }
+
+    public void setJoinDate(Date joinDate) {
+        this.joinDate = joinDate;
     }
 }
