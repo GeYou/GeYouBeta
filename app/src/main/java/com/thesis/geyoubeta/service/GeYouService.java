@@ -69,6 +69,6 @@ public interface GeYouService {
     @PUT("/party/update")
     void updateParty(@Body Party party, Callback<Party> callback);
 
-    @PUT("/party/addMember")
-    void addMember(@Query("partyId") Integer partyId, @Query("userId") Integer userId, Callback<Party> callback);
+    @PUT("/party/addMember/{id}")
+    void addMember(@Body Party party, @Query("id") Integer id, Callback<Party> callback);
 }
