@@ -14,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.GestureDetector;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -24,10 +25,14 @@ import android.widget.Toast;
 
 import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
+import com.thesis.geyoubeta.entity.User;
 import com.thesis.geyoubeta.service.GeYouService;
 import com.thesis.geyoubeta.service.SessionManager;
 
+import retrofit.Callback;
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import retrofit.converter.JacksonConverter;
 
 public class UserInfoActivity extends ActionBarActivity {
@@ -67,6 +72,8 @@ public class UserInfoActivity extends ActionBarActivity {
         initializeDrawer();
         initializeRest();
         initializeComponents();
+
+        setDefaults();
     }
 
     @Override
@@ -198,25 +205,94 @@ public class UserInfoActivity extends ActionBarActivity {
         eTxtPassword = (EditText) findViewById(R.id.editTextPasswordInfo);
         eTxtConfPass = (EditText) findViewById(R.id.editTextConfirmPassInfo);
 
+        eTxtPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                eTxtPassword.setText("");
+                eTxtConfPass.setText("");
+            }
+        });
+
         btnEdit = (Button) findViewById(R.id.btnEditUserInfo);
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                makeInputsEnabled();
+                btnSave.setEnabled(true);
+                btnCancel.setEnabled(true);
             }
         });
         btnSave = (Button) findViewById(R.id.btnSaveUserInfo);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (eTxtConfPass.getText().toString().equals(eTxtPassword.getText().toString())) {
+                    Toast.makeText(getApplicationContext(), "Passwords match!", Toast.LENGTH_SHORT).show();
+                    User nUser = new User();
 
+                    nUser.setId(session.getId());
+                    nUser.setfName(eTxtFName.getText().toString());
+                    nUser.setlName(eTxtLName.getText().toString());
+                    nUser.setEmail(eTxtEmail.getText().toString());
+                    nUser.setPassword(eTxtPassword.getText().toString());
+                    updateCredentials(nUser);
+                } else {
+                    eTxtPassword.setText("");
+                    eTxtConfPass.setText("");
+                    Toast.makeText(getApplicationContext(), "Passwords do not match!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         btnCancel = (Button) findViewById(R.id.btnCancelUserInfo);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                resetInputs();
+                btnSave.setEnabled(false);
+                btnCancel.setEnabled(false);
+            }
+        });
+    }
 
+    public void setDefaults() {
+        eTxtFName.setText(session.getFName());
+        eTxtLName.setText(session.getLName());
+        eTxtEmail.setText(session.getEmail());
+        eTxtPassword.setText(session.getPassword());
+        eTxtConfPass.setText(session.getPassword());
+    }
+
+    public void makeInputsEnabled() {
+        eTxtFName.setEnabled(true);
+        eTxtLName.setEnabled(true);
+        //eTxtEmail.setEnabled(true);
+        eTxtPassword.setEnabled(true);
+        eTxtConfPass.setEnabled(true);
+    }
+
+    public void resetInputs() {
+        setDefaults();
+        eTxtFName.setEnabled(false);
+        eTxtLName.setEnabled(false);
+        eTxtEmail.setEnabled(false);
+        eTxtPassword.setEnabled(false);
+        eTxtConfPass.setEnabled(false);
+    }
+
+    public void updateCredentials(User u) {
+        geYouService.updateUser(u, new Callback<User>() {
+            @Override
+            public void success(User user, Response response) {
+                Toast.makeText(UserInfoActivity.this, "Successfully updated user: " +user.toString(), Toast.LENGTH_LONG).show();
+                session.updateLoginCredentials(user);
+                resetInputs();
+                btnSave.setEnabled(false);
+                btnCancel.setEnabled(false);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(UserInfoActivity.this, "Unsuccessfully updated user.", Toast.LENGTH_LONG).show();
             }
         });
     }

@@ -184,7 +184,7 @@ public class LoginActivity extends ActionBarActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dummyLogin();
+                login();
             }
         });
 
@@ -207,7 +207,14 @@ public class LoginActivity extends ActionBarActivity {
     }
 
     public void dummyLogin() {
-        session.createLoginSession(1, "Fname", "Lname", "Email", "password");
+        User nUser = new User();
+        nUser.setId(-1);
+        nUser.setfName("fName");
+        nUser.setlName("lName");
+        nUser.setEmail("email");
+        nUser.setPassword("password");
+
+        session.createLoginSession(nUser);
         Intent i = new Intent(getApplicationContext(), MapActivity.class);
         startActivity(i);
     }
@@ -217,7 +224,7 @@ public class LoginActivity extends ActionBarActivity {
             @Override
             public void success(User user, Response response) {
                 if (user != null) {
-                    session.createLoginSession(user.getId(), user.getfName(), user.getlName(), user.getEmail(), user.getPassword());
+                    session.createLoginSession(user);
                     Intent i = new Intent(getApplicationContext(), MapActivity.class);
                     startActivity(i);
                 } else {

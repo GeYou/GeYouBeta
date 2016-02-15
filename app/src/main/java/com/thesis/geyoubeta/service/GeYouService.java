@@ -51,8 +51,8 @@ public interface GeYouService {
 
     //PARTY
 
-    @POST("/party/create")
-    void createParty(@Body Party party, Callback<Party> callback);
+    @POST("/party/create/{id}")
+    void createParty(@Body Party party,@Path("id") Integer id, Callback<Party> callback);
 
     @GET("/party/get/{id}")
     void getPartyById(@Path("id") Integer id, Callback<Party> callback);
@@ -68,4 +68,7 @@ public interface GeYouService {
 
     @PUT("/party/update")
     void updateParty(@Body Party party, Callback<Party> callback);
+
+    @PUT("/party/addMember/{id}")
+    void addMember(@Body Party party, @Query("id") Integer id, Callback<Party> callback);
 }
