@@ -6,6 +6,7 @@
 
 package com.thesis.geyoubeta.service;
 
+import com.thesis.geyoubeta.entity.History;
 import com.thesis.geyoubeta.entity.Party;
 import com.thesis.geyoubeta.entity.User;
 
@@ -28,17 +29,20 @@ public interface GeYouService {
 
     //USERS
 
-    @POST("/user/create")
-    void createUser(@Body User user, Callback<User> callback);
-
     @GET("/user/get/{id}")
     void getUserById(@Path("id") Integer id, Callback<User> callback);
 
     @GET("/user/get/all")
     void getAllUsers(Callback<List<User>> callback);
 
+    @POST("/user/create")
+    void createUser(@Body User user, Callback<User> callback);
+
     @DELETE("/user/delete/{id}")
     void deleteUser(@Path("id") Integer id, Callback<Integer> callback);
+
+    @GET("/user/validateEmail")
+    void validateEmail(@Query("email") String email, Callback<Boolean> callback);
 
     @GET("/user/login")
     void checkCredentials(@Query("email") String email, @Query("password") String password, Callback<User> callback);
@@ -46,19 +50,16 @@ public interface GeYouService {
     @PUT("/user/update")
     void updateUser(@Body User user, Callback<User> callback);
 
-    @GET("/user/validateEmail")
-    void validateEmail(@Query("email") String email, Callback<Boolean> callback);
-
     //PARTY
-
-    @POST("/party/create/{id}")
-    void createParty(@Body Party party,@Path("id") Integer id, Callback<Party> callback);
 
     @GET("/party/get/{id}")
     void getPartyById(@Path("id") Integer id, Callback<Party> callback);
 
     @GET("/party/get/all")
     void getAllparties(Callback<List<Party>> callback);
+
+    @POST("/party/create/{id}")
+    void createParty(@Body Party party, @Path("id") Integer id, Callback<Party> callback);
 
     @DELETE("/party/delete/{id}")
     void deleteParty(@Path("id") Integer id, Callback<Integer> callback);
@@ -71,4 +72,18 @@ public interface GeYouService {
 
     @PUT("/party/addMember/{id}")
     void addMember(@Body Party party, @Query("id") Integer id, Callback<Party> callback);
+
+    //HISTORY
+
+    @POST("/history/add")
+    void addHistory(@Body History history, Callback<History> callback);
+
+    @GET("/history/get/{id}")
+    void getHistory(@Path("id") Integer id, Callback<History> callback);
+
+    @GET("/history/getAll/{id}")
+    void getAllUserHistory(@Path("id") Integer id, Callback<List<History>> callback);
+
+    @PUT("/history/update")
+    void editHistory(@Body History history, Callback<History> callback);
 }
