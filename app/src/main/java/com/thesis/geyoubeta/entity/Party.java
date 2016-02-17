@@ -35,8 +35,6 @@ public class Party {
 
     private User createdBy;
 
-    private Set<PartyMember> partyMembers = new HashSet<PartyMember>(0);
-
     public Integer getId() {
         return id;
     }
@@ -115,14 +113,6 @@ public class Party {
 
     public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
-    }
-
-    public Set<PartyMember> getPartyMembers() {
-        return partyMembers;
-    }
-
-    public void setPartyMembers(Set<PartyMember> partyMembers) {
-        this.partyMembers = partyMembers;
     }
 
     @Override

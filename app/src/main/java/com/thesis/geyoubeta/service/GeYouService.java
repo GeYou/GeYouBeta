@@ -8,6 +8,7 @@ package com.thesis.geyoubeta.service;
 
 import com.thesis.geyoubeta.entity.History;
 import com.thesis.geyoubeta.entity.Party;
+import com.thesis.geyoubeta.entity.PartyMember;
 import com.thesis.geyoubeta.entity.User;
 
 
@@ -70,9 +71,6 @@ public interface GeYouService {
     @PUT("/party/update")
     void updateParty(@Body Party party, Callback<Party> callback);
 
-    @PUT("/party/addMember/{id}")
-    void addMember(@Body Party party, @Query("id") Integer id, Callback<Party> callback);
-
     //HISTORY
 
     @POST("/history/add")
@@ -86,4 +84,15 @@ public interface GeYouService {
 
     @PUT("/history/update")
     void editHistory(@Body History history, Callback<History> callback);
+
+    //PartyMember
+
+    @POST("/partyMember/add")
+    void addMember(@Body PartyMember partyMember, Callback<PartyMember> callback);
+
+    @GET("/partyMember/get/{id}")
+    void getPartyMember(@Path("id") Integer id, Callback<PartyMember> callback);
+
+    @GET("/partyMember/getByParty/{id}")
+    void getPartyMembers(@Path("id") Integer id, Callback<List<User>> callback);
 }
