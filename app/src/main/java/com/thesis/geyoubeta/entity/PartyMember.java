@@ -13,32 +13,36 @@ import java.util.Date;
  */
 public class PartyMember {
 
-    private PartyMemberId pk = new PartyMemberId();
+    private Integer id;
+
+    private User user;
+
+    private Party party;
 
     private Date joinDate;
 
-    public PartyMemberId getPk() {
-        return pk;
+    public Integer getId() {
+        return id;
     }
 
-    public void setPk(PartyMemberId pk) {
-        this.pk = pk;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public User getUser() {
-        return getPk().getUser();
+        return user;
     }
 
     public void setUser(User user) {
-        getPk().setUser(user);
+        this.user = user;
     }
 
     public Party getParty() {
-        return getPk().getParty();
+        return party;
     }
 
     public void setParty(Party party) {
-        getPk().setParty(party);
+        this.party = party;
     }
 
     public Date getJoinDate() {
