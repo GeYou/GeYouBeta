@@ -19,6 +19,10 @@ public class PartyMember {
 
     private Party party;
 
+    private Float lastLong;
+
+    private Float lastLat;
+
     private Date joinDate;
 
     public Integer getId() {
@@ -43,6 +47,22 @@ public class PartyMember {
 
     public void setParty(Party party) {
         this.party = party;
+    }
+
+    public Float getLastLong() {
+        return lastLong;
+    }
+
+    public void setLastLong(Float lastLong) {
+        this.lastLong = lastLong;
+    }
+
+    public Float getLastLat() {
+        return lastLat;
+    }
+
+    public void setLastLat(Float lastLat) {
+        this.lastLat = lastLat;
     }
 
     public Date getJoinDate() {

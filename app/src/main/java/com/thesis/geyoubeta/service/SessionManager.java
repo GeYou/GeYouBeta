@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.thesis.geyoubeta.activity.LoginActivity;
 import com.thesis.geyoubeta.entity.User;
 
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -31,11 +32,24 @@ public class SessionManager {
     private static final String PREF_NAME = "GeYouPrefs";
 
     private static final String IS_LOGIN = "IsLoggedIn";
-    public static final String KEY_ID = "id";
+
+    public static final String KEY_UID = "id";
     public static final String KEY_FNAME = "fName";
     public static final String KEY_LNAME = "lName";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_PASSWORD = "password";
+
+    public static final String KEY_PID = "id";
+    public static final String KEY_PNAME = "pName";
+    public static final String KEY_START = "startDateTime";
+    public static final String KEY_END = "endDateTime";
+    public static final String KEY_DEST = "destination";
+    public static final String KEY_DEST_LONG = "destLong";
+    public static final String KEY_DEST_LAT = "destLat";
+    public static final String KEY_STATUS = "status";
+    public static final String KEY_CDATE = "createdDate";
+    public static final String KEY_CBY = "createdBy";
+
     public static final String KEY_BASE_URL = "ipAddress";
 
     public SessionManager(Context context){
@@ -47,7 +61,7 @@ public class SessionManager {
     public void createLoginSession(User u) {
 
         editor.putBoolean(IS_LOGIN, true);
-        editor.putInt(KEY_ID, u.getId());
+        editor.putInt(KEY_UID, u.getId());
         editor.putString(KEY_FNAME, u.getfName());
         editor.putString(KEY_LNAME, u.getlName());
         editor.putString(KEY_EMAIL, u.getEmail());
@@ -81,7 +95,7 @@ public class SessionManager {
     public HashMap<String, Object> getUserDetails() {
         HashMap<String, Object> user = new HashMap<>();
 
-        user.put(KEY_ID, (pref.getInt(KEY_ID, -1)));
+        user.put(KEY_UID, (pref.getInt(KEY_UID, -1)));
         user.put(KEY_FNAME, pref.getString(KEY_FNAME, null));
         user.put(KEY_LNAME, pref.getString(KEY_LNAME, null));
         user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
@@ -91,7 +105,7 @@ public class SessionManager {
     }
 
     public void updateLoginCredentials(User u) {
-        editor.putInt(KEY_ID, u.getId());
+        editor.putInt(KEY_UID, u.getId());
         editor.putString(KEY_FNAME, u.getfName());
         editor.putString(KEY_LNAME, u.getlName());
         editor.putString(KEY_EMAIL, u.getEmail());
@@ -101,7 +115,7 @@ public class SessionManager {
     }
 
     public Integer getId() {
-        return pref.getInt(KEY_ID, -1);
+        return pref.getInt(KEY_UID, -1);
     }
 
     public String getFName() {
