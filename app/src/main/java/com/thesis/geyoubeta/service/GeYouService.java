@@ -71,9 +71,6 @@ public interface GeYouService {
     @PUT("/party/update")
     void updateParty(@Body Party party, Callback<Party> callback);
 
-    @GET("/party/getActiveParty")
-    void getActiveParty(Callback<Party> callback);
-
     //HISTORY
 
     @POST("/history/add")
@@ -98,4 +95,7 @@ public interface GeYouService {
 
     @GET("/partyMember/getByParty/{id}")
     void getPartyMembers(@Path("id") Integer id, Callback<List<User>> callback);
+
+    @GET("/partyMember/getActiveParty/{id}")
+    void getActiveParty(Callback<Party> callback);
 }

@@ -202,20 +202,19 @@ public class CreatePartyActivity extends ActionBarActivity {
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (session.getPartyStatus() != null || session.getPartyStatus().equals("status") || session.getPartyStatus().equals("I")) {
+                if (session.getPartyStatus().equals("status") || session.getPartyStatus().equals("I")) {
+                    Party nParty = new Party();
 
+                    nParty.setName(eTxtName.getText().toString());
+                    nParty.setStartDateTime(eTxtStartTimeStamp.getText().toString());
+                    nParty.setEndDateTime(eTxtEndTimeStamp.getText().toString());
+                    nParty.setDestination(eTxtDestination.getText().toString());
+
+                    createParty(nParty);
                 } else {
-
+                    Toast.makeText(getApplicationContext(), "Could not make party: You have an active party.", Toast.LENGTH_SHORT).show();
+                    clearInput();
                 }
-
-                Party nParty = new Party();
-
-                nParty.setName(eTxtName.getText().toString());
-                nParty.setStartDateTime(eTxtStartTimeStamp.getText().toString());
-                nParty.setEndDateTime(eTxtEndTimeStamp.getText().toString());
-                nParty.setDestination(eTxtDestination.getText().toString());
-
-                createParty(nParty);
             }
         });
         btnCancel = (Button) findViewById(R.id.btnCancelParty);

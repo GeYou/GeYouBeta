@@ -24,10 +24,14 @@ import android.widget.Toast;
 
 import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
+import com.thesis.geyoubeta.entity.Party;
 import com.thesis.geyoubeta.service.GeYouService;
 import com.thesis.geyoubeta.service.SessionManager;
 
+import retrofit.Callback;
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import retrofit.converter.JacksonConverter;
 
 public class PartyInfoActivity extends ActionBarActivity {
@@ -66,6 +70,8 @@ public class PartyInfoActivity extends ActionBarActivity {
         initializeDrawer();
         initializeRest();
         initializeComponents();
+
+        setDefaults();
     }
 
     @Override
@@ -200,20 +206,66 @@ public class PartyInfoActivity extends ActionBarActivity {
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                makeInputsEnabled();
+                btnSave.setEnabled(true);
+                btnCancel.setEnabled(true);
             }
         });
         btnSave = (Button) findViewById(R.id.btnSavePartyInfo);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Party nParty = new Party();
+                nParty.setName(eTxtName.getText().toString());
+                nParty.setStartDateTime(eTxtStartTimeStamp.getText().toString());
+                nParty.setEndDateTime(eTxtEndTimeStamp.getText().toString());
+                nParty.setDestination(eTxtDestination.getText().toString());
 
+                updateParty(nParty);
             }
         });
         btnCancel = (Button) findViewById(R.id.btnCancelPartyInfo);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                resetInputs();
+                btnSave.setEnabled(false);
+                btnCancel.setEnabled(false);
+            }
+        });
+    }
+
+    public void setDefaults() {
+        eTxtName.setText(session.getPartyName());
+        eTxtStartTimeStamp.setText(session.getPartyStart());
+        eTxtEndTimeStamp.setText(session.getPartyEnd());
+        eTxtDestination.setText(session.getPartyDest());
+    }
+
+    public void makeInputsEnabled() {
+        eTxtName.setEnabled(true);
+        eTxtStartTimeStamp.setEnabled(true);
+        eTxtEndTimeStamp.setEnabled(true);
+        eTxtDestination.setEnabled(true);
+    }
+
+    public void resetInputs() {
+        setDefaults();
+        eTxtName.setEnabled(false);
+        eTxtStartTimeStamp.setEnabled(false);
+        eTxtEndTimeStamp.setEnabled(false);
+        eTxtDestination.setEnabled(false);
+    }
+
+    public void updateParty(Party p) {
+        geYouService.updateParty(p, new Callback<Party>() {
+            @Override
+            public void success(Party party, Response response) {
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
 
             }
         });

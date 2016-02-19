@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
+import com.thesis.geyoubeta.entity.Party;
 import com.thesis.geyoubeta.entity.User;
 import com.thesis.geyoubeta.service.GeYouService;
 import com.thesis.geyoubeta.service.SessionManager;
@@ -225,6 +226,19 @@ public class LoginActivity extends ActionBarActivity {
             public void success(User user, Response response) {
                 if (user != null) {
                     session.createLoginSession(user);
+                    geYouService.getActiveParty(new Callback<Party>() {
+                        @Override
+                        public void success(Party party, Response response) {
+                            if (party != null) {
+                                session.setActiveParty(party);
+                            }
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {
+
+                        }
+                    });
                     Intent i = new Intent(getApplicationContext(), MapActivity.class);
                     startActivity(i);
                 } else {
