@@ -202,6 +202,12 @@ public class CreatePartyActivity extends ActionBarActivity {
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (session.getPartyStatus() != null || session.getPartyStatus().equals("status") || session.getPartyStatus().equals("I")) {
+
+                } else {
+
+                }
+
                 Party nParty = new Party();
 
                 nParty.setName(eTxtName.getText().toString());
@@ -222,9 +228,10 @@ public class CreatePartyActivity extends ActionBarActivity {
     }
 
     public void createParty(Party party) {
-        geYouService.createParty(party, session.getId(), new Callback<Party>() {
+        geYouService.createParty(party, session.getUserId(), new Callback<Party>() {
             @Override
             public void success(Party party, Response response) {
+                session.setActiveParty(party);
                 Toast.makeText(CreatePartyActivity.this, "Successfully created party: " + party.toString(), Toast.LENGTH_LONG).show();
             }
 

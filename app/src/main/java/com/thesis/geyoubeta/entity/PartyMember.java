@@ -25,6 +25,8 @@ public class PartyMember {
 
     private Date joinDate;
 
+    private String status;
+
     public Integer getId() {
         return id;
     }
@@ -71,5 +73,13 @@ public class PartyMember {
 
     public void setJoinDate(Date joinDate) {
         this.joinDate = joinDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

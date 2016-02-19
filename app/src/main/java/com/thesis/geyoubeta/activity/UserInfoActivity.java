@@ -14,7 +14,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.GestureDetector;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -230,7 +229,7 @@ public class UserInfoActivity extends ActionBarActivity {
                     Toast.makeText(getApplicationContext(), "Passwords match!", Toast.LENGTH_SHORT).show();
                     User nUser = new User();
 
-                    nUser.setId(session.getId());
+                    nUser.setId(session.getUserId());
                     nUser.setfName(eTxtFName.getText().toString());
                     nUser.setlName(eTxtLName.getText().toString());
                     nUser.setEmail(eTxtEmail.getText().toString());
@@ -255,11 +254,11 @@ public class UserInfoActivity extends ActionBarActivity {
     }
 
     public void setDefaults() {
-        eTxtFName.setText(session.getFName());
-        eTxtLName.setText(session.getLName());
-        eTxtEmail.setText(session.getEmail());
-        eTxtPassword.setText(session.getPassword());
-        eTxtConfPass.setText(session.getPassword());
+        eTxtFName.setText(session.getUserFName());
+        eTxtLName.setText(session.getUserLName());
+        eTxtEmail.setText(session.getUserEmail());
+        eTxtPassword.setText(session.getUserPassword());
+        eTxtConfPass.setText(session.getUserPassword());
     }
 
     public void makeInputsEnabled() {
