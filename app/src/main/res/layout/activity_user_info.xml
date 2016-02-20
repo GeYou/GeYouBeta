@@ -4,8 +4,7 @@
   ~  Copyright (C) 2015 Ivan Wesley Chua and Jethro Divino
   -->
 
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/DrawerLayout"
     android:layout_width="match_parent"
@@ -16,19 +15,19 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_alignBottom="@+id/RecyclerView">
+        android:layout_alignBottom="@+id/RecyclerView"
+        android:orientation="vertical">
 
         <include
             android:id="@+id/tool_bar"
             layout="@layout/tool_bar" />
 
         <TextView
+            android:id="@+id/textView9"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:text="USER INFO"
-            android:id="@+id/textView9"
-            android:gravity="center" />
+            android:gravity="center"
+            android:text="USER INFO" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -36,8 +35,8 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:orientation="vertical"
-            android:layout_gravity="center_horizontal" >
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textViewFName"
@@ -52,9 +51,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:enabled="false"
                 android:inputType="textPersonName"
-                android:textSize="17sp"
-                android:enabled="false" />
+                android:textSize="17sp" />
 
             <TextView
                 android:id="@+id/textViewLName"
@@ -69,9 +68,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:enabled="false"
                 android:inputType="textPersonName"
-                android:textSize="17sp"
-                android:enabled="false" />
+                android:textSize="17sp" />
 
             <TextView
                 android:id="@+id/textViewEmail"
@@ -86,9 +85,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:enabled="false"
                 android:inputType="textEmailAddress"
-                android:textSize="17sp"
-                android:enabled="false" />
+                android:textSize="17sp" />
 
             <TextView
                 android:id="@+id/textViewPassword"
@@ -103,49 +102,49 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:enabled="false"
                 android:inputType="textPassword"
-                android:textSize="17sp"
-                android:enabled="false" />
+                android:textSize="17sp" />
 
             <TextView
+                android:id="@+id/textViewConfirmPass"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="CONFIRM PASSWORD:"
                 android:textColor="#000000"
-                android:textSize="17sp"
-                android:id="@+id/textViewConfirmPass" />
+                android:textSize="17sp" />
 
             <EditText
                 android:id="@+id/editTextConfirmPassInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:enabled="false"
                 android:inputType="textPassword"
-                android:textSize="17sp"
-                android:enabled="false" />
+                android:textSize="17sp" />
 
             <Button
                 android:id="@+id/btnEditUserInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="EDIT"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:text="EDIT" />
 
             <Button
                 android:id="@+id/btnSaveUserInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="SAVE"
                 android:layout_gravity="center_horizontal"
-                android:enabled="false" />
+                android:enabled="false"
+                android:text="SAVE" />
 
             <Button
                 android:id="@+id/btnCancelUserInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="CANCEL"
                 android:layout_gravity="center_horizontal"
-                android:enabled="false" />
+                android:enabled="false"
+                android:text="CANCEL" />
         </LinearLayout>
 
 

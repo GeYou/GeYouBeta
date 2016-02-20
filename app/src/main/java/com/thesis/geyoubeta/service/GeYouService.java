@@ -11,7 +11,6 @@ import com.thesis.geyoubeta.entity.Party;
 import com.thesis.geyoubeta.entity.PartyMember;
 import com.thesis.geyoubeta.entity.User;
 
-
 import java.util.List;
 
 import retrofit.Callback;
@@ -97,5 +96,5 @@ public interface GeYouService {
     void getPartyMembers(@Path("id") Integer id, Callback<List<User>> callback);
 
     @GET("/partyMember/getActiveParty/{id}")
-    void getActiveParty(Callback<Party> callback);
+    void getActiveParty(@Path("id") Integer id, Callback<Party> callback);
 }

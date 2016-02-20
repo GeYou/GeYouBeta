@@ -21,24 +21,11 @@ import java.util.HashMap;
  * Created by ivanwesleychua on 04/02/2016.
  */
 public class SessionManager {
-    SharedPreferences pref;
-
-    SharedPreferences.Editor editor;
-
-    Context _context;
-
-    int PRIVATE_MODE = 0;
-
-    private static final String PREF_NAME = "GeYouPrefs";
-
-    private static final String IS_LOGIN = "IsLoggedIn";
-
     public static final String KEY_USER_ID = "id";
     public static final String KEY_USER_FNAME = "fName";
     public static final String KEY_USER_LNAME = "lName";
     public static final String KEY_USER_EMAIL = "email";
     public static final String KEY_USER_PASSWORD = "password";
-
     public static final String KEY_PARTY_ID = "id";
     public static final String KEY_PARTY_NAME = "pName";
     public static final String KEY_PARTY_START = "startDateTime";
@@ -49,10 +36,15 @@ public class SessionManager {
     public static final String KEY_PARTY_STATUS = "status";
     public static final String KEY_PARTY_CDATE = "createdDate";
     public static final String KEY_PARTY_CBY = "createdBy";
-
     public static final String KEY_BASE_URL = "ipAddress";
+    private static final String PREF_NAME = "GeYouPrefs";
+    private static final String IS_LOGIN = "IsLoggedIn";
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
+    Context _context;
+    int PRIVATE_MODE = 0;
 
-    public SessionManager(Context context){
+    public SessionManager(Context context) {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
@@ -90,7 +82,7 @@ public class SessionManager {
         editor.putString(KEY_BASE_URL, "http://" + ip + ":8080/geyou");
 
         editor.commit();
-        Toast.makeText(_context, "New URL is: " +pref.getString(KEY_BASE_URL, "not changed"), Toast.LENGTH_LONG).show();
+        Toast.makeText(_context, "New URL is: " + pref.getString(KEY_BASE_URL, "not changed"), Toast.LENGTH_LONG).show();
     }
 
     public String getBaseURL() {
@@ -186,7 +178,7 @@ public class SessionManager {
         return pref.getString(KEY_PARTY_CDATE, "createdDate");
     }
 
-    public void logoutUser(){
+    public void logoutUser() {
         editor.clear();
         editor.commit();
 
@@ -198,7 +190,7 @@ public class SessionManager {
         _context.startActivity(i);
     }
 
-    public boolean isLoggedIn(){
+    public boolean isLoggedIn() {
         return pref.getBoolean(IS_LOGIN, false);
     }
 }

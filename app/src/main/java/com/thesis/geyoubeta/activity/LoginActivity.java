@@ -48,15 +48,14 @@ public class LoginActivity extends ActionBarActivity {
     RestAdapter restAdapter;
     GeYouService geYouService;
 
-    private Toolbar toolbar;
     String TITLES[] = {"IP Settings"};
 
     RecyclerView mRecyclerView;                           // Declaring RecyclerView
     RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
     RecyclerView.LayoutManager mLayoutManager;            // Declaring Layout Manager as a linear layout manager
     DrawerLayout Drawer;                                  // Declaring DrawerLayout
-
     android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;                  // Declaring Action Bar Drawer Toggle;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,6 +166,7 @@ public class LoginActivity extends ActionBarActivity {
         menu.setDisplayUseLogoEnabled(true);
         menu.setTitle(" ");
     }
+
     public void initializeRest() {
         restAdapter = new RestAdapter.Builder()
                 .setLogLevel(RestAdapter.LogLevel.FULL)
@@ -226,7 +226,7 @@ public class LoginActivity extends ActionBarActivity {
             public void success(User user, Response response) {
                 if (user != null) {
                     session.createLoginSession(user);
-                    geYouService.getActiveParty(new Callback<Party>() {
+                    geYouService.getActiveParty(session.getUserId(), new Callback<Party>() {
                         @Override
                         public void success(Party party, Response response) {
                             if (party != null) {

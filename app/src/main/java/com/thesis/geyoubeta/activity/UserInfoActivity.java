@@ -50,15 +50,14 @@ public class UserInfoActivity extends ActionBarActivity {
     RestAdapter restAdapter;
     GeYouService geYouService;
 
-    private Toolbar toolbar;
-    String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings",  "Logout"};
+    String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings", "Logout"};
 
     RecyclerView mRecyclerView;                           // Declaring RecyclerView
     RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
     RecyclerView.LayoutManager mLayoutManager;            // Declaring Layout Manager as a linear layout manager
     DrawerLayout Drawer;                                  // Declaring DrawerLayout
-
     android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;                  // Declaring Action Bar Drawer Toggle;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -282,7 +281,7 @@ public class UserInfoActivity extends ActionBarActivity {
         geYouService.updateUser(u, new Callback<User>() {
             @Override
             public void success(User user, Response response) {
-                Toast.makeText(UserInfoActivity.this, "Successfully updated user: " +user.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(UserInfoActivity.this, "Successfully updated user: " + user.toString(), Toast.LENGTH_LONG).show();
                 session.updateLoginCredentials(user);
                 resetInputs();
                 btnSave.setEnabled(false);
