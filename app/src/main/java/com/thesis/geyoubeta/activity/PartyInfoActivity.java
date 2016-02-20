@@ -36,19 +36,19 @@ import retrofit.converter.JacksonConverter;
 
 public class PartyInfoActivity extends ActionBarActivity {
 
-    SessionManager session;
+    private SessionManager session;
 
-    EditText eTxtName;
-    EditText eTxtStartTimeStamp;
-    EditText eTxtEndTimeStamp;
-    EditText eTxtDestination;
-    Button btnEdit;
-    Button btnSave;
-    Button btnCancel;
-    Button btnPartyMembers;
+    private EditText eTxtName;
+    private EditText eTxtStartTimeStamp;
+    private EditText eTxtEndTimeStamp;
+    private EditText eTxtDestination;
+    private Button btnEdit;
+    private Button btnSave;
+    private Button btnCancel;
+    private Button btnPartyMembers;
 
-    RestAdapter restAdapter;
-    GeYouService geYouService;
+    private RestAdapter restAdapter;
+    private GeYouService geYouService;
 
     String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings", "Logout"};
 

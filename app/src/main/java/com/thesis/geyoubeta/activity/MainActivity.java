@@ -26,7 +26,7 @@ import com.thesis.geyoubeta.service.SessionManager;
 
 public class MainActivity extends ActionBarActivity {
 
-    SessionManager session;
+    private SessionManager session;
 
     String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings", "Logout"};
 

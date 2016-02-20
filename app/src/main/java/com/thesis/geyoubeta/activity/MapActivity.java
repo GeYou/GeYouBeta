@@ -30,10 +30,10 @@ import retrofit.converter.JacksonConverter;
 
 public class MapActivity extends ActionBarActivity {
 
-    SessionManager session;
+    private SessionManager session;
 
-    RestAdapter restAdapter;
-    GeYouService geYouService;
+    private RestAdapter restAdapter;
+    private GeYouService geYouService;
 
     String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings", "Logout"};
 

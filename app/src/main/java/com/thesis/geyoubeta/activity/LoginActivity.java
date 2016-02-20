@@ -37,16 +37,16 @@ import retrofit.converter.JacksonConverter;
 
 public class LoginActivity extends ActionBarActivity {
 
-    SessionManager session;
+    private SessionManager session;
 
-    Button btnLogin;
-    Button btnRegister;
-    Button btnChangeIP;
-    EditText eTxtEmail;
-    EditText eTxtPassword;
+    private Button btnLogin;
+    private Button btnRegister;
+    private Button btnChangeIP;
+    private EditText eTxtEmail;
+    private EditText eTxtPassword;
 
-    RestAdapter restAdapter;
-    GeYouService geYouService;
+    private RestAdapter restAdapter;
+    private GeYouService geYouService;
 
     String TITLES[] = {"IP Settings"};
 

@@ -18,8 +18,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.thesis.geyoubeta.R;
@@ -41,15 +43,17 @@ import retrofit.converter.JacksonConverter;
 
 public class PartyMembersActivity extends ActionBarActivity {
 
-    SessionManager session;
+    private SessionManager session;
 
-    EditText eTxtPartyMember;
-    Button btnAdd;
+    private EditText eTxtPartyMember;
+    private Button btnAdd;
+    private ListView listView;
 
-    public ArrayList<String> partyMembers;
+    private ArrayList<String> partyMembers;
+    private ArrayAdapter<String> itemsAdapter;
 
-    RestAdapter restAdapter;
-    GeYouService geYouService;
+    private RestAdapter restAdapter;
+    private GeYouService geYouService;
 
     String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings", "Logout"};
 
@@ -222,6 +226,8 @@ public class PartyMembersActivity extends ActionBarActivity {
             }
         });
 
+        listView = (ListView) findViewById(R.id.listViewPartyMembers);
+        itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, partyMembers);
     }
 
     public void getPartyMembers() {

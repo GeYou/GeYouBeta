@@ -28,10 +28,10 @@ import com.thesis.geyoubeta.service.SessionManager;
 
 public class IPSettingsActivity extends ActionBarActivity {
 
-    SessionManager session;
+    private SessionManager session;
 
-    EditText eTxtIP;
-    Button btnChange;
+    private EditText eTxtIP;
+    private Button btnChange;
 
     String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings", "Logout"};
 
