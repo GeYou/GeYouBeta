@@ -50,6 +50,9 @@ public interface GeYouService {
     @PUT("/user/update")
     void updateUser(@Body User user, Callback<User> callback);
 
+    @GET("/user/getByEmail")
+    void getUserByEmail(@Query("email") String email, Callback<User> callback);
+
     //PARTY
 
     @GET("/party/get/{id}")

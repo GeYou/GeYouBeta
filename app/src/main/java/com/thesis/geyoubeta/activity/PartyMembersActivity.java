@@ -18,20 +18,35 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
+import com.thesis.geyoubeta.entity.Party;
+import com.thesis.geyoubeta.entity.PartyMember;
+import com.thesis.geyoubeta.entity.User;
 import com.thesis.geyoubeta.service.GeYouService;
 import com.thesis.geyoubeta.service.SessionManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit.Callback;
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import retrofit.converter.JacksonConverter;
 
 public class PartyMembersActivity extends ActionBarActivity {
 
     SessionManager session;
 
+    EditText eTxtPartyMember;
+    Button btnAdd;
+
+    public ArrayList<String> partyMembers;
 
     RestAdapter restAdapter;
     GeYouService geYouService;
@@ -181,6 +196,77 @@ public class PartyMembersActivity extends ActionBarActivity {
     }
 
     public void initializeComponents() {
+        getPartyMembers();
 
+        eTxtPartyMember = (EditText) findViewById(R.id.editTextPartyMember);
+        btnAdd = (Button) findViewById(R.id.btnAddPartyMember);
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                geYouService.validateEmail(eTxtPartyMember.getText().toString(), new Callback<Boolean>() {
+                    @Override
+                    public void success(Boolean aBoolean, Response response) {
+                        if (aBoolean) {
+                            Toast.makeText(getApplicationContext(), "User exist.", Toast.LENGTH_LONG).show();
+                            addPartyMember(eTxtPartyMember.getText().toString());
+                        } else {
+                            Toast.makeText(getApplicationContext(), "User does not exist.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+
+                    }
+                });
+            }
+        });
+
+    }
+
+    public void getPartyMembers() {
+        geYouService.getPartyMembers(session.getPartyId(), new Callback<List<User>>() {
+            @Override
+            public void success(List<User> users, Response response) {
+                partyMembers = new ArrayList<String>();
+                for (User u : users) {
+                    partyMembers.add(u.getEmail());
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
+
+    public void addPartyMember(String email) {
+        geYouService.getUserByEmail(email, new Callback<User>() {
+            @Override
+            public void success(User user, Response response) {
+                Party p = new Party();
+                p.setId(session.getPartyId());
+                PartyMember pm = new PartyMember();
+                pm.setUser(user);
+                pm.setParty(p);
+                geYouService.addMember(pm, new Callback<PartyMember>() {
+                    @Override
+                    public void success(PartyMember partyMember, Response response) {
+                        Toast.makeText(getApplicationContext(), "Successfully add to party.", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
     }
 }
