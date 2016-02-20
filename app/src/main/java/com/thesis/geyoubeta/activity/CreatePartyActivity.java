@@ -48,15 +48,14 @@ public class CreatePartyActivity extends ActionBarActivity {
     RestAdapter restAdapter;
     GeYouService geYouService;
 
-    private Toolbar toolbar;
-    String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings",  "Logout"};
+    String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings", "Logout"};
 
     RecyclerView mRecyclerView;                           // Declaring RecyclerView
     RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
     RecyclerView.LayoutManager mLayoutManager;            // Declaring Layout Manager as a linear layout manager
     DrawerLayout Drawer;                                  // Declaring DrawerLayout
-
     android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;                  // Declaring Action Bar Drawer Toggle;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -202,14 +201,19 @@ public class CreatePartyActivity extends ActionBarActivity {
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Party nParty = new Party();
+                if (session.getPartyStatus().equals("status") || session.getPartyStatus().equals("I")) {
+                    Party nParty = new Party();
 
-                nParty.setName(eTxtName.getText().toString());
-                nParty.setStartDateTime(eTxtStartTimeStamp.getText().toString());
-                nParty.setEndDateTime(eTxtEndTimeStamp.getText().toString());
-                nParty.setDestination(eTxtDestination.getText().toString());
+                    nParty.setName(eTxtName.getText().toString());
+                    nParty.setStartDateTime(eTxtStartTimeStamp.getText().toString());
+                    nParty.setEndDateTime(eTxtEndTimeStamp.getText().toString());
+                    nParty.setDestination(eTxtDestination.getText().toString());
 
-                createParty(nParty);
+                    createParty(nParty);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Could not make party: You have an active party.", Toast.LENGTH_SHORT).show();
+                    clearInput();
+                }
             }
         });
         btnCancel = (Button) findViewById(R.id.btnCancelParty);
@@ -222,9 +226,10 @@ public class CreatePartyActivity extends ActionBarActivity {
     }
 
     public void createParty(Party party) {
-        geYouService.createParty(party, session.getId(), new Callback<Party>() {
+        geYouService.createParty(party, session.getUserId(), new Callback<Party>() {
             @Override
             public void success(Party party, Response response) {
+                session.setActiveParty(party);
                 Toast.makeText(CreatePartyActivity.this, "Successfully created party: " + party.toString(), Toast.LENGTH_LONG).show();
             }
 

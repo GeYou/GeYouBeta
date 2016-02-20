@@ -11,7 +11,6 @@ import com.thesis.geyoubeta.entity.Party;
 import com.thesis.geyoubeta.entity.PartyMember;
 import com.thesis.geyoubeta.entity.User;
 
-
 import java.util.List;
 
 import retrofit.Callback;
@@ -50,6 +49,9 @@ public interface GeYouService {
 
     @PUT("/user/update")
     void updateUser(@Body User user, Callback<User> callback);
+
+    @GET("/user/getByEmail")
+    void getUserByEmail(@Query("email") String email, Callback<User> callback);
 
     //PARTY
 
@@ -95,4 +97,10 @@ public interface GeYouService {
 
     @GET("/partyMember/getByParty/{id}")
     void getPartyMembers(@Path("id") Integer id, Callback<List<User>> callback);
+
+    @GET("/partyMember/getActiveParty/{id}")
+    void getActiveParty(@Path("id") Integer id, Callback<Party> callback);
+
+    @GET("/partyMember/checkPartyMembership")
+    void checkPartyMembership(@Query("partyId") Integer partyId, @Query("userId") Integer userId, Callback<Boolean> callback);
 }

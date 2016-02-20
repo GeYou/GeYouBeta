@@ -25,8 +25,13 @@ import android.widget.Toast;
 import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
 import com.thesis.geyoubeta.entity.Party;
+import com.thesis.geyoubeta.entity.PartyMember;
+import com.thesis.geyoubeta.entity.User;
 import com.thesis.geyoubeta.service.GeYouService;
 import com.thesis.geyoubeta.service.SessionManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -34,18 +39,14 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.converter.JacksonConverter;
 
-public class PartyInfoActivity extends ActionBarActivity {
+public class PartyMembersActivity extends ActionBarActivity {
 
     SessionManager session;
 
-    EditText eTxtName;
-    EditText eTxtStartTimeStamp;
-    EditText eTxtEndTimeStamp;
-    EditText eTxtDestination;
-    Button btnEdit;
-    Button btnSave;
-    Button btnCancel;
-    Button btnPartyMembers;
+    EditText eTxtPartyMember;
+    Button btnAdd;
+
+    public ArrayList<String> partyMembers;
 
     RestAdapter restAdapter;
     GeYouService geYouService;
@@ -62,7 +63,7 @@ public class PartyInfoActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_party_info);
+        setContentView(R.layout.activity_party_members);
 
         session = new SessionManager(getApplicationContext());
         session.checkLogin();
@@ -70,8 +71,6 @@ public class PartyInfoActivity extends ActionBarActivity {
         initializeDrawer();
         initializeRest();
         initializeComponents();
-
-        setDefaults();
     }
 
     @Override
@@ -197,78 +196,87 @@ public class PartyInfoActivity extends ActionBarActivity {
     }
 
     public void initializeComponents() {
-        eTxtName = (EditText) findViewById(R.id.editTextPartyNameInfo);
-        eTxtStartTimeStamp = (EditText) findViewById(R.id.editTextStartTimeStampInfo);
-        eTxtEndTimeStamp = (EditText) findViewById(R.id.editTextEndTimeStampInfo);
-        eTxtDestination = (EditText) findViewById(R.id.editTextDestinationInfo);
+        getPartyMembers();
 
-        btnEdit = (Button) findViewById(R.id.btnEditPartyInfo);
-        btnEdit.setOnClickListener(new View.OnClickListener() {
+        eTxtPartyMember = (EditText) findViewById(R.id.editTextPartyMember);
+        btnAdd = (Button) findViewById(R.id.btnAddPartyMember);
+        btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                makeInputsEnabled();
-                btnSave.setEnabled(true);
-                btnCancel.setEnabled(true);
-            }
-        });
-        btnSave = (Button) findViewById(R.id.btnSavePartyInfo);
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Party nParty = new Party();
-                nParty.setName(eTxtName.getText().toString());
-                nParty.setStartDateTime(eTxtStartTimeStamp.getText().toString());
-                nParty.setEndDateTime(eTxtEndTimeStamp.getText().toString());
-                nParty.setDestination(eTxtDestination.getText().toString());
+                geYouService.validateEmail(eTxtPartyMember.getText().toString(), new Callback<Boolean>() {
+                    @Override
+                    public void success(Boolean aBoolean, Response response) {
+                        if (aBoolean) {
+                            Toast.makeText(getApplicationContext(), "User exist.", Toast.LENGTH_LONG).show();
+                            addPartyMember(eTxtPartyMember.getText().toString());
+                        } else {
+                            Toast.makeText(getApplicationContext(), "User does not exist.", Toast.LENGTH_LONG).show();
+                        }
+                    }
 
-                updateParty(nParty);
+                    @Override
+                    public void failure(RetrofitError error) {
+
+                    }
+                });
             }
         });
-        btnCancel = (Button) findViewById(R.id.btnCancelPartyInfo);
-        btnCancel.setOnClickListener(new View.OnClickListener() {
+
+    }
+
+    public void getPartyMembers() {
+        geYouService.getPartyMembers(session.getPartyId(), new Callback<List<User>>() {
             @Override
-            public void onClick(View v) {
-                resetInputs();
-                btnSave.setEnabled(false);
-                btnCancel.setEnabled(false);
+            public void success(List<User> users, Response response) {
+                partyMembers = new ArrayList<String>();
+                for (User u : users) {
+                    partyMembers.add(u.getEmail());
+                }
             }
-        });
-        btnPartyMembers = (Button) findViewById(R.id.btnPartyMembersInfo);
-        btnPartyMembers.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), PartyMembersActivity.class);
-                startActivity(i);
+            public void failure(RetrofitError error) {
+
             }
         });
     }
 
-    public void setDefaults() {
-        eTxtName.setText(session.getPartyName());
-        eTxtStartTimeStamp.setText(session.getPartyStart());
-        eTxtEndTimeStamp.setText(session.getPartyEnd());
-        eTxtDestination.setText(session.getPartyDest());
-    }
-
-    public void makeInputsEnabled() {
-        eTxtName.setEnabled(true);
-        eTxtStartTimeStamp.setEnabled(true);
-        eTxtEndTimeStamp.setEnabled(true);
-        eTxtDestination.setEnabled(true);
-    }
-
-    public void resetInputs() {
-        setDefaults();
-        eTxtName.setEnabled(false);
-        eTxtStartTimeStamp.setEnabled(false);
-        eTxtEndTimeStamp.setEnabled(false);
-        eTxtDestination.setEnabled(false);
-    }
-
-    public void updateParty(Party p) {
-        geYouService.updateParty(p, new Callback<Party>() {
+    public void addPartyMember(String email) {
+        geYouService.getUserByEmail(email, new Callback<User>() {
             @Override
-            public void success(Party party, Response response) {
+            public void success(User user, Response response) {
+                final Party p = new Party();
+                p.setId(session.getPartyId());
+
+                final User u = user;
+                geYouService.checkPartyMembership(p.getId(), user.getId(), new Callback<Boolean>() {
+                    @Override
+                    public void success(Boolean aBoolean, Response response) {
+                        if (aBoolean) {
+                            Toast.makeText(getApplicationContext(), "User already in the party!", Toast.LENGTH_LONG).show();
+                        } else {
+                            PartyMember pm = new PartyMember();
+                            pm.setUser(u);
+                            pm.setParty(p);
+                            geYouService.addMember(pm, new Callback<PartyMember>() {
+                                @Override
+                                public void success(PartyMember partyMember, Response response) {
+                                    Toast.makeText(getApplicationContext(), "Successfully add to party.", Toast.LENGTH_LONG).show();
+                                }
+
+                                @Override
+                                public void failure(RetrofitError error) {
+
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void failure(RetrofitError error) {
+
+                    }
+                });
 
             }
 

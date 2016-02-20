@@ -7,8 +7,6 @@
 package com.thesis.geyoubeta.entity;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by ivanwesleychua on 01/02/2016.

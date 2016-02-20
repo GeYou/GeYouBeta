@@ -46,7 +46,10 @@
             android:label="@string/title_activity_ipsettings" />
         <activity
             android:name=".activity.HistoryActivity"
-            android:label="@string/title_activity_history"></activity>
+            android:label="@string/title_activity_history" />
+        <activity
+            android:name=".activity.PartyMembersActivity"
+            android:label="@string/title_activity_party_members"></activity>
     </application>
 
 </manifest>

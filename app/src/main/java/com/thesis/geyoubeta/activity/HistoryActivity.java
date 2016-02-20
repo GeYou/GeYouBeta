@@ -35,15 +35,14 @@ public class HistoryActivity extends ActionBarActivity {
     RestAdapter restAdapter;
     GeYouService geYouService;
 
-    private Toolbar toolbar;
-    String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings",  "Logout"};
+    String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings", "Logout"};
 
     RecyclerView mRecyclerView;                           // Declaring RecyclerView
     RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
     RecyclerView.LayoutManager mLayoutManager;            // Declaring Layout Manager as a linear layout manager
     DrawerLayout Drawer;                                  // Declaring DrawerLayout
-
     android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;                  // Declaring Action Bar Drawer Toggle;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +54,7 @@ public class HistoryActivity extends ActionBarActivity {
 
         initializeDrawer();
         initializeRest();
+        initializeComponents();
     }
 
     @Override
@@ -177,5 +177,9 @@ public class HistoryActivity extends ActionBarActivity {
                 .build();
 
         geYouService = restAdapter.create(GeYouService.class);
+    }
+
+    public void initializeComponents() {
+
     }
 }
