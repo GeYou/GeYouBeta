@@ -245,15 +245,31 @@ public class PartyMembersActivity extends ActionBarActivity {
         geYouService.getUserByEmail(email, new Callback<User>() {
             @Override
             public void success(User user, Response response) {
-                Party p = new Party();
+                final Party p = new Party();
                 p.setId(session.getPartyId());
-                PartyMember pm = new PartyMember();
-                pm.setUser(user);
-                pm.setParty(p);
-                geYouService.addMember(pm, new Callback<PartyMember>() {
+
+                final User u = user;
+                geYouService.checkPartyMembership(p.getId(), user.getId(), new Callback<Boolean>() {
                     @Override
-                    public void success(PartyMember partyMember, Response response) {
-                        Toast.makeText(getApplicationContext(), "Successfully add to party.", Toast.LENGTH_LONG).show();
+                    public void success(Boolean aBoolean, Response response) {
+                        if (aBoolean) {
+                            Toast.makeText(getApplicationContext(), "User already in the party!", Toast.LENGTH_LONG).show();
+                        } else {
+                            PartyMember pm = new PartyMember();
+                            pm.setUser(u);
+                            pm.setParty(p);
+                            geYouService.addMember(pm, new Callback<PartyMember>() {
+                                @Override
+                                public void success(PartyMember partyMember, Response response) {
+                                    Toast.makeText(getApplicationContext(), "Successfully add to party.", Toast.LENGTH_LONG).show();
+                                }
+
+                                @Override
+                                public void failure(RetrofitError error) {
+
+                                }
+                            });
+                        }
                     }
 
                     @Override
@@ -261,6 +277,7 @@ public class PartyMembersActivity extends ActionBarActivity {
 
                     }
                 });
+
             }
 
             @Override
