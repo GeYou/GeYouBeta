@@ -50,7 +50,6 @@ public class PartyMembersActivity extends ActionBarActivity {
     private ListView listView;
 
     private ArrayList<String> partyMembers;
-    private ArrayAdapter<String> itemsAdapter;
 
     private RestAdapter restAdapter;
     private GeYouService geYouService;
@@ -202,6 +201,12 @@ public class PartyMembersActivity extends ActionBarActivity {
     public void initializeComponents() {
         getPartyMembers();
 
+        listView = (ListView) findViewById(R.id.listViewPartyMembers);
+        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, partyMembers);
+        listView.setAdapter(itemsAdapter);
+
+        //Toast.makeText(getApplicationContext(), partyMembers.get(0), Toast.LENGTH_LONG).show();
+
         eTxtPartyMember = (EditText) findViewById(R.id.editTextPartyMember);
         btnAdd = (Button) findViewById(R.id.btnAddPartyMember);
         btnAdd.setOnClickListener(new View.OnClickListener() {
@@ -225,9 +230,6 @@ public class PartyMembersActivity extends ActionBarActivity {
                 });
             }
         });
-
-        listView = (ListView) findViewById(R.id.listViewPartyMembers);
-        itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, partyMembers);
     }
 
     public void getPartyMembers() {
@@ -237,6 +239,9 @@ public class PartyMembersActivity extends ActionBarActivity {
                 partyMembers = new ArrayList<String>();
                 for (User u : users) {
                     partyMembers.add(u.getEmail());
+                }
+                for (int i = 0; i < partyMembers.size(); i++) {
+                    Toast.makeText(getApplicationContext(), i + ": " + partyMembers.get(i), Toast.LENGTH_SHORT).show();
                 }
             }
 
