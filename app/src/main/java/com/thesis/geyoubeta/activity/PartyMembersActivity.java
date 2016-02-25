@@ -26,7 +26,9 @@ import android.widget.Toast;
 
 import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
+import com.thesis.geyoubeta.adapter.PartyMemberListAdapter;
 import com.thesis.geyoubeta.entity.Party;
+import com.thesis.geyoubeta.entity.PartyListView;
 import com.thesis.geyoubeta.entity.PartyMember;
 import com.thesis.geyoubeta.entity.User;
 import com.thesis.geyoubeta.service.GeYouService;
@@ -49,7 +51,8 @@ public class PartyMembersActivity extends ActionBarActivity {
     private Button btnAdd;
     private ListView listView;
 
-    private ArrayList<String> partyMembers;
+    public ArrayList<String> partyMembers;
+    private PartyMemberListAdapter itemsAdapter;
 
     private RestAdapter restAdapter;
     private GeYouService geYouService;
@@ -199,13 +202,14 @@ public class PartyMembersActivity extends ActionBarActivity {
     }
 
     public void initializeComponents() {
+        partyMembers = new ArrayList<String>();
         getPartyMembers();
 
-        listView = (ListView) findViewById(R.id.listViewPartyMembers);
-        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, partyMembers);
-        listView.setAdapter(itemsAdapter);
+        //listView = (ListView) findViewById(R.id.listViewPartyMembers);
+        //itemsAdapter = new PartyMemberListAdapter(partyMembers, this);
+        //listView.setAdapter(itemsAdapter);
 
-        //Toast.makeText(getApplicationContext(), partyMembers.get(0), Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), partyMembers.get(0), Toast.LENGTH_LONG).show();
 
         eTxtPartyMember = (EditText) findViewById(R.id.editTextPartyMember);
         btnAdd = (Button) findViewById(R.id.btnAddPartyMember);
@@ -236,13 +240,19 @@ public class PartyMembersActivity extends ActionBarActivity {
         geYouService.getPartyMembers(session.getPartyId(), new Callback<List<User>>() {
             @Override
             public void success(List<User> users, Response response) {
-                partyMembers = new ArrayList<String>();
-                for (User u : users) {
-                    partyMembers.add(u.getEmail());
+                if (users != null) {
+                    ArrayList<String> pms = new ArrayList<String>();
+                    for (User u : users) {
+                        pms.add(u.getEmail());
+                    }
+                    setPartyMembers(pms);
+                    for (int i = 0; i < pms.size(); i++) {
+                        Toast.makeText(getApplicationContext(), i + ": " + pms.get(i), Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    partyMembers.add("No party members yet.");
                 }
-                for (int i = 0; i < partyMembers.size(); i++) {
-                    Toast.makeText(getApplicationContext(), i + ": " + partyMembers.get(i), Toast.LENGTH_SHORT).show();
-                }
+
             }
 
             @Override
@@ -256,39 +266,44 @@ public class PartyMembersActivity extends ActionBarActivity {
         geYouService.getUserByEmail(email, new Callback<User>() {
             @Override
             public void success(User user, Response response) {
-                final Party p = new Party();
-                p.setId(session.getPartyId());
+                if (user != null) {
+                    final Party p = new Party();
+                    p.setId(session.getPartyId());
 
-                final User u = user;
-                geYouService.checkPartyMembership(p.getId(), user.getId(), new Callback<Boolean>() {
-                    @Override
-                    public void success(Boolean aBoolean, Response response) {
-                        if (aBoolean) {
-                            Toast.makeText(getApplicationContext(), "User already in the party!", Toast.LENGTH_LONG).show();
-                        } else {
-                            PartyMember pm = new PartyMember();
-                            pm.setUser(u);
-                            pm.setParty(p);
-                            geYouService.addMember(pm, new Callback<PartyMember>() {
-                                @Override
-                                public void success(PartyMember partyMember, Response response) {
-                                    Toast.makeText(getApplicationContext(), "Successfully add to party.", Toast.LENGTH_LONG).show();
-                                }
+                    final User u = user;
+                    geYouService.checkPartyMembership(p.getId(), user.getId(), new Callback<Boolean>() {
+                        @Override
+                        public void success(Boolean aBoolean, Response response) {
+                            if (aBoolean) {
+                                Toast.makeText(getApplicationContext(), "User already in the party!", Toast.LENGTH_LONG).show();
+                            } else {
+                                PartyMember pm = new PartyMember();
+                                pm.setUser(u);
+                                pm.setParty(p);
+                                geYouService.addMember(pm, new Callback<PartyMember>() {
+                                    @Override
+                                    public void success(PartyMember partyMember, Response response) {
+                                        Toast.makeText(getApplicationContext(), "Successfully add to party.", Toast.LENGTH_LONG).show();
+                                        partyMembers.add(partyMember.getUser().getEmail());
+                                        //itemsAdapter.notifyDataSetChanged();
+                                    }
 
-                                @Override
-                                public void failure(RetrofitError error) {
+                                    @Override
+                                    public void failure(RetrofitError error) {
 
-                                }
-                            });
+                                    }
+                                });
+                            }
                         }
-                    }
 
-                    @Override
-                    public void failure(RetrofitError error) {
+                        @Override
+                        public void failure(RetrofitError error) {
 
-                    }
-                });
-
+                        }
+                    });
+                } else {
+                    Toast.makeText(getApplicationContext(), "Not such user found.", Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
@@ -296,5 +311,9 @@ public class PartyMembersActivity extends ActionBarActivity {
 
             }
         });
+    }
+
+    public void setPartyMembers(ArrayList<String> emails) {
+        partyMembers = emails;
     }
 }
