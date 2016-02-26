@@ -18,7 +18,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -28,7 +27,6 @@ import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
 import com.thesis.geyoubeta.adapter.PartyMemberListAdapter;
 import com.thesis.geyoubeta.entity.Party;
-import com.thesis.geyoubeta.entity.PartyListView;
 import com.thesis.geyoubeta.entity.PartyMember;
 import com.thesis.geyoubeta.entity.User;
 import com.thesis.geyoubeta.service.GeYouService;
@@ -52,7 +50,7 @@ public class PartyMembersActivity extends ActionBarActivity {
     private ListView listView;
 
     public ArrayList<String> partyMembers;
-    private PartyMemberListAdapter itemsAdapter;
+    private PartyMemberListAdapter partyMembersAdapter;
 
     private RestAdapter restAdapter;
     private GeYouService geYouService;
@@ -203,13 +201,12 @@ public class PartyMembersActivity extends ActionBarActivity {
 
     public void initializeComponents() {
         partyMembers = new ArrayList<String>();
+
         getPartyMembers();
 
-        //listView = (ListView) findViewById(R.id.listViewPartyMembers);
-        //itemsAdapter = new PartyMemberListAdapter(partyMembers, this);
-        //listView.setAdapter(itemsAdapter);
-
-        Toast.makeText(getApplicationContext(), partyMembers.get(0), Toast.LENGTH_LONG).show();
+        listView = (ListView) findViewById(R.id.listViewPartyMembers);
+        partyMembersAdapter = new PartyMemberListAdapter(partyMembers, this);
+        listView.setAdapter(partyMembersAdapter);
 
         eTxtPartyMember = (EditText) findViewById(R.id.editTextPartyMember);
         btnAdd = (Button) findViewById(R.id.btnAddPartyMember);
@@ -241,14 +238,7 @@ public class PartyMembersActivity extends ActionBarActivity {
             @Override
             public void success(List<User> users, Response response) {
                 if (users != null) {
-                    ArrayList<String> pms = new ArrayList<String>();
-                    for (User u : users) {
-                        pms.add(u.getEmail());
-                    }
-                    setPartyMembers(pms);
-                    for (int i = 0; i < pms.size(); i++) {
-                        Toast.makeText(getApplicationContext(), i + ": " + pms.get(i), Toast.LENGTH_SHORT).show();
-                    }
+                    setPartyMembers(users);
                 } else {
                     partyMembers.add("No party members yet.");
                 }
@@ -285,7 +275,7 @@ public class PartyMembersActivity extends ActionBarActivity {
                                     public void success(PartyMember partyMember, Response response) {
                                         Toast.makeText(getApplicationContext(), "Successfully add to party.", Toast.LENGTH_LONG).show();
                                         partyMembers.add(partyMember.getUser().getEmail());
-                                        //itemsAdapter.notifyDataSetChanged();
+                                        //partyMembersAdapter.notifyDataSetChanged();
                                     }
 
                                     @Override
@@ -313,7 +303,12 @@ public class PartyMembersActivity extends ActionBarActivity {
         });
     }
 
-    public void setPartyMembers(ArrayList<String> emails) {
-        partyMembers = emails;
+    public void setPartyMembers(List<User> u) {
+        for (User user : u) {
+            partyMembers.add(user.getEmail());
+        }
+        for (int i = 0; i < partyMembers.size(); i++) {
+            Toast.makeText(getApplicationContext(), i + ": " + partyMembers.get(i), Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -18,19 +18,33 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.thesis.geyoubeta.R;
+import com.thesis.geyoubeta.adapter.HistoryListAdapter;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
+import com.thesis.geyoubeta.entity.History;
 import com.thesis.geyoubeta.service.GeYouService;
 import com.thesis.geyoubeta.service.SessionManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit.Callback;
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import retrofit.converter.JacksonConverter;
 
 public class HistoryActivity extends ActionBarActivity {
 
     private SessionManager session;
+
+    private ListView listView;
+
+    public ArrayList<History> histories;
+    private HistoryListAdapter historyAdapter;
 
     private RestAdapter restAdapter;
     private GeYouService geYouService;
@@ -180,6 +194,39 @@ public class HistoryActivity extends ActionBarActivity {
     }
 
     public void initializeComponents() {
+        histories = new ArrayList<History>();
 
+        getHistory();
+
+        listView = (ListView) findViewById(R.id.listViewHistory);
+        historyAdapter = new HistoryListAdapter(histories, this);
+        listView.setAdapter(historyAdapter);
+    }
+
+    public void getHistory() {
+        geYouService.getAllUserHistory(session.getUserId(), new Callback<List<History>>() {
+            @Override
+            public void success(List<History> histories, Response response) {
+                if (histories != null) {
+                    setHistories(histories);
+                } else {
+                    //History h = new History();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
+
+    public void setHistories(List<History> h) {
+        for (History history : h) {
+            histories.add(history);
+        }
+        for (int i = 0; i < histories.size(); i++) {
+            Toast.makeText(getApplicationContext(), i + ": " + histories.get(i), Toast.LENGTH_SHORT).show();
+        }
     }
 }
