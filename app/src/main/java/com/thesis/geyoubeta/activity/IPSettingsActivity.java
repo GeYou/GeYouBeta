@@ -28,10 +28,10 @@ import com.thesis.geyoubeta.service.SessionManager;
 
 public class IPSettingsActivity extends ActionBarActivity {
 
-    SessionManager session;
+    private SessionManager session;
 
-    EditText eTxtIP;
-    Button btnChange;
+    private EditText eTxtIP;
+    private Button btnChange;
 
     String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings", "Logout"};
 
@@ -167,11 +167,21 @@ public class IPSettingsActivity extends ActionBarActivity {
 
     public void initializeComponents() {
         eTxtIP = (EditText) findViewById(R.id.editTextIPS);
+        eTxtIP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), session.getBaseURL(), Toast.LENGTH_SHORT).show();
+            }
+        });
         btnChange = (Button) findViewById(R.id.btnChangeIPS);
         btnChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                session.changeIPAddress(eTxtIP.getText().toString());
+                if (!eTxtIP.getText().toString().equals("")) {
+                    session.changeIPAddress(eTxtIP.getText().toString());
+                } else {
+                    Toast.makeText(getApplicationContext(), "No input.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

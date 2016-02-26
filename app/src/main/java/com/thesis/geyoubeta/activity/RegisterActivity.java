@@ -36,18 +36,18 @@ import retrofit.converter.JacksonConverter;
 
 public class RegisterActivity extends ActionBarActivity {
 
-    SessionManager session;
+    private SessionManager session;
 
-    Button btnRegister;
-    Button btnCancel;
-    EditText eTxtFName;
-    EditText eTxtLName;
-    EditText eTxtEmail;
-    EditText eTxtPassword;
-    EditText eTxtConfirmPass;
+    private Button btnRegister;
+    private Button btnCancel;
+    private EditText eTxtFName;
+    private EditText eTxtLName;
+    private EditText eTxtEmail;
+    private EditText eTxtPassword;
+    private EditText eTxtConfirmPass;
 
-    RestAdapter restAdapter;
-    GeYouService geYouService;
+    private RestAdapter restAdapter;
+    private GeYouService geYouService;
 
     String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings", "Logout"};
 

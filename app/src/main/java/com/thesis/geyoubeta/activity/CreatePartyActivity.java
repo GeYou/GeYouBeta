@@ -36,17 +36,17 @@ import retrofit.converter.JacksonConverter;
 
 public class CreatePartyActivity extends ActionBarActivity {
 
-    SessionManager session;
+    private SessionManager session;
 
-    Button btnCreate;
-    Button btnCancel;
-    EditText eTxtName;
-    EditText eTxtStartTimeStamp;
-    EditText eTxtEndTimeStamp;
-    EditText eTxtDestination;
+    private Button btnCreate;
+    private Button btnCancel;
+    private EditText eTxtName;
+    private EditText eTxtStartTimeStamp;
+    private EditText eTxtEndTimeStamp;
+    private EditText eTxtDestination;
 
-    RestAdapter restAdapter;
-    GeYouService geYouService;
+    private RestAdapter restAdapter;
+    private GeYouService geYouService;
 
     String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings", "Logout"};
 
