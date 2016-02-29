@@ -17,9 +17,6 @@ import com.thesis.geyoubeta.entity.User;
 
 import java.util.HashMap;
 
-/**
- * Created by ivanwesleychua on 04/02/2016.
- */
 public class SessionManager {
     public static final String KEY_USER_ID = "id";
     public static final String KEY_USER_FNAME = "fName";
@@ -86,7 +83,7 @@ public class SessionManager {
     }
 
     public String getBaseURL() {
-        return pref.getString(KEY_BASE_URL, "http://10.0.3.2:8080/geyou");
+        return pref.getString(KEY_BASE_URL, "http://192.168.1.153:8080/geyou");
     }
 
     public void checkLogin() {
@@ -185,7 +182,8 @@ public class SessionManager {
         Intent i = new Intent(_context, LoginActivity.class);
 
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
         _context.startActivity(i);
     }
