@@ -33,6 +33,7 @@ public class PartyMemberListAdapter extends BaseAdapter {
             Log.d("PMLISTADAPTER", i + ": " + emails.get(i));
         }
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        Toast.makeText(context, "Inside Adapter", Toast.LENGTH_SHORT).show();
     }
 
     @Override
