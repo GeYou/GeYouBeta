@@ -217,10 +217,10 @@ public class PartyMembersActivity extends ActionBarActivity {
                     @Override
                     public void success(Boolean aBoolean, Response response) {
                         if (aBoolean) {
-                            Toast.makeText(getApplicationContext(), "User exist.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "User exist.", Toast.LENGTH_SHORT).show();
                             addPartyMember(eTxtPartyMember.getText().toString());
                         } else {
-                            Toast.makeText(getApplicationContext(), "User does not exist.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "User does not exist.", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -265,7 +265,7 @@ public class PartyMembersActivity extends ActionBarActivity {
                         @Override
                         public void success(Boolean aBoolean, Response response) {
                             if (aBoolean) {
-                                Toast.makeText(getApplicationContext(), "User already in the party!", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "User already in the party!", Toast.LENGTH_SHORT).show();
                             } else {
                                 PartyMember pm = new PartyMember();
                                 pm.setUser(u);
@@ -273,9 +273,10 @@ public class PartyMembersActivity extends ActionBarActivity {
                                 geYouService.addMember(pm, new Callback<PartyMember>() {
                                     @Override
                                     public void success(PartyMember partyMember, Response response) {
-                                        Toast.makeText(getApplicationContext(), "Successfully add to party.", Toast.LENGTH_LONG).show();
+                                        eTxtPartyMember.setText("");
+                                        Toast.makeText(getApplicationContext(), "Successfully added to party.", Toast.LENGTH_SHORT).show();
                                         partyMembers.add(partyMember.getUser().getEmail());
-                                        //partyMembersAdapter.notifyDataSetChanged();
+                                        partyMembersAdapter.notifyDataSetChanged();
                                     }
 
                                     @Override
@@ -292,7 +293,7 @@ public class PartyMembersActivity extends ActionBarActivity {
                         }
                     });
                 } else {
-                    Toast.makeText(getApplicationContext(), "Not such user found.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Not such user found.", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -307,8 +308,6 @@ public class PartyMembersActivity extends ActionBarActivity {
         for (User user : u) {
             partyMembers.add(user.getEmail());
         }
-        for (int i = 0; i < partyMembers.size(); i++) {
-            Toast.makeText(getApplicationContext(), i + ": " + partyMembers.get(i), Toast.LENGTH_SHORT).show();
-        }
+        partyMembersAdapter.notifyDataSetChanged();
     }
 }

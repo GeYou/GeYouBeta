@@ -221,35 +221,39 @@ public class LoginActivity extends ActionBarActivity {
     }
 
     public void login() {
-        geYouService.checkCredentials(eTxtEmail.getText().toString(), eTxtPassword.getText().toString(), new Callback<User>() {
-            @Override
-            public void success(User user, Response response) {
-                if (user != null) {
-                    session.createLoginSession(user);
-                    geYouService.getActiveParty(session.getUserId(), new Callback<Party>() {
-                        @Override
-                        public void success(Party party, Response response) {
-                            if (party != null) {
-                                session.setActiveParty(party);
+        if (eTxtEmail != null && eTxtPassword != null) {
+            geYouService.checkCredentials(eTxtEmail.getText().toString(), eTxtPassword.getText().toString(), new Callback<User>() {
+                @Override
+                public void success(User user, Response response) {
+                    if (user != null) {
+                        session.createLoginSession(user);
+                        geYouService.getActiveParty(session.getUserId(), new Callback<Party>() {
+                            @Override
+                            public void success(Party party, Response response) {
+                                if (party != null) {
+                                    session.setActiveParty(party);
+                                }
                             }
-                        }
 
-                        @Override
-                        public void failure(RetrofitError error) {
+                            @Override
+                            public void failure(RetrofitError error) {
 
-                        }
-                    });
-                    Intent i = new Intent(getApplicationContext(), MapActivity.class);
-                    startActivity(i);
-                } else {
-                    Toast.makeText(LoginActivity.this, "Not valid credentials.", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        Intent i = new Intent(getApplicationContext(), MapActivity.class);
+                        startActivity(i);
+                    } else {
+                        Toast.makeText(LoginActivity.this, "Not valid credentials.", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
 
-            @Override
-            public void failure(RetrofitError error) {
+                @Override
+                public void failure(RetrofitError error) {
 
-            }
-        });
+                }
+            });
+        } else {
+            Toast.makeText(getApplicationContext(), "Username or Password is empty!", Toast.LENGTH_SHORT).show();
+        }
     }
 }

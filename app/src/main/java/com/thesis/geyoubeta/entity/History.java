@@ -17,10 +17,6 @@ public class History {
 
     private Float startLat;
 
-    private Float endLong;
-
-    private Float endLat;
-
     private Party party;
 
     private User user;
@@ -49,22 +45,6 @@ public class History {
         this.startLat = startLat;
     }
 
-    public Float getEndLong() {
-        return endLong;
-    }
-
-    public void setEndLong(Float endLong) {
-        this.endLong = endLong;
-    }
-
-    public Float getEndLat() {
-        return endLat;
-    }
-
-    public void setEndLat(Float endLat) {
-        this.endLat = endLat;
-    }
-
     public Party getParty() {
         return party;
     }
@@ -86,8 +66,6 @@ public class History {
         return "[id : " + getId()
                 + "] [ startLong : " + getStartLong()
                 + "] [ startLat : " + getStartLat()
-                + "] [ endLong : " + getEndLong()
-                + "] [ endLat : " + getEndLat()
                 + "]";
     }
 }
