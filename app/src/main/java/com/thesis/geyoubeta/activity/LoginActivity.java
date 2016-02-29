@@ -220,7 +220,7 @@ public class LoginActivity extends ActionBarActivity {
     }
 
     public void login() {
-        if (eTxtEmail != null && eTxtPassword != null) {
+        if (!eTxtEmail.getText().toString().equals("") && !eTxtPassword.getText().toString().equals("")) {
             geYouService.checkCredentials(eTxtEmail.getText().toString(), eTxtPassword.getText().toString(), new Callback<User>() {
                 @Override
                 public void success(User user, Response response) {
