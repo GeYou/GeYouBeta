@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -198,8 +199,17 @@ public class HistoryActivity extends ActionBarActivity {
         getHistory();
 
         listView = (ListView) findViewById(R.id.listViewHistory);
-        historyAdapter = new HistoryListAdapter(histories, this);
-        listView.setAdapter(historyAdapter);
+        if (histories != null) {
+            historyAdapter = new HistoryListAdapter(histories, this);
+            listView.setAdapter(historyAdapter);
+            historyAdapter.notifyDataSetChanged();
+        } else {
+            ArrayList<String> items = new ArrayList<String>();
+            items.add("No history");
+            ArrayAdapter<String> itemAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
+            listView.setAdapter(itemAdapter);
+            itemAdapter.notifyDataSetChanged();
+        }
     }
 
     public void getHistory() {
@@ -208,8 +218,6 @@ public class HistoryActivity extends ActionBarActivity {
             public void success(List<History> histories, Response response) {
                 if (histories != null) {
                     setHistories(histories);
-                } else {
-                    //History h = new History();
                 }
             }
 

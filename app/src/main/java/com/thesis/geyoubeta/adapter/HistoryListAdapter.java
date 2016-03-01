@@ -54,9 +54,9 @@ public class HistoryListAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(android.R.layout.simple_list_item_2, parent, false);
         }
         TextView destination = (TextView) convertView.findViewById(android.R.id.text1);
-        destination.setText(histories.get(position).getParty().getDestination());
+        destination.setText(histories.get(position).getParty().getName());
         TextView date = (TextView) convertView.findViewById(android.R.id.text2);
-        date.setText(histories.get(position).getParty().getCreatedDate().toString());
+        date.setText(histories.get(position).getParty().getStartDateTime());
         return convertView;
     }
 }
