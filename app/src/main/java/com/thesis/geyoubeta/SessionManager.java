@@ -18,12 +18,12 @@ import com.thesis.geyoubeta.entity.User;
 import java.util.HashMap;
 
 public class SessionManager {
-    public static final String KEY_USER_ID = "id";
+    public static final String KEY_USER_ID = "uId";
     public static final String KEY_USER_FNAME = "fName";
     public static final String KEY_USER_LNAME = "lName";
     public static final String KEY_USER_EMAIL = "email";
     public static final String KEY_USER_PASSWORD = "password";
-    public static final String KEY_PARTY_ID = "id";
+    public static final String KEY_PARTY_ID = "pId";
     public static final String KEY_PARTY_NAME = "pName";
     public static final String KEY_PARTY_START = "startDateTime";
     public static final String KEY_PARTY_END = "endDateTime";

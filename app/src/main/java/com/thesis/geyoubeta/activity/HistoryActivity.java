@@ -199,22 +199,20 @@ public class HistoryActivity extends ActionBarActivity {
         getHistory();
 
         listView = (ListView) findViewById(R.id.listViewHistory);
-        if (histories != null) {
+        //if (histories != null) {
             historyAdapter = new HistoryListAdapter(histories, this);
             listView.setAdapter(historyAdapter);
             historyAdapter.notifyDataSetChanged();
-        } else {
-            ArrayList<String> items = new ArrayList<String>();
-            items.add("No history");
-            ArrayAdapter<String> itemAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
-            listView.setAdapter(itemAdapter);
-            itemAdapter.notifyDataSetChanged();
-        }
+//        } else {
+//            ArrayList<String> items = new ArrayList<String>();
+//            items.add("No history");
+//            ArrayAdapter<String> itemAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
+//            listView.setAdapter(itemAdapter);
+//            itemAdapter.notifyDataSetChanged();
+//        }
     }
 
     public void getHistory() {
-        Integer userId = session.getUserId();
-        Toast.makeText(getApplicationContext(), "history userId: ", Toast.LENGTH_SHORT).show();
         geYouService.getAllUserHistory(session.getUserId(), new Callback<List<History>>() {
             @Override
             public void success(List<History> histories, Response response) {
@@ -237,5 +235,6 @@ public class HistoryActivity extends ActionBarActivity {
         for (int i = 0; i < histories.size(); i++) {
             Toast.makeText(getApplicationContext(), i + ": " + histories.get(i), Toast.LENGTH_SHORT).show();
         }
+        historyAdapter.notifyDataSetChanged();
     }
 }
