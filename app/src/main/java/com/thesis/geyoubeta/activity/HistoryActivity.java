@@ -213,6 +213,8 @@ public class HistoryActivity extends ActionBarActivity {
     }
 
     public void getHistory() {
+        Integer userId = session.getUserId();
+        Toast.makeText(getApplicationContext(), "history userId: ", Toast.LENGTH_SHORT).show();
         geYouService.getAllUserHistory(session.getUserId(), new Callback<List<History>>() {
             @Override
             public void success(List<History> histories, Response response) {
