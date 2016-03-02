@@ -27,7 +27,7 @@ import com.thesis.geyoubeta.adapter.HistoryListAdapter;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
 import com.thesis.geyoubeta.entity.History;
 import com.thesis.geyoubeta.service.GeYouService;
-import com.thesis.geyoubeta.service.SessionManager;
+import com.thesis.geyoubeta.SessionManager;
 
 import java.util.ArrayList;
 import java.util.List;

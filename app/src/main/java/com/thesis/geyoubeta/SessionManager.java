@@ -4,7 +4,7 @@
  *  Copyright (C) 2015 Ivan Wesley Chua and Jethro Divino
  */
 
-package com.thesis.geyoubeta.service;
+package com.thesis.geyoubeta;
 
 import android.content.Context;
 import android.content.Intent;
