@@ -22,22 +22,6 @@
             android:id="@+id/tool_bar"
             layout="@layout/tool_bar" />
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="200dp"
-            android:layout_height="120dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="90dp"
-            android:src="@drawable/logo" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Select Destination"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
@@ -56,67 +40,13 @@
                 android:textSize="18dp" />
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/editTextTest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="70dp"
                 android:layout_marginTop="30dp"
                 android:layout_toEndOf="@+id/textView"
                 android:layout_toRightOf="@+id/textView" />
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/editText"
-                android:layout_marginLeft="55dp"
-                android:layout_marginTop="15dp"
-                android:text="TO"
-                android:textSize="18dp" />
-
-            <EditText
-                android:id="@+id/editText2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/editText"
-                android:layout_alignStart="@+id/editText"
-                android:layout_alignTop="@+id/editText"
-                android:layout_marginRight="70dp"
-                android:layout_marginTop="40dp" />
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_alignBottom="@+id/editText"
-                android:layout_alignLeft="@+id/editText"
-                android:layout_alignStart="@+id/editText"
-                android:layout_marginLeft="200dp"
-                android:layout_marginStart="206dp"
-                android:src="@drawable/gps_marker" />
-
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_alignLeft="@+id/imageView2"
-                android:layout_alignStart="@+id/imageView2"
-                android:layout_alignTop="@+id/editText2"
-                android:src="@drawable/gps_marker" />
-
-            <Button
-                android:id="@+id/button"
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="60dp"
-                android:layout_height="30dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:background="#ff2d4a8f"
-                android:text="Enter"
-                android:textColor="#ffffffff"
-                android:textSize="15dp" />
 
         </RelativeLayout>
 

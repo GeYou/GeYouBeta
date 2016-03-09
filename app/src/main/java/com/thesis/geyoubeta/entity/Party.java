@@ -17,9 +17,9 @@ public class Party {
 
     private String name;
 
-    private String startDateTime;
+    private Date startDateTime;
 
-    private String endDateTime;
+    private Date endDateTime;
 
     private String destination;
 
@@ -49,19 +49,19 @@ public class Party {
         this.name = name;
     }
 
-    public String getStartDateTime() {
+    public Date getStartDateTime() {
         return startDateTime;
     }
 
-    public void setStartDateTime(String startDateTime) {
+    public void setStartDateTime(Date startDateTime) {
         this.startDateTime = startDateTime;
     }
 
-    public String getEndDateTime() {
+    public Date getEndDateTime() {
         return endDateTime;
     }
 
-    public void setEndDateTime(String endDateTime) {
+    public void setEndDateTime(Date endDateTime) {
         this.endDateTime = endDateTime;
     }
 

@@ -62,8 +62,8 @@ public class SessionManager {
     public void setActiveParty(Party p) {
         editor.putInt(KEY_PARTY_ID, p.getId());
         editor.putString(KEY_PARTY_NAME, p.getName());
-        editor.putString(KEY_PARTY_START, p.getStartDateTime());
-        editor.putString(KEY_PARTY_END, p.getEndDateTime());
+        editor.putString(KEY_PARTY_START, p.getStartDateTime().toString());
+        editor.putString(KEY_PARTY_END, p.getEndDateTime().toString());
         editor.putString(KEY_PARTY_DEST, p.getDestination());
         editor.putFloat(KEY_PARTY_DEST_LONG, p.getDestLong());
         editor.putFloat(KEY_PARTY_DEST_LAT, p.getDestLat());

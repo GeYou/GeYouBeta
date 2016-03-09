@@ -49,6 +49,10 @@ public class NavDrawer {
         session = new SessionManager(ctx);
     }
 
+    public NavDrawer(Context c) {
+        this.ctx = c;
+    }
+
 //    public void initialize(String[] TITLES) {
 //        toolbar = (Toolbar) view.findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
 //        setSupportActionBar(toolbar);                   // Setting toolbar as the ActionBar with setSupportActionBar() call
@@ -135,4 +139,27 @@ public class NavDrawer {
 //        menu.setDisplayUseLogoEnabled(true);
 //        menu.setTitle(" ");
 //    }
+
+    public Intent getDrawerIntent(RecyclerView recyclerView, View child) {
+        Intent intent = null;
+        if (recyclerView.getChildPosition(child) == 1) {
+            intent = new Intent(ctx, UserInfoActivity.class);
+        } else if (recyclerView.getChildPosition(child) == 2) {
+            intent = new Intent(ctx, CreatePartyActivity.class);
+        } else if (recyclerView.getChildPosition(child) == 3) {
+            intent = new Intent(ctx, MapActivity.class);
+        } else if (recyclerView.getChildPosition(child) == 4) {
+            intent = new Intent(ctx, MessagesActivity.class);
+        } else if (recyclerView.getChildPosition(child) == 5) {
+            intent = new Intent(ctx, PartyInfoActivity.class);
+        } else if (recyclerView.getChildPosition(child) == 6) {
+            intent = new Intent(ctx, HistoryActivity.class);
+        } else if (recyclerView.getChildPosition(child) == 7) {
+            intent = new Intent(ctx, IPSettingsActivity.class);
+        } else if (recyclerView.getChildPosition(child) == 8) {
+            intent = null;
+        }
+
+        return intent;
+    }
 }
