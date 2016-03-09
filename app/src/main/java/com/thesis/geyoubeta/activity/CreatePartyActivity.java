@@ -281,6 +281,7 @@ public class CreatePartyActivity extends ActionBarActivity {
             public void success(Party party, Response response) {
                 session.setActiveParty(party);
                 Toast.makeText(CreatePartyActivity.this, "Successfully created party: " + party.toString(), Toast.LENGTH_LONG).show();
+                clearInput();
             }
 
             @Override

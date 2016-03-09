@@ -31,7 +31,6 @@ public class SessionManager {
     public static final String KEY_PARTY_DEST_LONG = "destLong";
     public static final String KEY_PARTY_DEST_LAT = "destLat";
     public static final String KEY_PARTY_STATUS = "status";
-    public static final String KEY_PARTY_CDATE = "createdDate";
     public static final String KEY_PARTY_CBY = "createdBy";
     public static final String KEY_BASE_URL = "ipAddress";
     private static final String PREF_NAME = "GeYouPrefs";
@@ -65,10 +64,9 @@ public class SessionManager {
         editor.putString(KEY_PARTY_START, p.getStartDateTime().toString());
         editor.putString(KEY_PARTY_END, p.getEndDateTime().toString());
         editor.putString(KEY_PARTY_DEST, p.getDestination());
-        editor.putFloat(KEY_PARTY_DEST_LONG, p.getDestLong());
-        editor.putFloat(KEY_PARTY_DEST_LAT, p.getDestLat());
+        //editor.putFloat(KEY_PARTY_DEST_LONG, p.getDestLong());
+        //editor.putFloat(KEY_PARTY_DEST_LAT, p.getDestLat());
         editor.putString(KEY_PARTY_STATUS, p.getStatus());
-        editor.putString(KEY_PARTY_CDATE, p.getCreatedDate().toString());
 
         editor.commit();
 
@@ -169,10 +167,6 @@ public class SessionManager {
 
     public String getPartyStatus() {
         return pref.getString(KEY_PARTY_STATUS, "status");
-    }
-
-    public String getPartyCreatedDate() {
-        return pref.getString(KEY_PARTY_CDATE, "createdDate");
     }
 
     public void logoutUser() {
