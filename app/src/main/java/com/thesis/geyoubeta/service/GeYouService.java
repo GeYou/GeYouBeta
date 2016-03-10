@@ -87,8 +87,8 @@ public interface GeYouService {
     @PUT("/history/update")
     void editHistory(@Body History history, Callback<History> callback);
 
-    @GET("history/getExistingHistory")
-    void getExistingHistory(@Body Party p, @Body User u, Callback<History> callback);
+    @GET("/history/getExistingHistory")
+    void getExistingHistory(@Query("partyId") Integer partyId, @Query("userId") Integer userId, Callback<History> callback);
 
     //PartyMember
 

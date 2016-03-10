@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
+import com.thesis.geyoubeta.entity.History;
 import com.thesis.geyoubeta.entity.Party;
 import com.thesis.geyoubeta.entity.User;
 import com.thesis.geyoubeta.service.GeYouService;
@@ -48,7 +50,7 @@ public class LoginActivity extends ActionBarActivity {
     private RestAdapter restAdapter;
     private GeYouService geYouService;
 
-    String TITLES[] = {"IP Settings"};
+    String TITLES[] = {"IP Settings", "Main"};
 
     RecyclerView mRecyclerView;
     RecyclerView.Adapter mAdapter;
@@ -119,6 +121,8 @@ public class LoginActivity extends ActionBarActivity {
                     Intent intent = null;
                     if (recyclerView.getChildPosition(child) == 1) {
                         intent = new Intent(getApplicationContext(), IPSettingsActivity.class);
+                    } else if (recyclerView.getChildPosition(child) == 2) {
+                        intent = new Intent(getApplicationContext(), MainActivity.class);
                     }
 
                     if (intent != null) {
@@ -221,13 +225,17 @@ public class LoginActivity extends ActionBarActivity {
             geYouService.checkCredentials(eTxtEmail.getText().toString(), eTxtPassword.getText().toString(), new Callback<User>() {
                 @Override
                 public void success(User user, Response response) {
-                    if (user != null) {
+                    if (user.getId() != null) {
                         session.createLoginSession(user);
                         geYouService.getActiveParty(session.getUserId(), new Callback<Party>() {
                             @Override
                             public void success(Party party, Response response) {
                                 if (party != null) {
                                     session.setActiveParty(party);
+
+                                    checkIfHistoryExists();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "no active party", Toast.LENGTH_SHORT).show();
                                 }
                             }
 
@@ -236,8 +244,6 @@ public class LoginActivity extends ActionBarActivity {
 
                             }
                         });
-                        Intent i = new Intent(getApplicationContext(), MapActivity.class);
-                        startActivity(i);
                     } else {
                         Toast.makeText(LoginActivity.this, "Not valid credentials.", Toast.LENGTH_SHORT).show();
                     }
@@ -251,5 +257,47 @@ public class LoginActivity extends ActionBarActivity {
         } else {
             Toast.makeText(getApplicationContext(), "Username or Password is empty!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void checkIfHistoryExists() {
+        geYouService.getExistingHistory(session.getPartyId(), session.getUserId(), new Callback<History>() {
+            @Override
+            public void success(History history, Response response) {
+                if (history.getId() == null) {
+                    User u = new User();
+                    Party p = new Party();
+
+                    u.setId(session.getUserId());
+                    p.setId(session.getPartyId());
+
+                    History h = new History();
+                    h.setUser(u);
+                    h.setParty(p);
+                    h.setStartLat((float) 51.5034070000);
+                    h.setStartLong((float) -0.1275920000);
+
+                    geYouService.addHistory(h, new Callback<History>() {
+                        @Override
+                        public void success(History history, Response response) {
+                            Toast.makeText(getApplicationContext(), "made history", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {
+
+                        }
+                    });
+                } else {
+                    Toast.makeText(getApplicationContext(), "has history", Toast.LENGTH_SHORT).show();
+                }
+                Intent i = new Intent(getApplicationContext(), MapActivity.class);
+                startActivity(i);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                
+            }
+        });
     }
 }

@@ -81,7 +81,7 @@ public class SessionManager {
     }
 
     public String getBaseURL() {
-        return pref.getString(KEY_BASE_URL, "http://192.168.1.153:8080/geyou");
+        return pref.getString(KEY_BASE_URL, "http://192.168.1.87:8080/geyou");
     }
 
     public void checkLogin() {

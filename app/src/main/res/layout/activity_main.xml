@@ -39,10 +39,11 @@
                 android:text="FROM"
                 android:textSize="18dp" />
 
-            <EditText
-                android:id="@+id/editTextTest"
+            <AutoCompleteTextView
+                android:id="@+id/autoCompleteTest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:completionThreshold="3"
                 android:layout_marginRight="70dp"
                 android:layout_marginTop="30dp"
                 android:layout_toEndOf="@+id/textView"
