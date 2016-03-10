@@ -6,7 +6,11 @@
 
 package com.thesis.geyoubeta.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -266,6 +270,31 @@ public class LoginActivity extends ActionBarActivity {
                 if (history.getId() == null) {
                     User u = new User();
                     Party p = new Party();
+                    Location location;
+                    LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                    LocationListener locationListener = new LocationListener() {
+                        @Override
+                        public void onLocationChanged(Location location) {
+
+                        }
+
+                        @Override
+                        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                        }
+
+                        @Override
+                        public void onProviderEnabled(String provider) {
+
+                        }
+
+                        @Override
+                        public void onProviderDisabled(String provider) {
+
+                        }
+                    };
+
+                    Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
                     u.setId(session.getUserId());
                     p.setId(session.getPartyId());
@@ -273,8 +302,8 @@ public class LoginActivity extends ActionBarActivity {
                     History h = new History();
                     h.setUser(u);
                     h.setParty(p);
-                    h.setStartLat((float) 51.5034070000);
-                    h.setStartLong((float) -0.1275920000);
+                    h.setStartLat((float) lastKnownLocation.getLatitude());
+                    h.setStartLong(((float) lastKnownLocation.getLongitude()));
 
                     geYouService.addHistory(h, new Callback<History>() {
                         @Override
@@ -296,7 +325,7 @@ public class LoginActivity extends ActionBarActivity {
 
             @Override
             public void failure(RetrofitError error) {
-                
+
             }
         });
     }
