@@ -14,7 +14,9 @@ import android.widget.Toast;
 import com.thesis.geyoubeta.activity.LoginActivity;
 import com.thesis.geyoubeta.entity.Party;
 import com.thesis.geyoubeta.entity.User;
+import com.thesis.geyoubeta.service.MyService;
 
+import java.text.DateFormat;
 import java.util.HashMap;
 
 public class SessionManager {
@@ -31,11 +33,13 @@ public class SessionManager {
     public static final String KEY_PARTY_DEST_LONG = "destLong";
     public static final String KEY_PARTY_DEST_LAT = "destLat";
     public static final String KEY_PARTY_STATUS = "status";
-    public static final String KEY_PARTY_CDATE = "createdDate";
     public static final String KEY_PARTY_CBY = "createdBy";
     public static final String KEY_BASE_URL = "ipAddress";
     private static final String PREF_NAME = "GeYouPrefs";
     private static final String IS_LOGIN = "IsLoggedIn";
+
+    private static final String DEFAULT_URL = "http://192.168.2.101:8080/geyou";
+
     SharedPreferences pref;
     SharedPreferences.Editor editor;
     Context _context;
@@ -60,30 +64,45 @@ public class SessionManager {
     }
 
     public void setActiveParty(Party p) {
-        editor.putInt(KEY_PARTY_ID, p.getId());
-        editor.putString(KEY_PARTY_NAME, p.getName());
-        editor.putString(KEY_PARTY_START, p.getStartDateTime());
-        editor.putString(KEY_PARTY_END, p.getEndDateTime());
-        editor.putString(KEY_PARTY_DEST, p.getDestination());
-        editor.putFloat(KEY_PARTY_DEST_LONG, p.getDestLong());
-        editor.putFloat(KEY_PARTY_DEST_LAT, p.getDestLat());
-        editor.putString(KEY_PARTY_STATUS, p.getStatus());
-        editor.putString(KEY_PARTY_CDATE, p.getCreatedDate().toString());
+
+        if (p != null) {
+            editor.putInt(KEY_PARTY_ID, p.getId());
+            editor.putString(KEY_PARTY_NAME, p.getName());
+            editor.putString(KEY_PARTY_START, DateFormat.getDateTimeInstance().format(p.getStartDateTime()));
+            editor.putString(KEY_PARTY_END, DateFormat.getDateTimeInstance().format(p.getEndDateTime()));
+            editor.putString(KEY_PARTY_DEST, p.getDestination());
+            //editor.putFloat(KEY_PARTY_DEST_LONG, p.getDestLong());
+            //editor.putFloat(KEY_PARTY_DEST_LAT, p.getDestLat());
+            editor.putString(KEY_PARTY_STATUS, p.getStatus());
+
+            editor.commit();
+
+            Toast.makeText(_context, "Party Name in prefs: " + getPartyName(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void clearActiveParty() {
+        editor.remove(KEY_PARTY_ID);
+        editor.remove(KEY_PARTY_NAME);
+        editor.remove(KEY_PARTY_START);
+        editor.remove(KEY_PARTY_END);
+        editor.remove(KEY_PARTY_DEST);
+        //editor.remove(KEY_PARTY_DEST_LONG);
+        //editor.remove(KEY_PARTY_DEST_LAT);
+        editor.remove(KEY_PARTY_STATUS);
 
         editor.commit();
-
-        Toast.makeText(_context, "Party Name in prefs: " + getPartyName(), Toast.LENGTH_LONG).show();
     }
 
     public void changeIPAddress(String ip) {
         editor.putString(KEY_BASE_URL, "http://" + ip + ":8080/geyou");
 
         editor.commit();
-        Toast.makeText(_context, "New URL is: " + pref.getString(KEY_BASE_URL, "not changed"), Toast.LENGTH_LONG).show();
+        Toast.makeText(_context, "New URL is: " + pref.getString(KEY_BASE_URL, "not changed"), Toast.LENGTH_SHORT).show();
     }
 
     public String getBaseURL() {
-        return pref.getString(KEY_BASE_URL, "http://192.168.1.153:8080/geyou");
+        return pref.getString(KEY_BASE_URL, DEFAULT_URL);
     }
 
     public void checkLogin() {
@@ -152,7 +171,7 @@ public class SessionManager {
     }
 
     public String getPartyEnd() {
-        return pref.getString(KEY_PARTY_END, "startDateTime");
+        return pref.getString(KEY_PARTY_END, "endDateTime");
     }
 
     public String getPartyDest() {
@@ -171,10 +190,6 @@ public class SessionManager {
         return pref.getString(KEY_PARTY_STATUS, "status");
     }
 
-    public String getPartyCreatedDate() {
-        return pref.getString(KEY_PARTY_CDATE, "createdDate");
-    }
-
     public void logoutUser() {
         editor.clear();
         editor.commit();
@@ -186,6 +201,9 @@ public class SessionManager {
         i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
         _context.startActivity(i);
+
+        Intent s = new Intent(_context, MyService.class);
+        _context.stopService(s);
     }
 
     public boolean isLoggedIn() {

@@ -87,8 +87,8 @@ public interface GeYouService {
     @PUT("/history/update")
     void editHistory(@Body History history, Callback<History> callback);
 
-    @GET("history/getExistingHistory")
-    void getExistingHistory(@Body Party p, @Body User u, Callback<History> callback);
+    @GET("/history/getExistingHistory")
+    void getExistingHistory(@Query("partyId") Integer partyId, @Query("userId") Integer userId, Callback<History> callback);
 
     //PartyMember
 
@@ -106,4 +106,10 @@ public interface GeYouService {
 
     @GET("/partyMember/checkPartyMembership")
     void checkPartyMembership(@Query("partyId") Integer partyId, @Query("userId") Integer userId, Callback<Boolean> callback);
+
+    @GET("/partyMember/getByUserAndParty")
+    void getPartyMemberByUserAndParty(@Query("partyId") Integer partyId, @Query("userId") Integer userId, Callback<PartyMember> callback);
+
+    @PUT("/partyMember/edit")
+    void editMember(@Body PartyMember partyMember, Callback<PartyMember> callback);
 }

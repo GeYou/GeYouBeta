@@ -56,7 +56,7 @@ public class HistoryListAdapter extends BaseAdapter {
         TextView destination = (TextView) convertView.findViewById(android.R.id.text1);
         destination.setText(histories.get(position).getParty().getName());
         TextView date = (TextView) convertView.findViewById(android.R.id.text2);
-        date.setText(histories.get(position).getParty().getStartDateTime());
+        date.setText(histories.get(position).getParty().getStartDateTime().toString());
         return convertView;
     }
 }

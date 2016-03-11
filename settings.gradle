@@ -4,4 +4,4 @@
  *  Copyright (C) 2015 Ivan Wesley Chua and Jethro Divino
  */
 
-include ':app'
+include ':app', ':slideDateTimePicker'
