@@ -231,24 +231,10 @@ public class LoginActivity extends ActionBarActivity {
                 @Override
                 public void success(User user, Response response) {
                     if (user.getId() != null) {
+
                         session.createLoginSession(user);
-                        geYouService.getActiveParty(session.getUserId(), new Callback<Party>() {
-                            @Override
-                            public void success(Party party, Response response) {
-                                if (party.getId() != null) {
-                                    session.setActiveParty(party);
-
-                                    checkIfHistoryExists();
-                                } else {
-                                    Toast.makeText(getApplicationContext(), "no active party", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                            @Override
-                            public void failure(RetrofitError error) {
-
-                            }
-                        });
+                        Toast.makeText(getApplicationContext(), "user id: " +session.getUserId(), Toast.LENGTH_SHORT).show();
+                        checkActiveParty();
 
                         Intent i = new Intent(getApplicationContext(), MapActivity.class);
                         Intent s = new Intent(getApplicationContext(), MyService.class);
@@ -267,6 +253,26 @@ public class LoginActivity extends ActionBarActivity {
         } else {
             Toast.makeText(getApplicationContext(), "Username or Password is empty!", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void checkActiveParty() {
+        geYouService.getActiveParty(session.getUserId(), new Callback<Party>() {
+            @Override
+            public void success(Party party, Response response) {
+                if (party.getId() != null) {
+                    session.setActiveParty(party);
+                    checkIfHistoryExists();
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "no active party", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
     }
 
     public void checkIfHistoryExists() {

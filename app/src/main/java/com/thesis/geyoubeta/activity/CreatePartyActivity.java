@@ -37,6 +37,7 @@ import com.thesis.geyoubeta.service.GeYouService;
 import com.thesis.geyoubeta.SessionManager;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import retrofit.Callback;
@@ -233,14 +234,16 @@ public class CreatePartyActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 if (session.getPartyStatus().equals("status") || session.getPartyStatus().equals("I")) {
-                    Party nParty = new Party();
+                    if (!eTxtName.getText().toString().equals("") && !eTxtStartTimeStamp.getText().toString().equals("") && !eTxtEndTimeStamp.getText().toString().equals("") && !eTxtDestination.getText().toString().equals("")) {
+                        Party nParty = new Party();
 
-                    nParty.setName(eTxtName.getText().toString());
-                    nParty.setStartDateTime(startDate);
-                    nParty.setEndDateTime(endDate);
-                    nParty.setDestination(eTxtDestination.getText().toString());
+                        nParty.setName(eTxtName.getText().toString());
+                        nParty.setStartDateTime(startDate);
+                        nParty.setEndDateTime(endDate);
+                        nParty.setDestination(eTxtDestination.getText().toString());
 
-                    createParty(nParty);
+                        createParty(nParty);
+                    }
                 } else {
                     Toast.makeText(getApplicationContext(), "Could not make party: You have an active party.", Toast.LENGTH_SHORT).show();
                     clearInput();
@@ -286,8 +289,8 @@ public class CreatePartyActivity extends ActionBarActivity {
             public void success(Party party, Response response) {
                 session.setActiveParty(party);
                 Toast.makeText(CreatePartyActivity.this, "Successfully created party: " + party.toString(), Toast.LENGTH_LONG).show();
-                clearInput();
                 checkIfHistoryExists();
+                clearInput();
             }
 
             @Override

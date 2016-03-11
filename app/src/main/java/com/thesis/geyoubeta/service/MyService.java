@@ -17,6 +17,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.widget.Toast;
 
+import com.thesis.geyoubeta.Listener.GeyouLocationListener;
 import com.thesis.geyoubeta.SessionManager;
 import com.thesis.geyoubeta.entity.History;
 import com.thesis.geyoubeta.entity.Party;
@@ -24,6 +25,7 @@ import com.thesis.geyoubeta.entity.PartyMember;
 import com.thesis.geyoubeta.entity.User;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.Date;
 
 import retrofit.Callback;
@@ -56,111 +58,30 @@ public class MyService extends Service {
             public void run(){
 
                 if (session.getPartyId() == -1) {
-                    geYouService.getActiveParty(session.getUserId(), new Callback<Party>() {
-                        @Override
-                        public void success(Party party, Response response) {
-                            if (party.getId() != null) {
-                                session.setActiveParty(party);
-
-                                checkIfHistoryExists();
-                            } else {
-                                Toast.makeText(getApplicationContext(), "no active party", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        @Override
-                        public void failure(RetrofitError error) {
-
-                        }
-                    });
+                    checkForActiveParty();
                 } else {
-                    //check if party is to be inactivate
-                    if(DateFormat.getDateTimeInstance().format(new Date()).equals(session.getPartyEnd())) {
-                        Toast.makeText(getApplicationContext(), "Party is to be deactivated.", Toast.LENGTH_SHORT).show();
-                        geYouService.getPartyMemberByUserAndParty(session.getPartyId(), session.getUserId(), new Callback<PartyMember>() {
-                            @Override
-                            public void success(PartyMember partyMember, Response response) {
-                                if (partyMember.getId() != null) {
-                                    partyMember.setStatus("I");
-                                    geYouService.editMember(partyMember, new Callback<PartyMember>() {
-                                        @Override
-                                        public void success(PartyMember partyMember, Response response) {
-                                            if (partyMember.getId() != null) {
-                                                Toast.makeText(getApplicationContext(), "Party is deactivated.", Toast.LENGTH_SHORT).show();
+                    //check if party has to be deactivated
+                    try {
+                        if(DateFormat.getDateTimeInstance().parse(session.getPartyEnd()).before(new Date())) {
+                            Toast.makeText(getApplicationContext(), "Party is to be deactivated.", Toast.LENGTH_SHORT).show();
 
-                                            }
-                                        }
-
-                                        @Override
-                                        public void failure(RetrofitError error) {
-
-                                        }
-                                    });
-                                }
-
-                            }
-
-                            @Override
-                            public void failure(RetrofitError error) {
-
-                            }
-                        });
-                    } else {
-                        //track
-                        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                        LocationListener locationListener = new LocationListener() {
-                            @Override
-                            public void onLocationChanged(Location location) {
-                                User u = new User();
-                                Party p = new Party();
-                                PartyMember pm = new PartyMember();
-                                u.setId(session.getUserId());
-                                p.setId(session.getPartyId());
-
-                                pm.setParty(p);
-                                pm.setUser(u);
-                                pm.setStatus("A");
-                                pm.setLastLat((float) location.getLatitude());
-                                pm.setLastLong((float) location.getLongitude());
-
-                                geYouService.editMember(pm, new Callback<PartyMember>() {
-                                    @Override
-                                    public void success(PartyMember partyMember, Response response) {
-                                        Toast.makeText(getApplicationContext(), "Updated location.", Toast.LENGTH_SHORT).show();
-                                    }
-
-                                    @Override
-                                    public void failure(RetrofitError error) {
-
-                                    }
-                                });
-                            }
-
-                            @Override
-                            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-                            }
-
-                            @Override
-                            public void onProviderEnabled(String provider) {
-
-                            }
-
-                            @Override
-                            public void onProviderDisabled(String provider) {
-
-                            }
-                        };
-                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                            deactivateParty();
+                            deletePartySession();
+                        } else {
+                            //track user loc
+                            updateUserLocation();
+//                            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//                            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//                            LocationListener locationListener = new GeyouLocationListener(session, geYouService, getApplicationContext());
+//                            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
                 }
-
-
-
                 h.postDelayed(this, delay);
             }
         }, delay);
-
 
         return Service.START_NOT_STICKY;
     }
@@ -183,6 +104,26 @@ public class MyService extends Service {
         geYouService = restAdapter.create(GeYouService.class);
     }
 
+    public void checkForActiveParty() {
+        geYouService.getActiveParty(session.getUserId(), new Callback<Party>() {
+            @Override
+            public void success(Party party, Response response) {
+                if (party.getId() != null) {
+                    session.setActiveParty(party);
+
+                    checkIfHistoryExists();
+                } else {
+                    Toast.makeText(getApplicationContext(), "no active party", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
+
     public void checkIfHistoryExists() {
         geYouService.getExistingHistory(session.getPartyId(), session.getUserId(), new Callback<History>() {
             @Override
@@ -191,7 +132,6 @@ public class MyService extends Service {
                     User u = new User();
                     Party p = new Party();
                     LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
                     Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
                     u.setId(session.getUserId());
@@ -224,5 +164,69 @@ public class MyService extends Service {
 
             }
         });
+    }
+
+    public void deactivateParty() {
+        geYouService.getPartyMemberByUserAndParty(session.getPartyId(), session.getUserId(), new Callback<PartyMember>() {
+            @Override
+            public void success(PartyMember partyMember, Response response) {
+                if (partyMember.getId() != null) {
+                    partyMember.setStatus("I");
+                    geYouService.editMember(partyMember, new Callback<PartyMember>() {
+                        @Override
+                        public void success(PartyMember partyMember, Response response) {
+                            if (partyMember.getId() != null) {
+                                Toast.makeText(getApplicationContext(), "Party is deactivated.", Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {
+
+                        }
+                    });
+                }
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
+
+    public void updateUserLocation(){
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Location l = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        User u = new User();
+        Party p = new Party();
+        PartyMember pm = new PartyMember();
+        u.setId(session.getUserId());
+        p.setId(session.getPartyId());
+
+        pm.setParty(p);
+        pm.setUser(u);
+        pm.setStatus("A");
+        pm.setLastLat((float) l.getLatitude());
+        pm.setLastLong((float) l.getLongitude());
+
+        geYouService.editMember(pm, new Callback<PartyMember>() {
+            @Override
+            public void success(PartyMember partyMember, Response response) {
+                Toast.makeText(getApplicationContext(), "Updated location.", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
+
+    public void deletePartySession() {
+        session.clearActiveParty();
     }
 }
