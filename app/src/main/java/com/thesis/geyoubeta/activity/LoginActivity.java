@@ -31,6 +31,7 @@ import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
 import com.thesis.geyoubeta.entity.History;
 import com.thesis.geyoubeta.entity.Party;
+import com.thesis.geyoubeta.entity.PartyMember;
 import com.thesis.geyoubeta.entity.User;
 import com.thesis.geyoubeta.service.GeYouService;
 import com.thesis.geyoubeta.SessionManager;
@@ -256,11 +257,13 @@ public class LoginActivity extends ActionBarActivity {
     }
 
     public void checkActiveParty() {
-        geYouService.getActiveParty(session.getUserId(), new Callback<Party>() {
+        geYouService.getActiveParty(session.getUserId(), new Callback<PartyMember>() {
             @Override
-            public void success(Party party, Response response) {
-                if (party.getId() != null) {
-                    session.setActiveParty(party);
+            public void success(PartyMember partyMember, Response response) {
+                if (partyMember.getId() != null) {
+                    Toast.makeText(getApplicationContext(), "Party Mem Id: " + partyMember.getId(), Toast.LENGTH_SHORT).show();
+                    session.setPartyMemberId(partyMember.getId());
+                    session.setActiveParty(partyMember.getParty());
                     checkIfHistoryExists();
 
                 } else {

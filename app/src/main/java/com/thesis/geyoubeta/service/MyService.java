@@ -69,11 +69,11 @@ public class MyService extends Service {
                             deletePartySession();
                         } else {
                             //track user loc
-                            updateUserLocation();
-//                            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//                            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//                            LocationListener locationListener = new GeyouLocationListener(session, geYouService, getApplicationContext());
-//                            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                            //updateUserLocation();
+                            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                            //Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                            LocationListener locationListener = new GeyouLocationListener(session, geYouService, getApplicationContext());
+                            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
                         }
                     } catch (ParseException e) {
                         e.printStackTrace();
@@ -105,11 +105,12 @@ public class MyService extends Service {
     }
 
     public void checkForActiveParty() {
-        geYouService.getActiveParty(session.getUserId(), new Callback<Party>() {
+        geYouService.getActiveParty(session.getUserId(), new Callback<PartyMember>() {
             @Override
-            public void success(Party party, Response response) {
-                if (party.getId() != null) {
-                    session.setActiveParty(party);
+            public void success(PartyMember partyMember, Response response) {
+                if (partyMember.getId() != null) {
+                    session.setPartyMemberId(partyMember.getId());
+                    session.setActiveParty(partyMember.getParty());
 
                     checkIfHistoryExists();
                 } else {
@@ -198,6 +199,8 @@ public class MyService extends Service {
     }
 
     public void updateUserLocation(){
+        Toast.makeText(getApplicationContext(), "updating location...", Toast.LENGTH_SHORT).show();
+
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Location l = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
@@ -207,6 +210,7 @@ public class MyService extends Service {
         u.setId(session.getUserId());
         p.setId(session.getPartyId());
 
+        pm.setId(session.getPartyMemberId());
         pm.setParty(p);
         pm.setUser(u);
         pm.setStatus("A");
