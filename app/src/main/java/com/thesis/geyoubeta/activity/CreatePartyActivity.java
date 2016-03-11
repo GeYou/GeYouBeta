@@ -6,7 +6,10 @@
 
 package com.thesis.geyoubeta.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -27,7 +30,9 @@ import com.github.jjobes.slidedatetimepicker.SlideDateTimePicker;
 import com.thesis.geyoubeta.NavDrawer;
 import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
+import com.thesis.geyoubeta.entity.History;
 import com.thesis.geyoubeta.entity.Party;
+import com.thesis.geyoubeta.entity.User;
 import com.thesis.geyoubeta.service.GeYouService;
 import com.thesis.geyoubeta.SessionManager;
 
@@ -282,6 +287,7 @@ public class CreatePartyActivity extends ActionBarActivity {
                 session.setActiveParty(party);
                 Toast.makeText(CreatePartyActivity.this, "Successfully created party: " + party.toString(), Toast.LENGTH_LONG).show();
                 clearInput();
+                checkIfHistoryExists();
             }
 
             @Override
@@ -296,5 +302,48 @@ public class CreatePartyActivity extends ActionBarActivity {
         eTxtStartTimeStamp.setText("");
         eTxtEndTimeStamp.setText("");
         eTxtDestination.setText("");
+    }
+
+    public void checkIfHistoryExists() {
+        geYouService.getExistingHistory(session.getPartyId(), session.getUserId(), new Callback<History>() {
+            @Override
+            public void success(History history, Response response) {
+                if (history.getId() == null) {
+                    User u = new User();
+                    Party p = new Party();
+                    LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+                    Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+                    u.setId(session.getUserId());
+                    p.setId(session.getPartyId());
+
+                    History h = new History();
+                    h.setUser(u);
+                    h.setParty(p);
+                    h.setStartLat((float) lastKnownLocation.getLatitude());
+                    h.setStartLong(((float) lastKnownLocation.getLongitude()));
+
+                    geYouService.addHistory(h, new Callback<History>() {
+                        @Override
+                        public void success(History history, Response response) {
+                            Toast.makeText(getApplicationContext(), "made history", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {
+
+                        }
+                    });
+                } else {
+                    Toast.makeText(getApplicationContext(), "has history", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
     }
 }

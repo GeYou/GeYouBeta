@@ -15,6 +15,8 @@ import com.thesis.geyoubeta.activity.LoginActivity;
 import com.thesis.geyoubeta.entity.Party;
 import com.thesis.geyoubeta.entity.User;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 public class SessionManager {
@@ -61,8 +63,8 @@ public class SessionManager {
     public void setActiveParty(Party p) {
         editor.putInt(KEY_PARTY_ID, p.getId());
         editor.putString(KEY_PARTY_NAME, p.getName());
-        editor.putString(KEY_PARTY_START, p.getStartDateTime().toString());
-        editor.putString(KEY_PARTY_END, p.getEndDateTime().toString());
+        editor.putString(KEY_PARTY_START, DateFormat.getDateTimeInstance().format(p.getStartDateTime()));
+        editor.putString(KEY_PARTY_END, DateFormat.getDateTimeInstance().format(p.getEndDateTime()));
         editor.putString(KEY_PARTY_DEST, p.getDestination());
         //editor.putFloat(KEY_PARTY_DEST_LONG, p.getDestLong());
         //editor.putFloat(KEY_PARTY_DEST_LAT, p.getDestLat());
@@ -150,7 +152,7 @@ public class SessionManager {
     }
 
     public String getPartyEnd() {
-        return pref.getString(KEY_PARTY_END, "startDateTime");
+        return pref.getString(KEY_PARTY_END, "endDateTime");
     }
 
     public String getPartyDest() {

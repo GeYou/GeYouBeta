@@ -34,6 +34,7 @@ import com.thesis.geyoubeta.entity.Party;
 import com.thesis.geyoubeta.entity.User;
 import com.thesis.geyoubeta.service.GeYouService;
 import com.thesis.geyoubeta.SessionManager;
+import com.thesis.geyoubeta.service.MyService;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -234,7 +235,7 @@ public class LoginActivity extends ActionBarActivity {
                         geYouService.getActiveParty(session.getUserId(), new Callback<Party>() {
                             @Override
                             public void success(Party party, Response response) {
-                                if (party != null) {
+                                if (party.getId() != null) {
                                     session.setActiveParty(party);
 
                                     checkIfHistoryExists();
@@ -248,6 +249,11 @@ public class LoginActivity extends ActionBarActivity {
 
                             }
                         });
+
+                        Intent i = new Intent(getApplicationContext(), MapActivity.class);
+                        Intent s = new Intent(getApplicationContext(), MyService.class);
+                        startService(s);
+                        startActivity(i);
                     } else {
                         Toast.makeText(LoginActivity.this, "Not valid credentials.", Toast.LENGTH_SHORT).show();
                     }
@@ -270,29 +276,7 @@ public class LoginActivity extends ActionBarActivity {
                 if (history.getId() == null) {
                     User u = new User();
                     Party p = new Party();
-                    Location location;
                     LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                    LocationListener locationListener = new LocationListener() {
-                        @Override
-                        public void onLocationChanged(Location location) {
-
-                        }
-
-                        @Override
-                        public void onStatusChanged(String provider, int status, Bundle extras) {
-
-                        }
-
-                        @Override
-                        public void onProviderEnabled(String provider) {
-
-                        }
-
-                        @Override
-                        public void onProviderDisabled(String provider) {
-
-                        }
-                    };
 
                     Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
@@ -319,8 +303,6 @@ public class LoginActivity extends ActionBarActivity {
                 } else {
                     Toast.makeText(getApplicationContext(), "has history", Toast.LENGTH_SHORT).show();
                 }
-                Intent i = new Intent(getApplicationContext(), MapActivity.class);
-                startActivity(i);
             }
 
             @Override

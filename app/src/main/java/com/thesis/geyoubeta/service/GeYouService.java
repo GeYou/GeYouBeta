@@ -106,4 +106,10 @@ public interface GeYouService {
 
     @GET("/partyMember/checkPartyMembership")
     void checkPartyMembership(@Query("partyId") Integer partyId, @Query("userId") Integer userId, Callback<Boolean> callback);
+
+    @GET("/partyMember/getByUserAndParty")
+    void getPartyMemberByUserAndParty(@Query("partyId") Integer partyId, @Query("userId") Integer userId, Callback<PartyMember> callback);
+
+    @PUT("/partyMember/edit")
+    void editMember(@Body PartyMember partyMember, Callback<PartyMember> callback);
 }
