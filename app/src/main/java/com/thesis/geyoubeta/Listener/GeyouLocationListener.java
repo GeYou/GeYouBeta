@@ -64,6 +64,7 @@ public class GeyouLocationListener implements LocationListener{
         u.setId(session.getUserId());
         p.setId(session.getPartyId());
 
+        pm.setId(session.getPartyMemberId());
         pm.setParty(p);
         pm.setUser(u);
         pm.setStatus("A");

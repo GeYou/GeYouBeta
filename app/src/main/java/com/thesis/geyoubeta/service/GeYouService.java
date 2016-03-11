@@ -102,7 +102,7 @@ public interface GeYouService {
     void getPartyMembers(@Path("id") Integer id, Callback<List<User>> callback);
 
     @GET("/partyMember/getActiveParty/{id}")
-    void getActiveParty(@Path("id") Integer id, Callback<Party> callback);
+    void getActiveParty(@Path("id") Integer id, Callback<PartyMember> callback);
 
     @GET("/partyMember/checkPartyMembership")
     void checkPartyMembership(@Query("partyId") Integer partyId, @Query("userId") Integer userId, Callback<Boolean> callback);

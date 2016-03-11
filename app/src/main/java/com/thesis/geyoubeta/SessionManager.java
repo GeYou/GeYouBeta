@@ -25,6 +25,7 @@ public class SessionManager {
     public static final String KEY_USER_LNAME = "lName";
     public static final String KEY_USER_EMAIL = "email";
     public static final String KEY_USER_PASSWORD = "password";
+    public static final String KEY_PARTY_MEMBER_ID = "pmId";
     public static final String KEY_PARTY_ID = "pId";
     public static final String KEY_PARTY_NAME = "pName";
     public static final String KEY_PARTY_START = "startDateTime";
@@ -38,7 +39,7 @@ public class SessionManager {
     private static final String PREF_NAME = "GeYouPrefs";
     private static final String IS_LOGIN = "IsLoggedIn";
 
-    private static final String DEFAULT_URL = "http://192.168.2.101:8080/geyou";
+    private static final String DEFAULT_URL = "http://172.20.10.5:8080/geyou";
 
     SharedPreferences pref;
     SharedPreferences.Editor editor;
@@ -81,7 +82,15 @@ public class SessionManager {
         }
     }
 
+    public void setPartyMemberId(Integer id) {
+        editor.putInt(KEY_PARTY_MEMBER_ID, id);
+        editor.commit();
+
+        Toast.makeText(_context, "Party Mem Id in prefs: " + getPartyMemberId(), Toast.LENGTH_SHORT).show();
+    }
+
     public void clearActiveParty() {
+        editor.remove(KEY_PARTY_MEMBER_ID);
         editor.remove(KEY_PARTY_ID);
         editor.remove(KEY_PARTY_NAME);
         editor.remove(KEY_PARTY_START);
@@ -190,6 +199,10 @@ public class SessionManager {
         return pref.getString(KEY_PARTY_STATUS, "status");
     }
 
+    public Integer getPartyMemberId() {
+        return pref.getInt(KEY_PARTY_MEMBER_ID, -1);
+    }
+
     public void logoutUser() {
         editor.clear();
         editor.commit();
@@ -200,10 +213,9 @@ public class SessionManager {
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         i.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 
-        _context.startActivity(i);
-
         Intent s = new Intent(_context, MyService.class);
         _context.stopService(s);
+        _context.startActivity(i);
     }
 
     public boolean isLoggedIn() {
