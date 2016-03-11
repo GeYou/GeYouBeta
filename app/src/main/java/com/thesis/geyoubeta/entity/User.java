@@ -6,6 +6,10 @@
 
 package com.thesis.geyoubeta.entity;
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 public class User {
 
     private Integer id;
@@ -17,6 +21,10 @@ public class User {
     private String email;
 
     private String password;
+
+    private Date createdDate;
+
+    private Set<PartyMember> partyMembers = new HashSet<PartyMember>(0);
 
     public Integer getId() {
         return id;
@@ -58,6 +66,22 @@ public class User {
         this.password = password;
     }
 
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Set<PartyMember> getPartyMembers() {
+        return partyMembers;
+    }
+
+    public void setPartyMembers(Set<PartyMember> partyMembers) {
+        this.partyMembers = partyMembers;
+    }
+
     @Override
     public String toString() {
         return "[id : " + getId()
@@ -65,6 +89,7 @@ public class User {
                 + "] [ lName : " + getlName()
                 + "] [ email : " + getEmail()
                 + "] [ password : " + getPassword()
+                + "] [ createdDate : " + getCreatedDate()
                 + "]";
     }
 }

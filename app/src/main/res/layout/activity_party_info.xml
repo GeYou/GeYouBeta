@@ -1,12 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~  Unauthorized copying of this file, via any medium is strictly prohibited
   ~  Proprietary and confidential
   ~  Copyright (C) 2015 Ivan Wesley Chua and Jethro Divino
   -->
 
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/DrawerLayout"
     android:layout_width="match_parent"
@@ -17,19 +15,19 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_alignBottom="@+id/RecyclerView">
+        android:layout_alignBottom="@+id/RecyclerView"
+        android:orientation="vertical">
 
         <include
             android:id="@+id/tool_bar"
             layout="@layout/tool_bar" />
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="90dp"
-            android:text="PARTY INFO"
             android:id="@+id/textView10"
-            android:gravity="center" />
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:text="PARTY INFO" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -37,8 +35,8 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:orientation="vertical"
-            android:layout_gravity="center_horizontal">
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textViewPartyName"
@@ -53,9 +51,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:enabled="false"
                 android:inputType="textPersonName"
-                android:textSize="17sp"
-                android:enabled="false" />
+                android:textSize="17sp" />
 
             <TextView
                 android:id="@+id/textViewStartTimeStamp"
@@ -70,9 +68,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
+                android:enabled="false"
                 android:inputType="datetime"
-                android:textSize="17sp"
-                android:enabled="false" />
+                android:textSize="17sp" />
 
             <TextView
                 android:id="@+id/textViewEndTimeStamp"
@@ -87,9 +85,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:textSize="17sp"
                 android:enabled="false"
-                android:inputType="datetime" />
+                android:inputType="datetime"
+                android:textSize="17sp" />
 
             <TextView
                 android:id="@+id/textViewDesination"
@@ -104,31 +102,38 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:textSize="17sp"
                 android:enabled="false"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:textSize="17sp" />
 
             <Button
                 android:id="@+id/btnEditPartyInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="EDIT"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:text="EDIT" />
 
             <Button
                 android:id="@+id/btnSavePartyInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="SAVE"
                 android:layout_gravity="center_horizontal"
-                android:enabled="false" />
+                android:enabled="false"
+                android:text="SAVE" />
 
             <Button
                 android:id="@+id/btnCancelPartyInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="CANCEL"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:text="CANCEL" />
+
+            <Button
+                android:id="@+id/btnPartyMembersInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="PARTY MEMBERS" />
         </LinearLayout>
 
 

@@ -24,37 +24,40 @@ import android.widget.Toast;
 
 import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
+import com.thesis.geyoubeta.entity.User;
 import com.thesis.geyoubeta.service.GeYouService;
-import com.thesis.geyoubeta.service.SessionManager;
+import com.thesis.geyoubeta.SessionManager;
 
+import retrofit.Callback;
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import retrofit.converter.JacksonConverter;
 
 public class UserInfoActivity extends ActionBarActivity {
 
-    SessionManager session;
+    private SessionManager session;
 
-    EditText eTxtFName;
-    EditText eTxtLName;
-    EditText eTxtEmail;
-    EditText eTxtPassword;
-    EditText eTxtConfPass;
-    Button btnEdit;
-    Button btnSave;
-    Button btnCancel;
+    private EditText eTxtFName;
+    private EditText eTxtLName;
+    private EditText eTxtEmail;
+    private EditText eTxtPassword;
+    private EditText eTxtConfPass;
+    private Button btnEdit;
+    private Button btnSave;
+    private Button btnCancel;
 
-    RestAdapter restAdapter;
-    GeYouService geYouService;
+    private RestAdapter restAdapter;
+    private GeYouService geYouService;
 
-    private Toolbar toolbar;
-    String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings",  "Logout"};
+    String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings", "Logout"};
 
     RecyclerView mRecyclerView;                           // Declaring RecyclerView
     RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
     RecyclerView.LayoutManager mLayoutManager;            // Declaring Layout Manager as a linear layout manager
     DrawerLayout Drawer;                                  // Declaring DrawerLayout
-
     android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;                  // Declaring Action Bar Drawer Toggle;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +70,8 @@ public class UserInfoActivity extends ActionBarActivity {
         initializeDrawer();
         initializeRest();
         initializeComponents();
+
+        setDefaults();
     }
 
     @Override
@@ -115,7 +120,6 @@ public class UserInfoActivity extends ActionBarActivity {
 
                 if ((child != null) && mGestureDetector.onTouchEvent(motionEvent)) {
                     Drawer.closeDrawers();
-                    Toast.makeText(getApplicationContext(), "The Item Clicked is: " + recyclerView.getChildPosition(child), Toast.LENGTH_SHORT).show();
 
                     Intent intent = null;
                     if (recyclerView.getChildPosition(child) == 1) {
@@ -198,25 +202,94 @@ public class UserInfoActivity extends ActionBarActivity {
         eTxtPassword = (EditText) findViewById(R.id.editTextPasswordInfo);
         eTxtConfPass = (EditText) findViewById(R.id.editTextConfirmPassInfo);
 
+        eTxtPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                eTxtPassword.setText("");
+                eTxtConfPass.setText("");
+            }
+        });
+
         btnEdit = (Button) findViewById(R.id.btnEditUserInfo);
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                makeInputsEnabled();
+                btnSave.setEnabled(true);
+                btnCancel.setEnabled(true);
             }
         });
         btnSave = (Button) findViewById(R.id.btnSaveUserInfo);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (eTxtConfPass.getText().toString().equals(eTxtPassword.getText().toString())) {
+                    Toast.makeText(getApplicationContext(), "Passwords match!", Toast.LENGTH_SHORT).show();
+                    User nUser = new User();
 
+                    nUser.setId(session.getUserId());
+                    nUser.setfName(eTxtFName.getText().toString());
+                    nUser.setlName(eTxtLName.getText().toString());
+                    nUser.setEmail(eTxtEmail.getText().toString());
+                    nUser.setPassword(eTxtPassword.getText().toString());
+                    updateCredentials(nUser);
+                } else {
+                    eTxtPassword.setText("");
+                    eTxtConfPass.setText("");
+                    Toast.makeText(getApplicationContext(), "Passwords do not match!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         btnCancel = (Button) findViewById(R.id.btnCancelUserInfo);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                resetInputs();
+                btnSave.setEnabled(false);
+                btnCancel.setEnabled(false);
+            }
+        });
+    }
 
+    public void setDefaults() {
+        eTxtFName.setText(session.getUserFName());
+        eTxtLName.setText(session.getUserLName());
+        eTxtEmail.setText(session.getUserEmail());
+        eTxtPassword.setText(session.getUserPassword());
+        eTxtConfPass.setText(session.getUserPassword());
+    }
+
+    public void makeInputsEnabled() {
+        eTxtFName.setEnabled(true);
+        eTxtLName.setEnabled(true);
+        //eTxtEmail.setEnabled(true);
+        eTxtPassword.setEnabled(true);
+        eTxtConfPass.setEnabled(true);
+    }
+
+    public void resetInputs() {
+        setDefaults();
+        eTxtFName.setEnabled(false);
+        eTxtLName.setEnabled(false);
+        eTxtEmail.setEnabled(false);
+        eTxtPassword.setEnabled(false);
+        eTxtConfPass.setEnabled(false);
+    }
+
+    public void updateCredentials(User u) {
+        geYouService.updateUser(u, new Callback<User>() {
+            @Override
+            public void success(User user, Response response) {
+                Toast.makeText(UserInfoActivity.this, "Successfully updated user: " + user.toString(), Toast.LENGTH_LONG).show();
+                session.updateLoginCredentials(user);
+                resetInputs();
+                btnSave.setEnabled(false);
+                btnCancel.setEnabled(false);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(UserInfoActivity.this, "Unsuccessfully updated user.", Toast.LENGTH_LONG).show();
             }
         });
     }

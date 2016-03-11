@@ -18,32 +18,46 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.thesis.geyoubeta.R;
+import com.thesis.geyoubeta.adapter.HistoryListAdapter;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
+import com.thesis.geyoubeta.entity.History;
 import com.thesis.geyoubeta.service.GeYouService;
-import com.thesis.geyoubeta.service.SessionManager;
+import com.thesis.geyoubeta.SessionManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit.Callback;
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import retrofit.converter.JacksonConverter;
 
 public class HistoryActivity extends ActionBarActivity {
 
-    SessionManager session;
+    private SessionManager session;
 
-    RestAdapter restAdapter;
-    GeYouService geYouService;
+    private ListView listView;
 
-    private Toolbar toolbar;
-    String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings",  "Logout"};
+    public ArrayList<History> histories;
+    private HistoryListAdapter historyAdapter;
+
+    private RestAdapter restAdapter;
+    private GeYouService geYouService;
+
+    String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings", "Logout"};
 
     RecyclerView mRecyclerView;                           // Declaring RecyclerView
     RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
     RecyclerView.LayoutManager mLayoutManager;            // Declaring Layout Manager as a linear layout manager
     DrawerLayout Drawer;                                  // Declaring DrawerLayout
-
     android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;                  // Declaring Action Bar Drawer Toggle;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +69,7 @@ public class HistoryActivity extends ActionBarActivity {
 
         initializeDrawer();
         initializeRest();
+        initializeComponents();
     }
 
     @Override
@@ -103,7 +118,6 @@ public class HistoryActivity extends ActionBarActivity {
 
                 if ((child != null) && mGestureDetector.onTouchEvent(motionEvent)) {
                     Drawer.closeDrawers();
-                    Toast.makeText(getApplicationContext(), "The Item Clicked is: " + recyclerView.getChildPosition(child), Toast.LENGTH_SHORT).show();
 
                     Intent intent = null;
                     if (recyclerView.getChildPosition(child) == 1) {
@@ -177,5 +191,50 @@ public class HistoryActivity extends ActionBarActivity {
                 .build();
 
         geYouService = restAdapter.create(GeYouService.class);
+    }
+
+    public void initializeComponents() {
+        histories = new ArrayList<History>();
+
+        getHistory();
+
+        listView = (ListView) findViewById(R.id.listViewHistory);
+        //if (histories != null) {
+            historyAdapter = new HistoryListAdapter(histories, this);
+            listView.setAdapter(historyAdapter);
+            historyAdapter.notifyDataSetChanged();
+//        } else {
+//            ArrayList<String> items = new ArrayList<String>();
+//            items.add("No history");
+//            ArrayAdapter<String> itemAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
+//            listView.setAdapter(itemAdapter);
+//            itemAdapter.notifyDataSetChanged();
+//        }
+    }
+
+    public void getHistory() {
+        geYouService.getAllUserHistory(session.getUserId(), new Callback<List<History>>() {
+            @Override
+            public void success(List<History> histories, Response response) {
+                if (histories != null) {
+                    setHistories(histories);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
+
+    public void setHistories(List<History> h) {
+        for (History history : h) {
+            histories.add(history);
+        }
+        for (int i = 0; i < histories.size(); i++) {
+            Toast.makeText(getApplicationContext(), i + ": " + histories.get(i), Toast.LENGTH_SHORT).show();
+        }
+        historyAdapter.notifyDataSetChanged();
     }
 }

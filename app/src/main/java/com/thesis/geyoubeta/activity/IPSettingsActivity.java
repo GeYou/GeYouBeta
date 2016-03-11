@@ -24,28 +24,23 @@ import android.widget.Toast;
 
 import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
-import com.thesis.geyoubeta.service.GeYouService;
-import com.thesis.geyoubeta.service.SessionManager;
-
-import retrofit.RestAdapter;
-import retrofit.converter.JacksonConverter;
+import com.thesis.geyoubeta.SessionManager;
 
 public class IPSettingsActivity extends ActionBarActivity {
 
-    SessionManager session;
+    private SessionManager session;
 
-    EditText eTxtIP;
-    Button btnChange;
+    private EditText eTxtIP;
+    private Button btnChange;
 
-    private Toolbar toolbar;
-    String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings",  "Logout"};
+    String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings", "Logout"};
 
     RecyclerView mRecyclerView;                           // Declaring RecyclerView
     RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
     RecyclerView.LayoutManager mLayoutManager;            // Declaring Layout Manager as a linear layout manager
     DrawerLayout Drawer;                                  // Declaring DrawerLayout
-
     android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;                  // Declaring Action Bar Drawer Toggle;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +99,6 @@ public class IPSettingsActivity extends ActionBarActivity {
 
                 if ((child != null) && mGestureDetector.onTouchEvent(motionEvent)) {
                     Drawer.closeDrawers();
-                    Toast.makeText(getApplicationContext(), "The Item Clicked is: " + recyclerView.getChildPosition(child), Toast.LENGTH_SHORT).show();
 
                     Intent intent = null;
                     if (recyclerView.getChildPosition(child) == 1) {
@@ -172,11 +166,21 @@ public class IPSettingsActivity extends ActionBarActivity {
 
     public void initializeComponents() {
         eTxtIP = (EditText) findViewById(R.id.editTextIPS);
+        eTxtIP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), session.getBaseURL(), Toast.LENGTH_SHORT).show();
+            }
+        });
         btnChange = (Button) findViewById(R.id.btnChangeIPS);
         btnChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                session.changeIPAddress(eTxtIP.getText().toString());
+                if (!eTxtIP.getText().toString().equals("")) {
+                    session.changeIPAddress(eTxtIP.getText().toString());
+                } else {
+                    Toast.makeText(getApplicationContext(), "No input.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

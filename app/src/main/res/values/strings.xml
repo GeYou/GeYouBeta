@@ -44,5 +44,6 @@
     </string-array>
     <string name="title_activity_ipsettings">IPSettingsActivity</string>
     <string name="title_activity_history">HistoryActivity</string>
+    <string name="title_activity_party_members">PartyMembersActivity</string>
 
 </resources>

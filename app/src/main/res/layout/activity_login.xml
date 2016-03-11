@@ -4,8 +4,7 @@
   ~  Copyright (C) 2015 Ivan Wesley Chua and Jethro Divino
   -->
 
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/DrawerLayout"
     android:layout_width="match_parent"
@@ -25,17 +24,17 @@
 
 
         <TextView
+            android:id="@+id/textView13"
             android:layout_width="match_parent"
             android:layout_height="90dp"
-            android:text="LOGIN"
-            android:id="@+id/textView13"
-            android:gravity="center" />
+            android:gravity="center"
+            android:text="LOGIN" />
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal">
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textViewEmailLogin"
@@ -73,21 +72,22 @@
                 android:id="@+id/btnLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="LOGIN"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:text="LOGIN" />
 
             <Button
                 android:id="@+id/btnRegisterLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="REGISTER"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:text="REGISTER" />
+
             <Button
                 android:id="@+id/btnChangeIPLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="CHANGE IP"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:text="CHANGE IP" />
         </LinearLayout>
 
     </LinearLayout>

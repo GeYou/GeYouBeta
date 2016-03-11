@@ -23,45 +23,18 @@ public class NavDrawerAdapter extends RecyclerView.Adapter<NavDrawerAdapter.View
     private static final int TYPE_HEADER = 0;  // Declaring Variable to Understand which View is being worked on
     // IF the view under inflation and population is header or Item
     private static final int TYPE_ITEM = 1;
-
-    private String mNavTitles[]; // String Array to store the passed titles Value from MainActivity.java
     //private int mIcons[];
     Context contxt;// Int Array to store the passed icons resource value from MainActivity.java
+    private String mNavTitles[]; // String Array to store the passed titles Value from MainActivity.java
 
     // Creating a ViewHolder which extends the RecyclerView View Holder
     // ViewHolder are used to to store the inflated views in order to recycle them
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        int Holderid;
-
-        TextView textView;
-        //ImageView imageView;
-
-        public ViewHolder(View itemView, int ViewType) {                 // Creating ViewHolder Constructor with View and viewType As a parameter
-            super(itemView);
-
-            // Here we set the appropriate view in accordance with the the view type as passed when the holder object is created
-
-            if (ViewType == TYPE_ITEM) {
-                textView = (TextView) itemView.findViewById(R.id.rowText); // Creating TextView object with the id of textView from item_row.xml
-                //imageView = (ImageView) itemView.findViewById(R.id.rowIcon);// Creating ImageView object with the id of ImageView from item_row.xml
-                Holderid = 1;                                               // setting holder id as 1 as the object being populated are of type item row
-            } else {
-                Holderid = 0;                                                // Setting holder id = 0 as the object being populated are of type header view
-            }
-        }
-    }
 
     public NavDrawerAdapter(String Titles[]) { // MyAdapter Constructor with titles and icons parameter
         // titles, icons, name, email, profile pic are passed from the main activity as we
         mNavTitles = Titles;                //have seen earlier
         //mIcons = Icons;
     }
-
-    //Below first we ovverride the method onCreateViewHolder which is called when the ViewHolder is
-    //Created, In this method we inflate the item_row.xml layout if the viewType is Type_ITEM or else we inflate header.xml
-    // if the viewType is TYPE_HEADER
-    // and pass it to the view holder
 
     @Override
     public NavDrawerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -84,6 +57,11 @@ public class NavDrawerAdapter extends RecyclerView.Adapter<NavDrawerAdapter.View
         }
         return null;
     }
+
+    //Below first we ovverride the method onCreateViewHolder which is called when the ViewHolder is
+    //Created, In this method we inflate the item_row.xml layout if the viewType is Type_ITEM or else we inflate header.xml
+    // if the viewType is TYPE_HEADER
+    // and pass it to the view holder
 
     //Next we override a method which is called when the item in a row is needed to be displayed, here the int position
     // Tells us item at which position is being constructed to be displayed and the holder id of the holder object tell us
@@ -119,5 +97,26 @@ public class NavDrawerAdapter extends RecyclerView.Adapter<NavDrawerAdapter.View
 
     private boolean isPositionHeader(int position) {
         return position == 0;
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        int Holderid;
+
+        TextView textView;
+        //ImageView imageView;
+
+        public ViewHolder(View itemView, int ViewType) {                 // Creating ViewHolder Constructor with View and viewType As a parameter
+            super(itemView);
+
+            // Here we set the appropriate view in accordance with the the view type as passed when the holder object is created
+
+            if (ViewType == TYPE_ITEM) {
+                textView = (TextView) itemView.findViewById(R.id.rowText); // Creating TextView object with the id of textView from item_row.xml
+                //imageView = (ImageView) itemView.findViewById(R.id.rowIcon);// Creating ImageView object with the id of ImageView from item_row.xml
+                Holderid = 1;                                               // setting holder id as 1 as the object being populated are of type item row
+            } else {
+                Holderid = 0;                                                // Setting holder id = 0 as the object being populated are of type header view
+            }
+        }
     }
 }

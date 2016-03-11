@@ -18,32 +18,30 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
 import com.thesis.geyoubeta.service.GeYouService;
-import com.thesis.geyoubeta.service.SessionManager;
+import com.thesis.geyoubeta.SessionManager;
 
 import retrofit.RestAdapter;
 import retrofit.converter.JacksonConverter;
 
 public class MapActivity extends ActionBarActivity {
 
-    SessionManager session;
+    private SessionManager session;
 
-    RestAdapter restAdapter;
-    GeYouService geYouService;
+    private RestAdapter restAdapter;
+    private GeYouService geYouService;
 
-    private Toolbar toolbar;
-    String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings",  "Logout"};
+    String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings", "Logout"};
 
     RecyclerView mRecyclerView;                           // Declaring RecyclerView
     RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
     RecyclerView.LayoutManager mLayoutManager;            // Declaring Layout Manager as a linear layout manager
     DrawerLayout Drawer;                                  // Declaring DrawerLayout
-
     android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;                  // Declaring Action Bar Drawer Toggle;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +101,6 @@ public class MapActivity extends ActionBarActivity {
 
                 if ((child != null) && mGestureDetector.onTouchEvent(motionEvent)) {
                     Drawer.closeDrawers();
-                    Toast.makeText(getApplicationContext(), "The Item Clicked is: " + recyclerView.getChildPosition(child), Toast.LENGTH_SHORT).show();
 
                     Intent intent = null;
                     if (recyclerView.getChildPosition(child) == 1) {

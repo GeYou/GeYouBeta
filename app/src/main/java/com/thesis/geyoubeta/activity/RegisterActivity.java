@@ -26,7 +26,7 @@ import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
 import com.thesis.geyoubeta.entity.User;
 import com.thesis.geyoubeta.service.GeYouService;
-import com.thesis.geyoubeta.service.SessionManager;
+import com.thesis.geyoubeta.SessionManager;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -36,28 +36,27 @@ import retrofit.converter.JacksonConverter;
 
 public class RegisterActivity extends ActionBarActivity {
 
-    SessionManager session;
+    private SessionManager session;
 
-    Button btnRegister;
-    Button btnCancel;
-    EditText eTxtFName;
-    EditText eTxtLName;
-    EditText eTxtEmail;
-    EditText eTxtPassword;
-    EditText eTxtConfirmPass;
+    private Button btnRegister;
+    private Button btnCancel;
+    private EditText eTxtFName;
+    private EditText eTxtLName;
+    private EditText eTxtEmail;
+    private EditText eTxtPassword;
+    private EditText eTxtConfirmPass;
 
-    RestAdapter restAdapter;
-    GeYouService geYouService;
+    private RestAdapter restAdapter;
+    private GeYouService geYouService;
 
-    private Toolbar toolbar;
-    String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings",  "Logout"};
+    String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings", "Logout"};
 
     RecyclerView mRecyclerView;                           // Declaring RecyclerView
     RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
     RecyclerView.LayoutManager mLayoutManager;            // Declaring Layout Manager as a linear layout manager
     DrawerLayout Drawer;                                  // Declaring DrawerLayout
-
     android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;                  // Declaring Action Bar Drawer Toggle;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +116,6 @@ public class RegisterActivity extends ActionBarActivity {
 
                 if ((child != null) && mGestureDetector.onTouchEvent(motionEvent)) {
                     Drawer.closeDrawers();
-                    Toast.makeText(getApplicationContext(), "The Item Clicked is: " + recyclerView.getChildPosition(child), Toast.LENGTH_SHORT).show();
 
                     Intent intent = null;
                     if (recyclerView.getChildPosition(child) == 1) {
@@ -224,7 +222,7 @@ public class RegisterActivity extends ActionBarActivity {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clearInput();
+                clearInputs();
             }
         });
 
@@ -246,6 +244,7 @@ public class RegisterActivity extends ActionBarActivity {
             @Override
             public void success(User user, Response response) {
                 Toast.makeText(RegisterActivity.this, "Successfully created user:" + user.toString(), Toast.LENGTH_LONG).show();
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
             }
 
             @Override
@@ -255,7 +254,7 @@ public class RegisterActivity extends ActionBarActivity {
         });
     }
 
-    public void clearInput() {
+    public void clearInputs() {
         eTxtFName.setText("");
         eTxtLName.setText("");
         eTxtEmail.setText("");

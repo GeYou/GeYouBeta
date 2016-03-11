@@ -6,6 +6,8 @@
 
 package com.thesis.geyoubeta.entity;
 
+import java.util.Date;
+
 /**
  * Created by ivanwesleychua on 01/02/2016.
  */
@@ -20,6 +22,16 @@ public class Party {
     private String endDateTime;
 
     private String destination;
+
+    private Float destLong;
+
+    private Float destLat;
+
+    private String status;
+
+    private Date createdDate;
+
+    private User createdBy;
 
     public Integer getId() {
         return id;
@@ -61,6 +73,46 @@ public class Party {
         this.destination = destination;
     }
 
+    public Float getDestLong() {
+        return destLong;
+    }
+
+    public void setDestLong(Float destLong) {
+        this.destLong = destLong;
+    }
+
+    public Float getDestLat() {
+        return destLat;
+    }
+
+    public void setDestLat(Float destLat) {
+        this.destLat = destLat;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
+    }
+
     @Override
     public String toString() {
         return "[id : " + getId()
@@ -68,6 +120,11 @@ public class Party {
                 + "] [ startDateTime : " + getStartDateTime()
                 + "] [ endDateTime : " + getEndDateTime()
                 + "] [ destination : " + getDestination()
+                + "] [ destLong : " + getDestLong()
+                + "] [ destLat : " + getDestLat()
+                + "] [ status : " + getStatus()
+                + "] [ createdDate : " + getCreatedDate()
+                + "] [ createdBy : " + getCreatedBy()
                 + "]";
     }
 }

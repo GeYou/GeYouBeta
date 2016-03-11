@@ -20,40 +20,43 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
+import com.thesis.geyoubeta.entity.Party;
 import com.thesis.geyoubeta.service.GeYouService;
-import com.thesis.geyoubeta.service.SessionManager;
+import com.thesis.geyoubeta.SessionManager;
 
+import retrofit.Callback;
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import retrofit.converter.JacksonConverter;
 
 public class PartyInfoActivity extends ActionBarActivity {
 
-    SessionManager session;
+    private SessionManager session;
 
-    EditText eTxtName;
-    EditText eTxtStartTimeStamp;
-    EditText eTxtEndTimeStamp;
-    EditText eTxtDestination;
-    Button btnEdit;
-    Button btnSave;
-    Button btnCancel;
+    private EditText eTxtName;
+    private EditText eTxtStartTimeStamp;
+    private EditText eTxtEndTimeStamp;
+    private EditText eTxtDestination;
+    private Button btnEdit;
+    private Button btnSave;
+    private Button btnCancel;
+    private Button btnPartyMembers;
 
-    RestAdapter restAdapter;
-    GeYouService geYouService;
+    private RestAdapter restAdapter;
+    private GeYouService geYouService;
 
-    private Toolbar toolbar;
-    String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings",  "Logout"};
+    String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings", "Logout"};
 
     RecyclerView mRecyclerView;                           // Declaring RecyclerView
     RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
     RecyclerView.LayoutManager mLayoutManager;            // Declaring Layout Manager as a linear layout manager
     DrawerLayout Drawer;                                  // Declaring DrawerLayout
-
     android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;                  // Declaring Action Bar Drawer Toggle;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +69,8 @@ public class PartyInfoActivity extends ActionBarActivity {
         initializeDrawer();
         initializeRest();
         initializeComponents();
+
+        setDefaults();
     }
 
     @Override
@@ -114,7 +119,6 @@ public class PartyInfoActivity extends ActionBarActivity {
 
                 if ((child != null) && mGestureDetector.onTouchEvent(motionEvent)) {
                     Drawer.closeDrawers();
-                    Toast.makeText(getApplicationContext(), "The Item Clicked is: " + recyclerView.getChildPosition(child), Toast.LENGTH_SHORT).show();
 
                     Intent intent = null;
                     if (recyclerView.getChildPosition(child) == 1) {
@@ -200,20 +204,74 @@ public class PartyInfoActivity extends ActionBarActivity {
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                makeInputsEnabled();
+                btnSave.setEnabled(true);
+                btnCancel.setEnabled(true);
             }
         });
         btnSave = (Button) findViewById(R.id.btnSavePartyInfo);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Party nParty = new Party();
+                nParty.setName(eTxtName.getText().toString());
+                nParty.setStartDateTime(eTxtStartTimeStamp.getText().toString());
+                nParty.setEndDateTime(eTxtEndTimeStamp.getText().toString());
+                nParty.setDestination(eTxtDestination.getText().toString());
 
+                updateParty(nParty);
             }
         });
         btnCancel = (Button) findViewById(R.id.btnCancelPartyInfo);
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                resetInputs();
+                btnSave.setEnabled(false);
+                btnCancel.setEnabled(false);
+            }
+        });
+        btnPartyMembers = (Button) findViewById(R.id.btnPartyMembersInfo);
+        btnPartyMembers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), PartyMembersActivity.class);
+                startActivity(i);
+            }
+        });
+    }
+
+    public void setDefaults() {
+        eTxtName.setText(session.getPartyName());
+        eTxtStartTimeStamp.setText(session.getPartyStart());
+        eTxtEndTimeStamp.setText(session.getPartyEnd());
+        eTxtDestination.setText(session.getPartyDest());
+    }
+
+    public void makeInputsEnabled() {
+        eTxtName.setEnabled(true);
+        eTxtStartTimeStamp.setEnabled(true);
+        eTxtEndTimeStamp.setEnabled(true);
+        eTxtDestination.setEnabled(true);
+    }
+
+    public void resetInputs() {
+        setDefaults();
+        eTxtName.setEnabled(false);
+        eTxtStartTimeStamp.setEnabled(false);
+        eTxtEndTimeStamp.setEnabled(false);
+        eTxtDestination.setEnabled(false);
+    }
+
+    public void updateParty(Party p) {
+        geYouService.updateParty(p, new Callback<Party>() {
+            @Override
+            public void success(Party party, Response response) {
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
 
             }
         });
