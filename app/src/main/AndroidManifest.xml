@@ -22,6 +22,9 @@
         android:theme="@style/AppTheme">
 
         <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCdp9kV6gks62Zq1cBkGWXoK_cEj4ifEt4" />
 
@@ -64,6 +67,10 @@
         <activity
             android:name=".activity.PartyMembersActivity"
             android:label="@string/title_activity_party_members"></activity>
+
+        <service
+            android:name=".service.MyService"
+            android:exported="false"/>
     </application>
 
 </manifest>
