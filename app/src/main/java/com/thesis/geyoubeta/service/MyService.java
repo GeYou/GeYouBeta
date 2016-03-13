@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.widget.Toast;
@@ -41,6 +40,9 @@ public class MyService extends Service {
 
     private SessionManager session;
 
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+
     private RestAdapter restAdapter;
     private GeYouService geYouService;
 
@@ -49,10 +51,10 @@ public class MyService extends Service {
 
         Toast.makeText(getApplicationContext(), "Started service.", Toast.LENGTH_SHORT).show();
 
-        initializeRestAndSession();
+        initializeComponents();
 
         final Handler h = new Handler();
-        final int delay = 3000; //milliseconds
+        final int delay = 4000;
 
         h.postDelayed(new Runnable(){
             public void run(){
@@ -65,15 +67,9 @@ public class MyService extends Service {
                         if(DateFormat.getDateTimeInstance().parse(session.getPartyEnd()).before(new Date())) {
                             Toast.makeText(getApplicationContext(), "Party is to be deactivated.", Toast.LENGTH_SHORT).show();
 
+                            locationManager.removeUpdates(locationListener);
                             deactivateParty();
                             deletePartySession();
-                        } else {
-                            //track user loc
-                            //updateUserLocation();
-                            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                            //Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                            LocationListener locationListener = new GeyouLocationListener(session, geYouService, getApplicationContext());
-                            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
                         }
                     } catch (ParseException e) {
                         e.printStackTrace();
@@ -92,7 +88,7 @@ public class MyService extends Service {
         return null;
     }
 
-    public void initializeRestAndSession() {
+    public void initializeComponents() {
         session = new SessionManager(getApplicationContext());
 
         restAdapter = new RestAdapter.Builder()
@@ -102,6 +98,13 @@ public class MyService extends Service {
                 .build();
 
         geYouService = restAdapter.create(GeYouService.class);
+
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new GeyouLocationListener(session, geYouService, getApplicationContext());
+        if (session.getPartyId() != null) {
+            updateUserLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 3, locationListener);
+        }
     }
 
     public void checkForActiveParty() {
@@ -111,6 +114,8 @@ public class MyService extends Service {
                 if (partyMember.getId() != null) {
                     session.setPartyMemberId(partyMember.getId());
                     session.setActiveParty(partyMember.getParty());
+
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 3, locationListener);
 
                     checkIfHistoryExists();
                 } else {
@@ -132,7 +137,7 @@ public class MyService extends Service {
                 if (history.getId() == null) {
                     User u = new User();
                     Party p = new Party();
-                    LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
                     Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
                     u.setId(session.getUserId());
@@ -198,11 +203,8 @@ public class MyService extends Service {
         });
     }
 
-    public void updateUserLocation(){
+    public void updateUserLocation(Location l){
         Toast.makeText(getApplicationContext(), "updating location...", Toast.LENGTH_SHORT).show();
-
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Location l = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
         User u = new User();
         Party p = new Party();
