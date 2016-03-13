@@ -58,6 +58,8 @@ public class GeyouLocationListener implements LocationListener{
     }
 
     public void updateUserLocation(Location l){
+        Toast.makeText(context, "Updating location...", Toast.LENGTH_SHORT).show();
+
         User u = new User();
         Party p = new Party();
         PartyMember pm = new PartyMember();
