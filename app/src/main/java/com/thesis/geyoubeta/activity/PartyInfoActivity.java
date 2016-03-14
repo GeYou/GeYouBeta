@@ -241,6 +241,7 @@ public class PartyInfoActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Party nParty = new Party();
+                nParty.setId(session.getPartyId());
                 nParty.setName(eTxtName.getText().toString());
                 nParty.setStartDateTime(startDate);
                 nParty.setEndDateTime(endDate);
@@ -318,7 +319,7 @@ public class PartyInfoActivity extends ActionBarActivity {
         geYouService.updateParty(p, new Callback<Party>() {
             @Override
             public void success(Party party, Response response) {
-
+                resetInputs();
             }
 
             @Override
