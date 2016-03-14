@@ -13,9 +13,9 @@ public class History {
 
     private Integer id;
 
-    private Float startLong;
+    private Double startLong;
 
-    private Float startLat;
+    private Double startLat;
 
     private Party party;
 
@@ -29,19 +29,19 @@ public class History {
         this.id = id;
     }
 
-    public Float getStartLong() {
+    public Double getStartLong() {
         return startLong;
     }
 
-    public void setStartLong(Float startLong) {
+    public void setStartLong(Double startLong) {
         this.startLong = startLong;
     }
 
-    public Float getStartLat() {
+    public Double getStartLat() {
         return startLat;
     }
 
-    public void setStartLat(Float startLat) {
+    public void setStartLat(Double startLat) {
         this.startLat = startLat;
     }
 
