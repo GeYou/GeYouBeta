@@ -148,6 +148,11 @@ public class MainActivity extends ActionBarActivity {
             public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
 
             }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+            }
         });
 
         mLayoutManager = new LinearLayoutManager(this);
@@ -182,7 +187,7 @@ public class MainActivity extends ActionBarActivity {
 
 
         AutoCompleteTextView autocompleteView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTest);
-        autocompleteView.setAdapter(new PlaceAutoCompleteAdapter(getApplicationContext(), R.layout.autocomplete_list_item));
+        //autocompleteView.setAdapter(new PlaceAutoCompleteAdapter(getApplicationContext(), R.layout.autocomplete_list_item));
 
         autocompleteView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

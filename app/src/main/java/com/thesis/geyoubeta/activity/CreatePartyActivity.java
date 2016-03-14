@@ -151,6 +151,11 @@ public class CreatePartyActivity extends ActionBarActivity {
             public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
 
             }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+            }
         });
 
         mLayoutManager = new LinearLayoutManager(this);
