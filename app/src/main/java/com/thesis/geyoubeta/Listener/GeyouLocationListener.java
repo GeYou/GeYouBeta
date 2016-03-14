@@ -58,7 +58,10 @@ public class GeyouLocationListener implements LocationListener{
     }
 
     public void updateUserLocation(Location l){
-        Toast.makeText(context, "Updating location...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "listener: Updating location...", Toast.LENGTH_SHORT).show();
+
+        Toast.makeText(context, "listener: lat: " +l.getLatitude(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "listener: long: " +l.getLongitude(), Toast.LENGTH_SHORT).show();
 
         User u = new User();
         Party p = new Party();
@@ -70,13 +73,13 @@ public class GeyouLocationListener implements LocationListener{
         pm.setParty(p);
         pm.setUser(u);
         pm.setStatus("A");
-        pm.setLastLat((float) l.getLatitude());
-        pm.setLastLong((float) l.getLongitude());
+        pm.setLastLat(l.getLatitude());
+        pm.setLastLong(l.getLongitude());
 
         geYouService.editMember(pm, new Callback<PartyMember>() {
             @Override
             public void success(PartyMember partyMember, Response response) {
-                Toast.makeText(context, "Updated location.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "listener: Updated location.", Toast.LENGTH_SHORT).show();
             }
 
             @Override

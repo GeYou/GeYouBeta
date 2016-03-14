@@ -324,8 +324,8 @@ public class CreatePartyActivity extends ActionBarActivity {
                     History h = new History();
                     h.setUser(u);
                     h.setParty(p);
-                    h.setStartLat((float) lastKnownLocation.getLatitude());
-                    h.setStartLong(((float) lastKnownLocation.getLongitude()));
+                    h.setStartLat(lastKnownLocation.getLatitude());
+                    h.setStartLong(lastKnownLocation.getLongitude());
 
                     geYouService.addHistory(h, new Callback<History>() {
                         @Override

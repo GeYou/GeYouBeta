@@ -146,8 +146,8 @@ public class MyService extends Service {
                     History h = new History();
                     h.setUser(u);
                     h.setParty(p);
-                    h.setStartLat((float) lastKnownLocation.getLatitude());
-                    h.setStartLong(((float) lastKnownLocation.getLongitude()));
+                    h.setStartLat(lastKnownLocation.getLatitude());
+                    h.setStartLong(lastKnownLocation.getLongitude());
 
                     geYouService.addHistory(h, new Callback<History>() {
                         @Override
@@ -216,8 +216,8 @@ public class MyService extends Service {
         pm.setParty(p);
         pm.setUser(u);
         pm.setStatus("A");
-        pm.setLastLat((float) l.getLatitude());
-        pm.setLastLong((float) l.getLongitude());
+        pm.setLastLat(l.getLatitude());
+        pm.setLastLong(l.getLongitude());
 
         geYouService.editMember(pm, new Callback<PartyMember>() {
             @Override
