@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit;
  * Created by ivanwesleychua on 10/03/2016.
  */
 
-public class PlaceAutocompleteAdapter
+public class PlaceAutoCompleteAdapter
         extends ArrayAdapter<String> implements Filterable {
 
     ArrayList<String> resultList;
@@ -41,7 +41,7 @@ public class PlaceAutocompleteAdapter
 
     PlaceAPI mPlaceAPI = new PlaceAPI();
 
-    public PlaceAutocompleteAdapter(Context context, int resource) {
+    public PlaceAutoCompleteAdapter(Context context, int resource) {
         super(context, resource);
 
         mContext = context;
