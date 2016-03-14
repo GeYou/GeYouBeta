@@ -72,9 +72,8 @@ public class SessionManager {
             editor.putString(KEY_PARTY_START, DateFormat.getDateTimeInstance().format(p.getStartDateTime()));
             editor.putString(KEY_PARTY_END, DateFormat.getDateTimeInstance().format(p.getEndDateTime()));
             editor.putString(KEY_PARTY_DEST, p.getDestination());
-            //editor.putFloat(KEY_PARTY_DEST_LONG, p.getDestLong());
-            //editor.putFloat(KEY_PARTY_DEST_LAT, p.getDestLat());
-            editor.putString(KEY_PARTY_STATUS, p.getStatus());
+            //editor.putString(KEY_PARTY_DEST_LONG, p.getDestLong().toString());
+            //editor.putString(KEY_PARTY_DEST_LAT, p.getDestLat().toString());
 
             editor.commit();
 

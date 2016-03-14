@@ -23,11 +23,9 @@ public class Party {
 
     private String destination;
 
-    private Float destLong;
+    private Double destLong;
 
-    private Float destLat;
-
-    private String status;
+    private Double destLat;
 
     private Date createdDate;
 
@@ -73,28 +71,20 @@ public class Party {
         this.destination = destination;
     }
 
-    public Float getDestLong() {
+    public Double getDestLong() {
         return destLong;
     }
 
-    public void setDestLong(Float destLong) {
+    public void setDestLong(Double destLong) {
         this.destLong = destLong;
     }
 
-    public Float getDestLat() {
+    public Double getDestLat() {
         return destLat;
     }
 
-    public void setDestLat(Float destLat) {
+    public void setDestLat(Double destLat) {
         this.destLat = destLat;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public Date getCreatedDate() {
@@ -122,7 +112,6 @@ public class Party {
                 + "] [ destination : " + getDestination()
                 + "] [ destLong : " + getDestLong()
                 + "] [ destLat : " + getDestLat()
-                + "] [ status : " + getStatus()
                 + "] [ createdDate : " + getCreatedDate()
                 + "] [ createdBy : " + getCreatedBy()
                 + "]";
