@@ -237,7 +237,7 @@ public class LoginActivity extends ActionBarActivity {
                         Toast.makeText(getApplicationContext(), "user id: " +session.getUserId(), Toast.LENGTH_SHORT).show();
                         checkActiveParty();
 
-                        for(int i = 0; i < 10; i++);
+                        //for(int i = 0; i < 50; i++);
 
                         Intent i = new Intent(getApplicationContext(), MapActivity.class);
                         Intent s = new Intent(getApplicationContext(), MyService.class);
@@ -250,7 +250,7 @@ public class LoginActivity extends ActionBarActivity {
 
                 @Override
                 public void failure(RetrofitError error) {
-
+                    Toast.makeText(getApplicationContext(), "failed", Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
@@ -288,7 +288,6 @@ public class LoginActivity extends ActionBarActivity {
                     User u = new User();
                     Party p = new Party();
                     LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
                     Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
                     u.setId(session.getUserId());

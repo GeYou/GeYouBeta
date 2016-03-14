@@ -101,9 +101,10 @@ public class MyService extends Service {
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationListener = new GeyouLocationListener(session, geYouService, getApplicationContext());
-        if (session.getPartyId() != null) {
+        if (session.getPartyId() != -1) {
+            Toast.makeText(getApplicationContext(), "updtr", Toast.LENGTH_SHORT).show();
             updateUserLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 3, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 2, locationListener);
         }
     }
 
@@ -213,8 +214,6 @@ public class MyService extends Service {
         p.setId(session.getPartyId());
 
         pm.setId(session.getPartyMemberId());
-        pm.setParty(p);
-        pm.setUser(u);
         pm.setStatus("A");
         pm.setLastLat(l.getLatitude());
         pm.setLastLong(l.getLongitude());
