@@ -232,6 +232,14 @@ public class MyService extends Service {
         });
     }
 
+    public void setUserOrigin(Location l){
+        Toast.makeText(getApplicationContext(), "Setting user origin.", Toast.LENGTH_SHORT).show();
+        User u = new User();
+        u.setId(session.getUserId());
+    }
+
+
+
     public void deletePartySession() {
         session.clearActiveParty();
     }
