@@ -232,23 +232,24 @@ public class LoginActivity extends ActionBarActivity {
                     if (user.getId() != null) {
 
                         session.createLoginSession(user);
-                        Toast.makeText(getApplicationContext(), "user id: " +session.getUserId(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "user id: " + session.getUserId(), Toast.LENGTH_SHORT).show();
                         checkActiveParty();
-
-                        for(int i = 0; i < 10; i++);
 
                         Intent i = new Intent(getApplicationContext(), MapActivity.class);
                         Intent s = new Intent(getApplicationContext(), MyService.class);
+
+                        for(int in = 0; in < 100; in++);
+
                         startService(s);
                         startActivity(i);
-                    } else {
+                    }else{
                         Toast.makeText(LoginActivity.this, "Not valid credentials.", Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-
+                    Toast.makeText(getApplicationContext(), "failed", Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
@@ -286,7 +287,6 @@ public class LoginActivity extends ActionBarActivity {
                     User u = new User();
                     Party p = new Party();
                     LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
                     Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
                     u.setId(session.getUserId());

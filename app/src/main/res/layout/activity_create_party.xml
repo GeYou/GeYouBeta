@@ -87,19 +87,35 @@
                 android:textSize="17sp" />
 
             <TextView
-                android:id="@+id/textViewDestination"
+                android:id="@+id/textViewDestinationLong"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="DESTINATION:"
+                android:text="DESTINATION LONGITUDE:"
                 android:textColor="#000000"
                 android:textSize="17sp" />
 
             <EditText
-                android:id="@+id/editTextDestination"
+                android:id="@+id/editTextDestinationLong"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName"
+                android:textSize="17sp"
+                android:inputType="numberDecimal" />
+
+            <TextView
+                android:id="@+id/textViewDestinationLat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DESTINATION LATTITUDE:"
+                android:textColor="#000000"
+                android:textSize="17sp" />
+
+            <EditText
+                android:id="@+id/editTextDestinationLat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="numberDecimal"
                 android:textSize="17sp" />
 
             <Button
