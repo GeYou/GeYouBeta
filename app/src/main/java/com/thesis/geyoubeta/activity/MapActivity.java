@@ -237,6 +237,7 @@ public class MapActivity extends ActionBarActivity implements
 
     public void initializeComponents() {
         navDrawer = new NavDrawer(this);
+        mMap.setMyLocationEnabled(true);
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         String provider = locationManager.getBestProvider(criteria, true);
@@ -526,34 +527,6 @@ public class MapActivity extends ActionBarActivity implements
         handleNewLocation(location);
     }
 
-    private void handleNewLocation(Location location) {
-        Log.d(TAG, location.toString());
-
-        mMap.setMyLocationEnabled(true);
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        String provider = locationManager.getBestProvider(criteria, true);
-        location = locationManager.getLastKnownLocation(provider);
-
-        double currentLatitude = location.getLatitude();
-        double currentLongitude = location.getLongitude();
-        LatLng latLng = new LatLng(currentLatitude, currentLongitude);
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.getUiSettings().setMapToolbarEnabled(false);
-        CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(latLng, 17);
-        mMap.animateCamera(yourLocation);
-
-        if(dest!=null) {
-            String url = getDirectionsUrl(latLng, dest);
-            DownloadTaskDistance downloadTask = new DownloadTaskDistance();
-            downloadTask.execute(url);
-        }else{
-            Log.i(TAG,"Location not handled");
-        }
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -572,6 +545,19 @@ public class MapActivity extends ActionBarActivity implements
                 Log.e("onPause error",toString());
             }
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        asyncGetPartyMemberLocation();
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        timer.cancel();
+        timer.purge();
     }
 
     private class DownloadTaskDistance extends AsyncTask<String, Void, String>{
@@ -650,17 +636,32 @@ public class MapActivity extends ActionBarActivity implements
         }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        asyncGetPartyMemberLocation();
-    }
-    @Override
-    protected void onStop() {
-        super.onStop();
+    private void handleNewLocation(Location location) {
+        Log.d(TAG, location.toString());
 
-        timer.cancel();
-        timer.purge();
+        mMap.setMyLocationEnabled(true);
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        String provider = locationManager.getBestProvider(criteria, true);
+        location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+        double currentLatitude = location.getLatitude();
+        double currentLongitude = location.getLongitude();
+        LatLng latLng = new LatLng(currentLatitude, currentLongitude);
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap.getUiSettings().setZoomControlsEnabled(true);
+        mMap.getUiSettings().setMapToolbarEnabled(false);
+        CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(latLng, 17);
+        mMap.animateCamera(yourLocation);
+
+        if(dest!=null) {
+            String url = getDirectionsUrl(latLng, dest);
+            DownloadTaskDistance downloadTask = new DownloadTaskDistance();
+            downloadTask.execute(url);
+        }else{
+            Log.i(TAG,"Location not handled");
+        }
     }
 
     public void getPartyDestination(){
