@@ -84,7 +84,7 @@ public class GeyouLocationListener implements LocationListener{
 
             @Override
             public void failure(RetrofitError error) {
-
+                Toast.makeText(context, "listener: failrd Updated location.", Toast.LENGTH_SHORT).show();
             }
         });
     }
