@@ -71,9 +71,9 @@ public class SessionManager {
             editor.putString(KEY_PARTY_NAME, p.getName());
             editor.putString(KEY_PARTY_START, DateFormat.getDateTimeInstance().format(p.getStartDateTime()));
             editor.putString(KEY_PARTY_END, DateFormat.getDateTimeInstance().format(p.getEndDateTime()));
-            editor.putString(KEY_PARTY_DEST, p.getDestination());
-            //editor.putString(KEY_PARTY_DEST_LONG, p.getDestLong().toString());
-            //editor.putString(KEY_PARTY_DEST_LAT, p.getDestLat().toString());
+            //editor.putString(KEY_PARTY_DEST, p.getDestination());
+            editor.putFloat(KEY_PARTY_DEST_LONG, Float.parseFloat(p.getDestLong().toString()));
+            editor.putFloat(KEY_PARTY_DEST_LAT, Float.parseFloat(p.getDestLat().toString()));
 
             editor.commit();
 
@@ -94,9 +94,9 @@ public class SessionManager {
         editor.remove(KEY_PARTY_NAME);
         editor.remove(KEY_PARTY_START);
         editor.remove(KEY_PARTY_END);
-        editor.remove(KEY_PARTY_DEST);
-        //editor.remove(KEY_PARTY_DEST_LONG);
-        //editor.remove(KEY_PARTY_DEST_LAT);
+        //editor.remove(KEY_PARTY_DEST);
+        editor.remove(KEY_PARTY_DEST_LONG);
+        editor.remove(KEY_PARTY_DEST_LAT);
         editor.remove(KEY_PARTY_STATUS);
 
         editor.commit();
@@ -191,7 +191,7 @@ public class SessionManager {
     }
 
     public Float getPartyDestLat() {
-        return pref.getFloat(KEY_PARTY_DEST_LONG, 0);
+        return pref.getFloat(KEY_PARTY_DEST_LAT, 0);
     }
 
     public String getPartyStatus() {
