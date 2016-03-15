@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Telephony;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,6 +33,7 @@ import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
 import com.thesis.geyoubeta.entity.History;
 import com.thesis.geyoubeta.entity.Party;
+import com.thesis.geyoubeta.entity.PartyMember;
 import com.thesis.geyoubeta.entity.User;
 import com.thesis.geyoubeta.service.GeYouService;
 import com.thesis.geyoubeta.SessionManager;
@@ -55,7 +57,8 @@ public class CreatePartyActivity extends ActionBarActivity {
     private EditText eTxtName;
     private EditText eTxtStartTimeStamp;
     private EditText eTxtEndTimeStamp;
-    private EditText eTxtDestination;
+    private EditText eTxtDestinationLong;
+    private EditText eTxtDestinationLat;
 
     private SlideDateTimeListener startDateListener;
     private SlideDateTimeListener endDateListener;
@@ -196,7 +199,8 @@ public class CreatePartyActivity extends ActionBarActivity {
         eTxtName = (EditText) findViewById(R.id.editTextPartyName);
         eTxtStartTimeStamp = (EditText) findViewById(R.id.editTextStartTimeStamp);
         eTxtEndTimeStamp = (EditText) findViewById(R.id.editTextEndTimeStamp);
-        eTxtDestination = (EditText) findViewById(R.id.editTextDestination);
+        eTxtDestinationLong = (EditText) findViewById(R.id.editTextDestinationLong);
+        eTxtDestinationLat = (EditText) findViewById(R.id.editTextDestinationLat);
 
         startDateListener = new SlideDateTimeListener() {
 
@@ -234,13 +238,14 @@ public class CreatePartyActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 if (session.getPartyStatus().equals("status") || session.getPartyStatus().equals("I")) {
-                    if (!eTxtName.getText().toString().equals("") && !eTxtStartTimeStamp.getText().toString().equals("") && !eTxtEndTimeStamp.getText().toString().equals("") && !eTxtDestination.getText().toString().equals("")) {
+                    if (!eTxtName.getText().toString().equals("") && !eTxtStartTimeStamp.getText().toString().equals("") && !eTxtEndTimeStamp.getText().toString().equals("") && !eTxtDestinationLong.getText().toString().equals("") && !eTxtDestinationLat.getText().toString().equals("")) {
                         Party nParty = new Party();
 
                         nParty.setName(eTxtName.getText().toString());
                         nParty.setStartDateTime(startDate);
                         nParty.setEndDateTime(endDate);
-                        nParty.setDestination(eTxtDestination.getText().toString());
+                        nParty.setDestLat(Double.parseDouble(eTxtDestinationLat.getText().toString()));
+                        nParty.setDestLong(Double.parseDouble(eTxtDestinationLong.getText().toString()));
 
                         createParty(nParty);
                     }
@@ -289,7 +294,11 @@ public class CreatePartyActivity extends ActionBarActivity {
             public void success(Party party, Response response) {
                 session.setActiveParty(party);
                 Toast.makeText(CreatePartyActivity.this, "Successfully created party: " + party.toString(), Toast.LENGTH_LONG).show();
+                addMemberToParty();
                 checkIfHistoryExists();
+                //checkActiveParty();
+                for (int i = 0; i < 20; i++);
+                updateUserLocation();
                 clearInput();
             }
 
@@ -304,7 +313,8 @@ public class CreatePartyActivity extends ActionBarActivity {
         eTxtName.setText("");
         eTxtStartTimeStamp.setText("");
         eTxtEndTimeStamp.setText("");
-        eTxtDestination.setText("");
+        eTxtDestinationLong.setText("");
+        eTxtDestinationLat.setText("");
     }
 
     public void checkIfHistoryExists() {
@@ -341,6 +351,81 @@ public class CreatePartyActivity extends ActionBarActivity {
                 } else {
                     Toast.makeText(getApplicationContext(), "has history", Toast.LENGTH_SHORT).show();
                 }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
+
+    public void updateUserLocation(){
+        Toast.makeText(getApplicationContext(), "updating location...", Toast.LENGTH_SHORT).show();
+
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        Location l = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        User u = new User();
+        Party p = new Party();
+        PartyMember pm = new PartyMember();
+        u.setId(session.getUserId());
+        p.setId(session.getPartyId());
+
+        pm.setId(session.getPartyMemberId());
+        pm.setStatus("A");
+        pm.setLastLat(l.getLatitude());
+        pm.setLastLong(l.getLongitude());
+
+        geYouService.editMember(pm, new Callback<PartyMember>() {
+            @Override
+            public void success(PartyMember partyMember, Response response) {
+                Toast.makeText(getApplicationContext(), "Updated location.", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
+
+    public void checkActiveParty() {
+        geYouService.getActiveParty(session.getUserId(), new Callback<PartyMember>() {
+            @Override
+            public void success(PartyMember partyMember, Response response) {
+                if (partyMember.getId() != null) {
+                    Toast.makeText(getApplicationContext(), "check: Party Mem Id: " + partyMember.getId(), Toast.LENGTH_SHORT).show();
+                    session.setPartyMemberId(partyMember.getId());
+                    session.setActiveParty(partyMember.getParty());
+                    //checkIfHistoryExists();
+                    updateUserLocation();
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "no active party", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
+
+    public void addMemberToParty() {
+        PartyMember pm = new PartyMember();
+        User u = new User();
+        Party p = new Party();
+        u.setId(session.getUserId());
+        p.setId(session.getPartyId());
+        pm.setParty(p);
+        pm.setUser(u);
+        geYouService.addMember(pm, new Callback<PartyMember>() {
+            @Override
+            public void success(PartyMember partyMember, Response response) {
+                Toast.makeText(CreatePartyActivity.this, "Successfully added user to party", Toast.LENGTH_LONG).show();
             }
 
             @Override

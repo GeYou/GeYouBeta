@@ -104,7 +104,7 @@ public class MyService extends Service {
         if (session.getPartyId() != -1) {
             Toast.makeText(getApplicationContext(), "updtr", Toast.LENGTH_SHORT).show();
             updateUserLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 2, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 3, locationListener);
         }
     }
 
