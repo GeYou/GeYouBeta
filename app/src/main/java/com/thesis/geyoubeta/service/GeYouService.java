@@ -114,6 +114,9 @@ public interface GeYouService {
     @PUT("/partyMember/edit")
     void editMember(@Body PartyMember partyMember, Callback<PartyMember> callback);
 
+    @GET("/partyMember/getMembersByParty/{id}")
+    void getMembersByParty(@Path("id")Integer id, Callback<List<PartyMember>> callback);
+
     //Messages
 
     @POST("/msg/create")
