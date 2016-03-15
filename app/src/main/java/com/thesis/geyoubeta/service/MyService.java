@@ -55,7 +55,7 @@ public class MyService extends Service {
 
         if (session.getPartyId() != -1) {
             Toast.makeText(getApplicationContext(), "updtr", Toast.LENGTH_SHORT).show();
-            updateUserLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
+            updateUserLocation(locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER));
         } else {
             Toast.makeText(getApplicationContext(), "updt21r", Toast.LENGTH_SHORT).show();
         }
@@ -108,7 +108,7 @@ public class MyService extends Service {
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationListener = new GeyouLocationListener(session, geYouService, getApplicationContext());
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 3, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 3, locationListener);
     }
 
     public void checkForActiveParty() {
@@ -119,7 +119,7 @@ public class MyService extends Service {
                     session.setPartyMemberId(partyMember.getId());
                     session.setActiveParty(partyMember.getParty());
 
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 3, locationListener);
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10000, 3, locationListener);
 
                     checkIfHistoryExists();
                 } else {
@@ -142,7 +142,7 @@ public class MyService extends Service {
                     User u = new User();
                     Party p = new Party();
 
-                    Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
                     u.setId(session.getUserId());
                     p.setId(session.getPartyId());
