@@ -234,16 +234,17 @@ public class LoginActivity extends ActionBarActivity {
                     if (user.getId() != null) {
 
                         session.createLoginSession(user);
-                        Toast.makeText(getApplicationContext(), "user id: " +session.getUserId(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "user id: " + session.getUserId(), Toast.LENGTH_SHORT).show();
                         checkActiveParty();
-
-                        //for(int i = 0; i < 50; i++);
 
                         Intent i = new Intent(getApplicationContext(), MapActivity.class);
                         Intent s = new Intent(getApplicationContext(), MyService.class);
+
+                        for(int in = 0; in < 100; in++);
+
                         startService(s);
                         startActivity(i);
-                    } else {
+                    }else{
                         Toast.makeText(LoginActivity.this, "Not valid credentials.", Toast.LENGTH_SHORT).show();
                     }
                 }

@@ -7,25 +7,47 @@
 package com.thesis.geyoubeta.activity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.thesis.geyoubeta.NavDrawer;
 import com.thesis.geyoubeta.R;
+import com.thesis.geyoubeta.adapter.HistoryListAdapter;
+import com.thesis.geyoubeta.adapter.MessageListAdapter;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
+import com.thesis.geyoubeta.entity.History;
+import com.thesis.geyoubeta.entity.Message;
+import com.thesis.geyoubeta.entity.Party;
+import com.thesis.geyoubeta.entity.User;
 import com.thesis.geyoubeta.service.GeYouService;
 import com.thesis.geyoubeta.SessionManager;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import retrofit.Callback;
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import retrofit.converter.JacksonConverter;
 
 public class MessagesActivity extends ActionBarActivity {
@@ -35,6 +57,13 @@ public class MessagesActivity extends ActionBarActivity {
     private RestAdapter restAdapter;
     private GeYouService geYouService;
     private NavDrawer navDrawer;
+
+    private EditText eTxtMesssage;
+    private Button btnSend;
+    private ListView listView;
+
+    public ArrayList<Message> messages;
+    private MessageListAdapter messageAdapter;
 
     String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings", "Logout"};
 
@@ -163,5 +192,110 @@ public class MessagesActivity extends ActionBarActivity {
 
     public void initializeComponents() {
         navDrawer = new NavDrawer(this);
+
+        messages = new ArrayList<Message>();
+
+        getMessages();
+
+        //asyncGetMsg();
+
+        listView = (ListView) findViewById(R.id.listViewMessages);
+        messageAdapter = new MessageListAdapter(messages, this);
+        listView.setAdapter(messageAdapter);
+        messageAdapter.notifyDataSetChanged();
+
+        eTxtMesssage = (EditText) findViewById(R.id.editTextMessage);
+        btnSend = (Button) findViewById(R.id.btnSendMessage);
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!eTxtMesssage.getText().toString().equals("")) {
+                    Message nMsg = new Message();
+                    Party p = new Party();
+                    User u = new User();
+
+                    p.setId(session.getPartyId());
+                    u.setId(session.getUserId());
+
+                    nMsg.setUser(u);
+                    nMsg.setParty(p);
+                    nMsg.setMessage(eTxtMesssage.getText().toString());
+
+                    addMessage(nMsg);
+                }
+            }
+        });
+    }
+
+    public void addMessage(Message m) {
+        geYouService.addMessage(m, new Callback<Message>() {
+            @Override
+            public void success(Message message, Response response) {
+                messages.clear();
+                messageAdapter.notifyDataSetChanged();
+                getMessages();
+                eTxtMesssage.setText("");
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
+
+    public void getMessages() {
+        geYouService.getMessagesByParty(session.getPartyId(), new Callback<List<Message>>() {
+            @Override
+            public void success(List<Message> messages, Response response) {
+                setMessages(messages);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
+
+    public void setMessages(List<Message> m) {
+        for (Message msg : m) {
+            messages.add(msg);
+        }
+        messageAdapter.notifyDataSetChanged();
+    }
+
+    public void asyncGetMsg() {
+
+        new AsyncTask<Void, Void, String>() {
+
+            protected void onPreExecute() {
+            };
+
+            @Override
+            protected String doInBackground(Void... params) {
+
+                final Handler h = new Handler();
+                final int delay = 3000;
+
+                h.postDelayed(new Runnable(){
+                    public void run(){
+                        messages.clear();
+                        getMessages();
+                        h.postDelayed(this, delay);
+                    }
+                }, delay);
+
+                return "";
+            }
+
+            @Override
+            protected void onPostExecute(String msg) {
+
+            }
+
+
+        }.execute(null, null, null);
+
     }
 }

@@ -53,6 +53,14 @@ public class MyService extends Service {
 
         initializeComponents();
 
+        if (session.getPartyId() != -1) {
+            Toast.makeText(getApplicationContext(), "updtr", Toast.LENGTH_SHORT).show();
+            updateUserLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 3, locationListener);
+        } else {
+            Toast.makeText(getApplicationContext(), "updt21r", Toast.LENGTH_SHORT).show();
+        }
+
         final Handler h = new Handler();
         final int delay = 4000;
 
@@ -101,11 +109,6 @@ public class MyService extends Service {
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationListener = new GeyouLocationListener(session, geYouService, getApplicationContext());
-        if (session.getPartyId() != -1) {
-            Toast.makeText(getApplicationContext(), "updtr", Toast.LENGTH_SHORT).show();
-            updateUserLocation(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 3, locationListener);
-        }
     }
 
     public void checkForActiveParty() {
@@ -214,6 +217,8 @@ public class MyService extends Service {
         p.setId(session.getPartyId());
 
         pm.setId(session.getPartyMemberId());
+        pm.setUser(u);
+        pm.setParty(p);
         pm.setStatus("A");
         pm.setLastLat(l.getLatitude());
         pm.setLastLong(l.getLongitude());

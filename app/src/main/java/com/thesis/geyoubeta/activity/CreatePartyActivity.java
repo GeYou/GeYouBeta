@@ -375,6 +375,8 @@ public class CreatePartyActivity extends ActionBarActivity {
 
         pm.setId(session.getPartyMemberId());
         pm.setStatus("A");
+        pm.setUser(u);
+        pm.setParty(p);
         pm.setLastLat(l.getLatitude());
         pm.setLastLong(l.getLongitude());
 
