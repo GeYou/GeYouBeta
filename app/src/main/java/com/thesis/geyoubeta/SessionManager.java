@@ -39,7 +39,7 @@ public class SessionManager {
     private static final String PREF_NAME = "GeYouPrefs";
     private static final String IS_LOGIN = "IsLoggedIn";
 
-    private static final String DEFAULT_URL = "http://172.20.10.5:8080/geyou";
+    private static final String DEFAULT_URL = "http://192.168.1.153:8080/geyou";
 
     SharedPreferences pref;
     SharedPreferences.Editor editor;
@@ -144,6 +144,21 @@ public class SessionManager {
         editor.putString(KEY_USER_PASSWORD, u.getPassword());
 
         editor.commit();
+    }
+
+    public void updateActiveParty(Party p) {
+
+        if (p != null) {
+            editor.putInt(KEY_PARTY_ID, p.getId());
+            editor.putString(KEY_PARTY_NAME, p.getName());
+            editor.putString(KEY_PARTY_START, DateFormat.getDateTimeInstance().format(p.getStartDateTime()));
+            editor.putString(KEY_PARTY_END, DateFormat.getDateTimeInstance().format(p.getEndDateTime()));
+            //editor.putString(KEY_PARTY_DEST, p.getDestination());
+            editor.putFloat(KEY_PARTY_DEST_LONG, Float.parseFloat(p.getDestLong().toString()));
+            editor.putFloat(KEY_PARTY_DEST_LAT, Float.parseFloat(p.getDestLat().toString()));
+
+            editor.commit();
+        }
     }
 
     public Integer getUserId() {

@@ -43,6 +43,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -61,6 +63,8 @@ public class MessagesActivity extends ActionBarActivity {
     private EditText eTxtMesssage;
     private Button btnSend;
     private ListView listView;
+
+    private Timer timer;
 
     public ArrayList<Message> messages;
     private MessageListAdapter messageAdapter;
@@ -82,6 +86,8 @@ public class MessagesActivity extends ActionBarActivity {
         session = new SessionManager(getApplicationContext());
         session.checkLogin();
 
+        timer = new Timer();
+
         initializeDrawer();
         initializeRest();
         initializeComponents();
@@ -102,6 +108,20 @@ public class MessagesActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        asyncGetMsg();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        timer.cancel();
+        timer.purge();
     }
 
     public void initializeDrawer() {
@@ -273,21 +293,16 @@ public class MessagesActivity extends ActionBarActivity {
 
             @Override
             protected String doInBackground(Void... params) {
-
-                messages.clear();
-                getMessages();
-
-//                final Handler h = new Handler();
-//                final int delay = 3000;
-//
-//                h.postDelayed(new Runnable(){
-//                    public void run(){
-//                        messages.clear();
-//                        getMessages();
-//                        h.postDelayed(this, delay);
-//                    }
-//                }, delay);
-
+                timer.scheduleAtFixedRate(new TimerTask() {
+                    public void run() {
+                        try {
+                            messages.clear();
+                            getMessages();
+                        } catch (Exception e) {
+                            // TODO: handle exception
+                        }
+                    }
+                }, 0, 1000);
                 return "";
             }
 
@@ -295,9 +310,19 @@ public class MessagesActivity extends ActionBarActivity {
             protected void onPostExecute(String msg) {
 
             }
-
-
         }.execute(null, null, null);
+    }
 
+    private void doSomethingRepeatedly() {
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                try {
+                    asyncGetMsg();
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
+            }
+        }, 0, 1000);
     }
 }
