@@ -326,7 +326,7 @@ public class CreatePartyActivity extends ActionBarActivity {
                     Party p = new Party();
                     LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-                    Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
                     u.setId(session.getUserId());
                     p.setId(session.getPartyId());
@@ -365,7 +365,7 @@ public class CreatePartyActivity extends ActionBarActivity {
 
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        Location l = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location l = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
         User u = new User();
         Party p = new Party();
