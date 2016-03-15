@@ -46,7 +46,7 @@ import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.SessionManager;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
 import com.thesis.geyoubeta.entity.Party;
-import com.thesis.geyoubeta.entity.User;
+import com.thesis.geyoubeta.entity.PartyMember;
 import com.thesis.geyoubeta.parser.DirectionJSONParser;
 import com.thesis.geyoubeta.service.GeYouService;
 
@@ -61,8 +61,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import retrofit.Callback;
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import retrofit.converter.JacksonConverter;
 
 public class MapActivity extends ActionBarActivity implements
@@ -75,7 +80,9 @@ public class MapActivity extends ActionBarActivity implements
     private RestAdapter restAdapter;
     private GeYouService geYouService;
     private NavDrawer navDrawer;
-    private List<User> partyMemberLocation;
+    private List<PartyMember> partyMemberLocation;
+    private Timer timer;
+
     String TITLES[] = {"User Info", "Create Party", "Map", "Messages", "Party Info", "History", "IP Settings", "Logout"};
 
     RecyclerView mRecyclerView;
@@ -89,10 +96,12 @@ public class MapActivity extends ActionBarActivity implements
     public static final String TAG = MapActivity.class.getSimpleName();
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
     private LocationRequest mLocationRequest;
-    TextView tvDistanceDuration;
-    LatLng origin;
-    public LatLng dest = null;
-    ArrayList<LatLng> markerPoints;
+    private TextView tvDistanceDuration;
+    private LatLng origin;
+    private LatLng dest = null;
+    private ArrayList<LatLng> markerPoints;
+    private String url;
+    private DownloadTask downloadTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,92 +127,10 @@ public class MapActivity extends ActionBarActivity implements
                 .setFastestInterval(1 * 1000); // 1 second, in milliseconds
 
         tvDistanceDuration = (TextView) findViewById(R.id.tv_distance_time);
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        String provider = locationManager.getBestProvider(criteria, true);
-        Location location = locationManager.getLastKnownLocation(provider);
-
-        final double originLatitude = location.getLatitude();
-        final double originLongitude = location.getLongitude();
-        final LatLng origin2 = new LatLng(originLatitude, originLongitude);
-        origin = origin2;
-
-        // Initializing
-        markerPoints = new ArrayList<LatLng>();
-
-        // Getting reference to SupportMapFragment of the activity_main
-        SupportMapFragment fm = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
-
-        // Getting Map for the SupportMapFragment
-        mMap = fm.getMap();
-
-
-        if(mMap!=null){
-//            if(getPartyDestination()!=null) {
-//                String url = getDirectionsUrl(origin, getPartyDestination());
-//
-//                DownloadTask downloadTask = new DownloadTask();
-//
-//                // Start downloading json data from Google Directions API
-//                downloadTask.execute(url);
-//            }else{
-//                Toast.makeText(getApplicationContext(), "No party destination.", Toast.LENGTH_SHORT).show();
-//            }
-
-
-            // Enable MyLocation Button in the Map
-
-            mMap.setMyLocationEnabled(true);
-            // Setting onclick event listener for the map
-            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                @Override
-                public void onMapClick(LatLng point) {
-
-                    // Already two locations
-                    if(markerPoints.size()>0){
-                        markerPoints.clear();
-                        mMap.clear();
-                    }
-
-                    // Adding new item to the ArrayList
-                    markerPoints.add(point);
-
-                    // Creating MarkerOptions
-                    MarkerOptions options = new MarkerOptions();
-
-                    // Setting the position of the marker
-                    options.position(point);
-
-                    /**
-                     * For the start location, the color of marker is GREEN and
-                     * for the end location, the color of marker is RED.
-                     */
-                    if(markerPoints.size()==1){
-                        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
-                    }
-
-                    // Add new marker to the Google Map Android API V2
-                    mMap.addMarker(options);
-
-                    // Checks, whether start and end locations are captured
-                    if(markerPoints.size() >= 1) {
-                        LatLng dest2 = markerPoints.get(0);
-                        dest = dest2;
-                        Log.i(TAG, dest.toString());
-                        // Getting URL to the Google Directions API
-                        String url = getDirectionsUrl(origin, dest2);
-
-                        DownloadTask downloadTask = new DownloadTask();
-
-                        // Start downloading json data from Google Directions API
-                        downloadTask.execute(url);
-                        //Location.distanceBetween(originLatitude,originLongitude,dest.latitude,dest.longitude,results);
-                    }
-                }
-            });
-        }
+        timer = new Timer();
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -310,7 +237,85 @@ public class MapActivity extends ActionBarActivity implements
 
     public void initializeComponents() {
         navDrawer = new NavDrawer(this);
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        String provider = locationManager.getBestProvider(criteria, true);
+        Location location = locationManager.getLastKnownLocation(provider);
 
+        final double originLatitude = location.getLatitude();
+        final double originLongitude = location.getLongitude();
+        final LatLng origin2 = new LatLng(originLatitude, originLongitude);
+        origin = origin2;
+
+        // Initializing
+        markerPoints = new ArrayList<LatLng>();
+
+        // Getting reference to SupportMapFragment of the activity_main
+        SupportMapFragment fm = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
+
+        // Getting Map for the SupportMapFragment
+        mMap = fm.getMap();
+
+        if(mMap!=null){
+            mMap.setMyLocationEnabled(true);
+            getPartyDestination();
+            if(dest!=null) {
+                String url = getDirectionsUrl(origin, dest);
+                DownloadTask downloadTask = new DownloadTask();
+                // Start downloading json data from Google Directions API
+                downloadTask.execute(url);
+            }else{
+                Toast.makeText(getApplicationContext(), "No party destination.", Toast.LENGTH_SHORT).show();
+            }
+
+//             //Setting onclick event listener for the map
+//            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+//                @Override
+//                public void onMapClick(LatLng point) {
+//
+//                    // Already two locations
+//                    if(markerPoints.size()>0){
+//                        markerPoints.clear();
+//                        mMap.clear();
+//                    }
+//
+//                    // Adding new item to the ArrayList
+//                    markerPoints.add(point);
+//
+//                    // Creating MarkerOptions
+//                    MarkerOptions options = new MarkerOptions();
+//
+//                    // Setting the position of the marker
+//                    options.position(point);
+//
+//                    /**
+//                     * For the start location, the color of marker is GREEN and
+//                     * for the end location, the color of marker is RED.
+//                     */
+//                    if(markerPoints.size()==1){
+//                        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+//                    }
+//
+//                    // Add new marker to the Google Map Android API V2
+//                    mMap.addMarker(options);
+//
+//                    // Checks, whether start and end locations are captured
+//                    if(markerPoints.size() >= 1) {
+//                        LatLng dest2 = markerPoints.get(0);
+//                        dest = dest2;
+//                        Log.i(TAG, dest.toString());
+//                        // Getting URL to the Google Directions API
+//                        url = getDirectionsUrl(origin, dest2);
+//
+//                        downloadTask = new DownloadTask();
+//
+//                        // Start downloading json data from Google Directions API
+//                        downloadTask.execute(url);
+//                        //Location.distanceBetween(originLatitude,originLongitude,dest.latitude,dest.longitude,results);
+//                    }
+//                }
+//            });
+        }
 
     }
 
@@ -645,21 +650,91 @@ public class MapActivity extends ActionBarActivity implements
         }
     }
 
-    public LatLng getPartyDestination(){
-        Party p = new Party();
-        p.setId(session.getPartyId());
-        double destLong = p.getDestLong();
-        double destLat = p.getDestLat();
+    @Override
+    protected void onStart() {
+        super.onStart();
+        asyncGetPartyMemberLocation();
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
 
-        LatLng destination = new LatLng(destLat,destLong);
-        return destination;
+        timer.cancel();
+        timer.purge();
     }
 
-    private class GeYouLocationReceiver implements Runnable{
+    public void getPartyDestination(){
+        geYouService.getPartyById(session.getPartyId(), new Callback<Party>() {
+            @Override
+            public void success(Party party, Response response) {
+                ;
+                setDestination(party.getDestLat(), party.getDestLong());
+            }
 
-        @Override
-        public void run() {
+            @Override
+            public void failure(RetrofitError error) {
 
+            }
+        });
+    }
+
+    public void setDestination(double latitude, double longitude){
+        dest = new LatLng(latitude, longitude);
+    }
+
+    public void getPartyMemberLocation(){
+        geYouService.getMembersByParty(session.getPartyId(), new Callback<List<PartyMember>>() {
+            @Override
+            public void success(List<PartyMember> partyMembers, Response response) {
+                setPartyMemberLocation(partyMembers);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
+
+    public void setPartyMemberLocation(List<PartyMember> pm){
+        mMap.clear();
+        downloadTask = new DownloadTask();
+        downloadTask.execute(url);
+        LatLng pos;
+        for (PartyMember partyMember: pm){
+            pos = new LatLng(partyMember.getLastLat(), partyMember.getLastLong());
+            mMap.addMarker(new MarkerOptions()
+                .position(pos)
+                    .title(partyMember.getUser().getfName())
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         }
+    }
+
+    public void asyncGetPartyMemberLocation(){
+        new AsyncTask<Void, Void, String>() {
+
+            protected void onPreExecute() {
+
+            }
+
+            @Override
+            protected String doInBackground(Void... params) {
+                timer.scheduleAtFixedRate(new TimerTask() {
+                    public void run() {
+                        try {
+                            getPartyMemberLocation();
+                        } catch (Exception e) {
+                            // TODO: handle exception
+                        }
+                    }
+                }, 0, 3000);
+                return "";
+            }
+
+            @Override
+            protected void onPostExecute(String msg) {
+
+            }
+        }.execute(null, null, null);
     }
 }

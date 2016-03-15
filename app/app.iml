@@ -105,7 +105,6 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/lint" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/manifests" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/ndk" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/multi-dex" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/pre-dexed" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/proguard" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/res" />
@@ -122,8 +121,8 @@
     <orderEntry type="library" exported="" name="play-services-drive-7.8.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-location-7.8.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-nearby-7.8.0" level="project" />
-    <orderEntry type="library" exported="" name="converter-jackson-1.9.0" level="project" />
     <orderEntry type="library" exported="" name="jackson-annotations-2.6.0" level="project" />
+    <orderEntry type="library" exported="" name="converter-jackson-1.9.0" level="project" />
     <orderEntry type="library" exported="" name="circleimageview-1.2.1" level="project" />
     <orderEntry type="library" exported="" name="play-services-ads-7.8.0" level="project" />
     <orderEntry type="library" exported="" name="play-services-panorama-7.8.0" level="project" />
