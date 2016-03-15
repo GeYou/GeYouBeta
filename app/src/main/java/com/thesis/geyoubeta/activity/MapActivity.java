@@ -240,7 +240,7 @@ public class MapActivity extends ActionBarActivity implements
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
         String provider = locationManager.getBestProvider(criteria, true);
-        Location location = locationManager.getLastKnownLocation(provider);
+        Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
         final double originLatitude = location.getLatitude();
         final double originLongitude = location.getLongitude();
