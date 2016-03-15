@@ -20,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.github.jjobes.slidedatetimepicker.SlideDateTimeListener;
 import com.github.jjobes.slidedatetimepicker.SlideDateTimePicker;
@@ -31,6 +32,7 @@ import com.thesis.geyoubeta.service.GeYouService;
 import com.thesis.geyoubeta.SessionManager;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.Date;
 
 import retrofit.Callback;
@@ -203,7 +205,7 @@ public class PartyInfoActivity extends ActionBarActivity {
             @Override
             public void onDateTimeSet(Date date)
             {
-                startDate = date;
+                //startDate = date;
                 eTxtStartTimeStamp.setText(DateFormat.getDateTimeInstance().format(date));
             }
 
@@ -218,7 +220,7 @@ public class PartyInfoActivity extends ActionBarActivity {
             @Override
             public void onDateTimeSet(Date date)
             {
-                endDate = date;
+                //endDate = date;
                 eTxtEndTimeStamp.setText(DateFormat.getDateTimeInstance().format(date));
             }
 
@@ -245,8 +247,12 @@ public class PartyInfoActivity extends ActionBarActivity {
                 Party nParty = new Party();
                 nParty.setId(session.getPartyId());
                 nParty.setName(eTxtName.getText().toString());
-                nParty.setStartDateTime(startDate);
-                nParty.setEndDateTime(endDate);
+                try {
+                    nParty.setStartDateTime(DateFormat.getDateTimeInstance().parse(eTxtStartTimeStamp.getText().toString()));
+                    nParty.setEndDateTime(DateFormat.getDateTimeInstance().parse(eTxtEndTimeStamp.getText().toString()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 nParty.setDestLong(Double.parseDouble(eTxtDestinationLong.getText().toString()));
                 nParty.setDestLat(Double.parseDouble(eTxtDestinationLat.getText().toString()));
 
@@ -320,12 +326,15 @@ public class PartyInfoActivity extends ActionBarActivity {
         eTxtEndTimeStamp.setEnabled(false);
         eTxtDestinationLong.setEnabled(false);
         eTxtDestinationLat.setEnabled(false);
+        btnSave.setEnabled(false);
     }
 
     public void updateParty(Party p) {
         geYouService.updateParty(p, new Callback<Party>() {
             @Override
             public void success(Party party, Response response) {
+                Toast.makeText(getApplicationContext(), "Successfully updated party: " + party.toString(), Toast.LENGTH_LONG).show();
+                session.updateActiveParty(party);
                 resetInputs();
             }
 
