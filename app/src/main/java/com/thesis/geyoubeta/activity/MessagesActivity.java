@@ -197,8 +197,6 @@ public class MessagesActivity extends ActionBarActivity {
 
         getMessages();
 
-        //asyncGetMsg();
-
         listView = (ListView) findViewById(R.id.listViewMessages);
         messageAdapter = new MessageListAdapter(messages, this);
         listView.setAdapter(messageAdapter);
@@ -270,21 +268,25 @@ public class MessagesActivity extends ActionBarActivity {
         new AsyncTask<Void, Void, String>() {
 
             protected void onPreExecute() {
-            };
+
+            }
 
             @Override
             protected String doInBackground(Void... params) {
 
-                final Handler h = new Handler();
-                final int delay = 3000;
+                messages.clear();
+                getMessages();
 
-                h.postDelayed(new Runnable(){
-                    public void run(){
-                        messages.clear();
-                        getMessages();
-                        h.postDelayed(this, delay);
-                    }
-                }, delay);
+//                final Handler h = new Handler();
+//                final int delay = 3000;
+//
+//                h.postDelayed(new Runnable(){
+//                    public void run(){
+//                        messages.clear();
+//                        getMessages();
+//                        h.postDelayed(this, delay);
+//                    }
+//                }, delay);
 
                 return "";
             }
