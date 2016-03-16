@@ -111,10 +111,11 @@ public class MapActivity extends ActionBarActivity implements
         session = new SessionManager(getApplicationContext());
         session.checkLogin();
 
+        setUpMapIfNeeded();
         initializeDrawer();
         initializeRest();
         initializeComponents();
-        setUpMapIfNeeded();
+
         mMap.setMyLocationEnabled(true);
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -237,6 +238,7 @@ public class MapActivity extends ActionBarActivity implements
 
     public void initializeComponents() {
         navDrawer = new NavDrawer(this);
+
         mMap.setMyLocationEnabled(true);
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
@@ -247,77 +249,37 @@ public class MapActivity extends ActionBarActivity implements
         final double originLongitude = location.getLongitude();
         final LatLng origin2 = new LatLng(originLatitude, originLongitude);
         origin = origin2;
-
+        Log.d(TAG,"OGIRIN:"+origin.toString());
         // Initializing
         markerPoints = new ArrayList<LatLng>();
 
-        // Getting reference to SupportMapFragment of the activity_main
-        SupportMapFragment fm = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
+        Log.i(TAG, "get party destination");
+        getPartyDestination();
+    }
+
+    public void drawPath(){
+        SupportMapFragment fm = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
         // Getting Map for the SupportMapFragment
         mMap = fm.getMap();
+        if(dest == null){
+            Log.i(TAG, "destination null");
+        }
+        if (mMap != null) {
 
-        if(mMap!=null){
-            mMap.setMyLocationEnabled(true);
-            getPartyDestination();
-            if(dest!=null) {
-                String url = getDirectionsUrl(origin, dest);
+            if (dest != null) {
+                Log.i(TAG, "destination:"+dest.toString());
+                mMap.addMarker(new MarkerOptions()
+                        .position(dest)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+                url = getDirectionsUrl(origin, dest);
                 DownloadTask downloadTask = new DownloadTask();
                 // Start downloading json data from Google Directions API
                 downloadTask.execute(url);
-            }else{
-                Toast.makeText(getApplicationContext(), "No party destination.", Toast.LENGTH_SHORT).show();
+            } else {
+                Log.i(TAG,"No party destination");
             }
-
-//             //Setting onclick event listener for the map
-//            mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-//                @Override
-//                public void onMapClick(LatLng point) {
-//
-//                    // Already two locations
-//                    if(markerPoints.size()>0){
-//                        markerPoints.clear();
-//                        mMap.clear();
-//                    }
-//
-//                    // Adding new item to the ArrayList
-//                    markerPoints.add(point);
-//
-//                    // Creating MarkerOptions
-//                    MarkerOptions options = new MarkerOptions();
-//
-//                    // Setting the position of the marker
-//                    options.position(point);
-//
-//                    /**
-//                     * For the start location, the color of marker is GREEN and
-//                     * for the end location, the color of marker is RED.
-//                     */
-//                    if(markerPoints.size()==1){
-//                        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
-//                    }
-//
-//                    // Add new marker to the Google Map Android API V2
-//                    mMap.addMarker(options);
-//
-//                    // Checks, whether start and end locations are captured
-//                    if(markerPoints.size() >= 1) {
-//                        LatLng dest2 = markerPoints.get(0);
-//                        dest = dest2;
-//                        Log.i(TAG, dest.toString());
-//                        // Getting URL to the Google Directions API
-//                        url = getDirectionsUrl(origin, dest2);
-//
-//                        downloadTask = new DownloadTask();
-//
-//                        // Start downloading json data from Google Directions API
-//                        downloadTask.execute(url);
-//                        //Location.distanceBetween(originLatitude,originLongitude,dest.latitude,dest.longitude,results);
-//                    }
-//                }
-//            });
-        }
-
+        }else{Log.i(TAG,"Map is null");}
     }
 
     private String getDirectionsUrl(LatLng origin,LatLng dest){
@@ -467,8 +429,8 @@ public class MapActivity extends ActionBarActivity implements
 
                 // Adding all the points in the route to LineOptions
                 lineOptions.addAll(points);
-                lineOptions.width(2);
-                lineOptions.color(Color.RED);
+                lineOptions.width(7);
+                lineOptions.color(Color.rgb(26, 255, 26));
             }
 
             tvDistanceDuration.setText("Distance:"+distance + ", Duration:"+duration);
@@ -550,7 +512,9 @@ public class MapActivity extends ActionBarActivity implements
     @Override
     protected void onStart() {
         super.onStart();
-        asyncGetPartyMemberLocation();
+        if (getPartyMemberLocation()) {
+            asyncGetPartyMemberLocation();
+        }
     }
     @Override
     protected void onStop() {
@@ -656,6 +620,7 @@ public class MapActivity extends ActionBarActivity implements
         mMap.animateCamera(yourLocation);
 
         if(dest!=null) {
+            Log.d(TAG,"location changed, updating distance calculator");
             String url = getDirectionsUrl(latLng, dest);
             DownloadTaskDistance downloadTask = new DownloadTaskDistance();
             downloadTask.execute(url);
@@ -668,8 +633,7 @@ public class MapActivity extends ActionBarActivity implements
         geYouService.getPartyById(session.getPartyId(), new Callback<Party>() {
             @Override
             public void success(Party party, Response response) {
-                ;
-                setDestination(party.getDestLat(), party.getDestLong());
+                setDestination(party);
             }
 
             @Override
@@ -679,15 +643,25 @@ public class MapActivity extends ActionBarActivity implements
         });
     }
 
-    public void setDestination(double latitude, double longitude){
-        dest = new LatLng(latitude, longitude);
+    public void setDestination(Party party){
+        Log.i(TAG, "set party destination");
+        if (party != null){
+            Log.i(TAG,party.getName().toString());
+            dest = new LatLng(party.getDestLat(), party.getDestLong());
+            Log.i(TAG,"Destination: "+ dest.toString());
+            drawPath();
+        }
     }
 
-    public void getPartyMemberLocation(){
+    public boolean getPartyMemberLocation(){
+        final boolean[] retval = {false};
         geYouService.getMembersByParty(session.getPartyId(), new Callback<List<PartyMember>>() {
             @Override
             public void success(List<PartyMember> partyMembers, Response response) {
                 setPartyMemberLocation(partyMembers);
+                if(!partyMembers.isEmpty()){
+                    retval[0] = true;
+                }
             }
 
             @Override
@@ -695,19 +669,35 @@ public class MapActivity extends ActionBarActivity implements
 
             }
         });
+        return retval[0];
     }
 
     public void setPartyMemberLocation(List<PartyMember> pm){
-        mMap.clear();
-        downloadTask = new DownloadTask();
-        downloadTask.execute(url);
-        LatLng pos;
-        for (PartyMember partyMember: pm){
-            pos = new LatLng(partyMember.getLastLat(), partyMember.getLastLong());
+        if(pm.isEmpty()) {
+            Log.i(TAG, "No party member location");
+                Toast.makeText(getApplicationContext(), "No party member location.", Toast.LENGTH_SHORT).show();
+        }else{
+            mMap.clear();
             mMap.addMarker(new MarkerOptions()
-                .position(pos)
-                    .title(partyMember.getUser().getfName())
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                    .position(dest)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
+
+            DownloadTask downloadTask = new DownloadTask();
+            downloadTask.execute(url);
+            LatLng pos;
+            for (PartyMember partyMember : pm) {
+                if (partyMember.getLastLat() !=null && partyMember.getLastLong() != null) {
+                    if(session.getUserId()!=partyMember.getUser().getId()) {
+                        pos = new LatLng(partyMember.getLastLat(), partyMember.getLastLong());
+                        mMap.addMarker(new MarkerOptions()
+                                .position(pos)
+                                .title(partyMember.getUser().getfName())
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                    }
+                }else{
+                    Toast.makeText(getApplicationContext(), partyMember.getUser().getfName() +" is not active.", Toast.LENGTH_SHORT).show();
+                }
+            }
         }
     }
 
