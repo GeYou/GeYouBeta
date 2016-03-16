@@ -235,7 +235,7 @@ public class LoginActivity extends ActionBarActivity {
                         Toast.makeText(getApplicationContext(), "user id: " + session.getUserId(), Toast.LENGTH_SHORT).show();
                         checkActiveParty();
 
-                        Intent i = new Intent(getApplicationContext(), MapActivity.class);
+                        Intent i = new Intent(getApplicationContext(), CreatePartyActivity.class);
                         Intent s = new Intent(getApplicationContext(), MyService.class);
 
                         for(int in = 0; in < 100; in++);
