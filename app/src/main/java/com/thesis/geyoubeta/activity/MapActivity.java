@@ -50,6 +50,7 @@ import com.thesis.geyoubeta.entity.PartyMember;
 import com.thesis.geyoubeta.entity.User;
 import com.thesis.geyoubeta.parser.DirectionJSONParser;
 import com.thesis.geyoubeta.service.GeYouService;
+import com.thesis.geyoubeta.service.MyService;
 
 import org.json.JSONObject;
 
@@ -514,6 +515,7 @@ public class MapActivity extends ActionBarActivity implements
     @Override
     protected void onStart() {
         super.onStart();
+        startService(new Intent(getApplicationContext(), MyService.class));
         if (getPartyMemberLocation()) {
             asyncGetPartyMemberLocation();
         }
@@ -521,6 +523,8 @@ public class MapActivity extends ActionBarActivity implements
     @Override
     protected void onStop() {
         super.onStop();
+
+        stopService(new Intent(getApplicationContext(), MyService.class));
 
         timer.cancel();
         timer.purge();

@@ -29,6 +29,7 @@ import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
 import com.thesis.geyoubeta.entity.History;
 import com.thesis.geyoubeta.service.GeYouService;
 import com.thesis.geyoubeta.SessionManager;
+import com.thesis.geyoubeta.service.MyService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +73,19 @@ public class HistoryActivity extends ActionBarActivity {
         initializeDrawer();
         initializeRest();
         initializeComponents();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        startService(new Intent(getApplicationContext(), MyService.class));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        stopService(new Intent(getApplicationContext(), MyService.class));
     }
 
     @Override

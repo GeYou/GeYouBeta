@@ -16,6 +16,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -232,7 +233,7 @@ public class LoginActivity extends ActionBarActivity {
                     if (user.getId() != null) {
 
                         session.createLoginSession(user);
-                        Toast.makeText(getApplicationContext(), "user id: " + session.getUserId(), Toast.LENGTH_SHORT).show();
+                        Log.i("LOGIN", "user id: " + session.getUserId());
                         checkActiveParty();
 
                         Intent i = new Intent(getApplicationContext(), CreatePartyActivity.class);
@@ -240,7 +241,7 @@ public class LoginActivity extends ActionBarActivity {
 
                         for(int in = 0; in < 100; in++);
 
-                        startService(s);
+                        //startService(s);
                         startActivity(i);
                     }else{
                         Toast.makeText(LoginActivity.this, "Not valid credentials.", Toast.LENGTH_SHORT).show();
@@ -249,7 +250,7 @@ public class LoginActivity extends ActionBarActivity {
 
                 @Override
                 public void failure(RetrofitError error) {
-                    Toast.makeText(getApplicationContext(), "failed", Toast.LENGTH_SHORT).show();
+                    Log.i("LOGIN", "failed");
                 }
             });
         } else {
@@ -262,7 +263,7 @@ public class LoginActivity extends ActionBarActivity {
             @Override
             public void success(PartyMember partyMember, Response response) {
                 if (partyMember.getId() != null) {
-                    Toast.makeText(getApplicationContext(), "Party Mem Id: " + partyMember.getId(), Toast.LENGTH_SHORT).show();
+                    Log.i("LOGIN", "Party Mem Id: " + partyMember.getId());
                     session.setPartyMemberId(partyMember.getId());
                     session.setActiveParty(partyMember.getParty());
                     checkIfHistoryExists();
