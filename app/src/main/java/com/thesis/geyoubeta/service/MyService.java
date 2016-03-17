@@ -14,6 +14,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.thesis.geyoubeta.Listener.GeyouLocationListener;
@@ -208,7 +209,7 @@ public class MyService extends Service {
     }
 
     public void updateUserLocation(Location l){
-        Toast.makeText(getApplicationContext(), "updating location...", Toast.LENGTH_SHORT).show();
+        Log.i("SERVICESSS", "updating location...");
 
         User u = new User();
         Party p = new Party();
@@ -226,7 +227,7 @@ public class MyService extends Service {
         geYouService.editMember(pm, new Callback<PartyMember>() {
             @Override
             public void success(PartyMember partyMember, Response response) {
-                Toast.makeText(getApplicationContext(), "Updated location.", Toast.LENGTH_SHORT).show();
+                Log.i("SERVICESSS", "Updated location.");
             }
 
             @Override

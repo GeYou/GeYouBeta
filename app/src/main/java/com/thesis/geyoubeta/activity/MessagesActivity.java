@@ -37,6 +37,7 @@ import com.thesis.geyoubeta.entity.Party;
 import com.thesis.geyoubeta.entity.User;
 import com.thesis.geyoubeta.service.GeYouService;
 import com.thesis.geyoubeta.SessionManager;
+import com.thesis.geyoubeta.service.MyService;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -113,12 +114,14 @@ public class MessagesActivity extends ActionBarActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        startService(new Intent(getApplicationContext(), MyService.class));
         asyncGetMsg();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        stopService(new Intent(getApplicationContext(), MyService.class));
 
         timer.cancel();
         timer.purge();
