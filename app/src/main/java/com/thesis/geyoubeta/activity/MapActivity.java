@@ -47,6 +47,7 @@ import com.thesis.geyoubeta.SessionManager;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
 import com.thesis.geyoubeta.entity.Party;
 import com.thesis.geyoubeta.entity.PartyMember;
+import com.thesis.geyoubeta.entity.User;
 import com.thesis.geyoubeta.parser.DirectionJSONParser;
 import com.thesis.geyoubeta.service.GeYouService;
 
@@ -487,6 +488,7 @@ public class MapActivity extends ActionBarActivity implements
     public void onLocationChanged(Location location) {
         Log.i(TAG,"location changed");
         handleNewLocation(location);
+        updateUserLocation(location);
     }
 
     @Override
@@ -659,7 +661,7 @@ public class MapActivity extends ActionBarActivity implements
             @Override
             public void success(List<PartyMember> partyMembers, Response response) {
                 setPartyMemberLocation(partyMembers);
-                if(!partyMembers.isEmpty()){
+                if (!partyMembers.isEmpty()) {
                     retval[0] = true;
                 }
             }
@@ -727,5 +729,34 @@ public class MapActivity extends ActionBarActivity implements
 
             }
         }.execute(null, null, null);
+    }
+
+    public void updateUserLocation(Location l){
+        Toast.makeText(getApplicationContext(), "updating location...", Toast.LENGTH_SHORT).show();
+
+        User u = new User();
+        Party p = new Party();
+        PartyMember pm = new PartyMember();
+        u.setId(session.getUserId());
+        p.setId(session.getPartyId());
+
+        pm.setId(session.getPartyMemberId());
+        pm.setUser(u);
+        pm.setParty(p);
+        pm.setStatus("A");
+        pm.setLastLat(l.getLatitude());
+        pm.setLastLong(l.getLongitude());
+
+        geYouService.editMember(pm, new Callback<PartyMember>() {
+            @Override
+            public void success(PartyMember partyMember, Response response) {
+                Toast.makeText(getApplicationContext(), "Updated location.", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
     }
 }
