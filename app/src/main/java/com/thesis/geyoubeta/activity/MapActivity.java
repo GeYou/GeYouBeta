@@ -103,7 +103,10 @@ public class MapActivity extends ActionBarActivity implements
     private LatLng dest = null;
     private ArrayList<LatLng> markerPoints;
     private String url;
-    private DownloadTask downloadTask;
+    private LatLng currentLoc = null;
+    private LatLng pmCurrentLoc =null;
+    private String pmName = "null";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -251,6 +254,8 @@ public class MapActivity extends ActionBarActivity implements
         final double originLongitude = location.getLongitude();
         final LatLng origin2 = new LatLng(originLatitude, originLongitude);
         origin = origin2;
+        currentLoc = origin2;
+
         Log.d(TAG,"OGIRIN:"+origin.toString());
         // Initializing
         markerPoints = new ArrayList<LatLng>();
@@ -268,8 +273,8 @@ public class MapActivity extends ActionBarActivity implements
             Log.i(TAG, "destination null");
         }
         if (mMap != null) {
-
             if (dest != null) {
+//                mMap.clear();
                 Log.i(TAG, "destination:"+dest.toString());
                 mMap.addMarker(new MarkerOptions()
                         .position(dest)
@@ -619,12 +624,15 @@ public class MapActivity extends ActionBarActivity implements
         double currentLongitude = location.getLongitude();
         LatLng latLng = new LatLng(currentLatitude, currentLongitude);
 
+        currentLoc = latLng;
+        Log.d(TAG,"current latlang:"+currentLoc.toString());
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setMapToolbarEnabled(false);
         CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(latLng, 17);
         mMap.animateCamera(yourLocation);
 
+        getPartyMemberLocation();
         if(dest!=null) {
             Log.d(TAG,"location changed, updating distance calculator");
             String url = getDirectionsUrl(latLng, dest);
@@ -690,15 +698,29 @@ public class MapActivity extends ActionBarActivity implements
 
             DownloadTask downloadTask = new DownloadTask();
             downloadTask.execute(url);
-            LatLng pos;
+//            LatLng pos;
             for (PartyMember partyMember : pm) {
                 if (partyMember.getLastLat() !=null && partyMember.getLastLong() != null) {
                     if(session.getUserId()!=partyMember.getUser().getId()) {
-                        pos = new LatLng(partyMember.getLastLat(), partyMember.getLastLong());
-                        mMap.addMarker(new MarkerOptions()
-                                .position(pos)
-                                .title(partyMember.getUser().getfName())
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                        pmCurrentLoc = new LatLng(partyMember.getLastLat(), partyMember.getLastLong());
+                        if(currentLoc!=null) {
+                            Log.i(TAG,"currentLoc not null");
+                            pmName = partyMember.getUser().getfName();
+                            String url = getDirectionsUrl(currentLoc, pmCurrentLoc);
+                            DownloadTaskDistancePm downloadTaskPm = new DownloadTaskDistancePm();
+                            downloadTaskPm.execute(url);
+//                            mMap.addMarker(new MarkerOptions()
+//                                    .position(pm)
+//                                    .title(partyMember.getUser().getfName())
+//                                    .snippet(pmDistance)
+//                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                        }else{
+                            Log.i(TAG,"currentLoc null");
+                            mMap.addMarker(new MarkerOptions()
+                                    .position(pmCurrentLoc)
+                                    .title(partyMember.getUser().getfName())
+                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                        }
                     }
                 }else{
                     Toast.makeText(getApplicationContext(), partyMember.getUser().getfName() +" is not active.", Toast.LENGTH_SHORT).show();
@@ -733,6 +755,89 @@ public class MapActivity extends ActionBarActivity implements
 
             }
         }.execute(null, null, null);
+    }
+
+    private class DownloadTaskDistancePm extends AsyncTask<String, Void, String>{
+        // Downloading data in non-ui thread
+        @Override
+        protected String doInBackground(String... url) {
+
+            // For storing data from web service
+            String data = "";
+
+            try{
+                // Fetching the data from web service
+                data = downloadUrl(url[0]);
+            }catch(Exception e){
+                Log.d("Background Task",e.toString());
+            }
+            return data;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            ParserTaskDistancePm parserTask = new ParserTaskDistancePm();
+            parserTask.execute(result);
+        }
+    }
+
+    private class ParserTaskDistancePm extends AsyncTask<String, Integer, List<List<HashMap<String,String>>> >{
+        // Parsing the data in non-ui thread
+        @Override
+        protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
+
+            JSONObject jObject;
+            List<List<HashMap<String, String>>> routes = null;
+
+            try{
+                jObject = new JSONObject(jsonData[0]);
+                DirectionJSONParser parser = new DirectionJSONParser();
+
+                // Starts parsing data
+                routes = parser.parse(jObject);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            return routes;
+        }
+        // Executes in UI thread, after the parsing process
+        @Override
+        protected void onPostExecute(List<List<HashMap<String, String>>> result) {
+            String distance ="null";
+            String duration = "";
+
+            if(result.size()<1){
+                Toast.makeText(getBaseContext(), "No Points", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            // Traversing through all the routes
+            for(int i=0;i<result.size();i++) {
+                List<HashMap<String, String>> path = result.get(i);
+
+                for (int j = 0; j < path.size(); j++) {
+                    HashMap<String, String> point = path.get(j);
+
+                    if (j == 0) { // Get distance from the list
+                        distance = (String) point.get("distance");
+                        continue;
+                    } else if (j == 1) { // Get duration from the list
+                        duration = (String) point.get("duration");
+                        continue;
+                    }
+                }
+            }
+//            pmDistance = distance;
+//            Log.i(TAG,"PMDISTANCE:" +pmDistance);
+
+            mMap.addMarker(new MarkerOptions()
+                    .position(pmCurrentLoc)
+                    .title(pmName)
+                    .snippet("Distance:"+distance)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+        }
+
     }
 
     public void updateUserLocation(Location l){
