@@ -232,9 +232,9 @@ public class HistoryActivity extends ActionBarActivity {
         for (History history : h) {
             histories.add(history);
         }
-        for (int i = 0; i < histories.size(); i++) {
-            Toast.makeText(getApplicationContext(), i + ": " + histories.get(i), Toast.LENGTH_SHORT).show();
-        }
+//        for (int i = 0; i < histories.size(); i++) {
+//            Toast.makeText(getApplicationContext(), i + ": " + histories.get(i), Toast.LENGTH_SHORT).show();
+//        }
         historyAdapter.notifyDataSetChanged();
     }
 }
