@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -266,16 +267,33 @@ public class PartyMembersActivity extends ActionBarActivity {
                             if (aBoolean) {
                                 Toast.makeText(getApplicationContext(), "User already in the party!", Toast.LENGTH_SHORT).show();
                             } else {
-                                PartyMember pm = new PartyMember();
-                                pm.setUser(u);
-                                pm.setParty(p);
-                                geYouService.addMember(pm, new Callback<PartyMember>() {
+
+                                //check if have active party
+                                geYouService.getActiveParty(u.getId(), new Callback<PartyMember>() {
                                     @Override
                                     public void success(PartyMember partyMember, Response response) {
-                                        eTxtPartyMember.setText("");
-                                        Toast.makeText(getApplicationContext(), "Successfully added to party.", Toast.LENGTH_SHORT).show();
-                                        partyMembers.add(partyMember.getUser().getEmail());
-                                        partyMembersAdapter.notifyDataSetChanged();
+                                        if (partyMember.getId() != null) {
+                                            Toast.makeText(getApplicationContext(), "User already in an active party!", Toast.LENGTH_SHORT).show();
+
+                                        } else {
+                                            PartyMember pm = new PartyMember();
+                                            pm.setUser(u);
+                                            pm.setParty(p);
+                                            geYouService.addMember(pm, new Callback<PartyMember>() {
+                                                @Override
+                                                public void success(PartyMember partyMember, Response response) {
+                                                    eTxtPartyMember.setText("");
+                                                    Toast.makeText(getApplicationContext(), "Successfully added to party.", Toast.LENGTH_SHORT).show();
+                                                    partyMembers.add(partyMember.getUser().getEmail());
+                                                    partyMembersAdapter.notifyDataSetChanged();
+                                                }
+
+                                                @Override
+                                                public void failure(RetrofitError error) {
+
+                                                }
+                                            });
+                                        }
                                     }
 
                                     @Override
