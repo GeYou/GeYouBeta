@@ -251,7 +251,10 @@ public class MapActivity extends ActionBarActivity implements
         final double originLongitude = location.getLongitude();
         final LatLng origin2 = new LatLng(originLatitude, originLongitude);
         origin = origin2;
+        currentLoc = origin2;
+
         pmDistance="null";
+
         Log.d(TAG,"OGIRIN:"+origin.toString());
         // Initializing
         markerPoints = new ArrayList<LatLng>();
@@ -811,8 +814,6 @@ public class MapActivity extends ActionBarActivity implements
 
                     if (j == 0) { // Get distance from the list
                         distance = (String) point.get("distance");
-                        pmDistance = distance;
-                        Log.i(TAG,"PMDISTANCE:" +pmDistance);
                         continue;
                     } else if (j == 1) { // Get duration from the list
                         duration = (String) point.get("duration");
@@ -820,6 +821,8 @@ public class MapActivity extends ActionBarActivity implements
                     }
                 }
             }
+            pmDistance = distance;
+            Log.i(TAG,"PMDISTANCE:" +pmDistance);
         }
 
     }
