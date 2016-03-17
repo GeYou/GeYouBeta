@@ -273,8 +273,8 @@ public class MapActivity extends ActionBarActivity implements
             Log.i(TAG, "destination null");
         }
         if (mMap != null) {
-
             if (dest != null) {
+//                mMap.clear();
                 Log.i(TAG, "destination:"+dest.toString());
                 mMap.addMarker(new MarkerOptions()
                         .position(dest)
@@ -632,6 +632,7 @@ public class MapActivity extends ActionBarActivity implements
         CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(latLng, 17);
         mMap.animateCamera(yourLocation);
 
+        getPartyMemberLocation();
         if(dest!=null) {
             Log.d(TAG,"location changed, updating distance calculator");
             String url = getDirectionsUrl(latLng, dest);
