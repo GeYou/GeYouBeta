@@ -833,7 +833,7 @@ public class MapActivity extends ActionBarActivity implements
             mMap.addMarker(new MarkerOptions()
                     .position(pmCurrentLoc)
                     .title(pmName)
-                    .snippet(distance)
+                    .snippet("Distance:"+distance)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         }
 
