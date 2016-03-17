@@ -9,13 +9,11 @@ package com.thesis.geyoubeta.activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,25 +22,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.thesis.geyoubeta.NavDrawer;
 import com.thesis.geyoubeta.R;
-import com.thesis.geyoubeta.adapter.HistoryListAdapter;
+import com.thesis.geyoubeta.SessionManager;
 import com.thesis.geyoubeta.adapter.MessageListAdapter;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
-import com.thesis.geyoubeta.entity.History;
 import com.thesis.geyoubeta.entity.Message;
 import com.thesis.geyoubeta.entity.Party;
 import com.thesis.geyoubeta.entity.User;
 import com.thesis.geyoubeta.service.GeYouService;
-import com.thesis.geyoubeta.SessionManager;
 import com.thesis.geyoubeta.service.MyService;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -313,7 +305,7 @@ public class MessagesActivity extends ActionBarActivity {
             protected void onPostExecute(String msg) {
 
             }
-        }.execute(null, null, null);
+        }.execute(null,null,null);
     }
 
     private void doSomethingRepeatedly() {

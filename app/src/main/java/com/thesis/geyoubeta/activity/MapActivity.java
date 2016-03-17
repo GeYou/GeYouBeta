@@ -521,9 +521,9 @@ public class MapActivity extends ActionBarActivity implements
     protected void onStart() {
         super.onStart();
         startService(new Intent(getApplicationContext(), MyService.class));
-        if (getPartyMemberLocation()) {
+//        if (getPartyMemberLocation()) {
             asyncGetPartyMemberLocation();
-        }
+
     }
     @Override
     protected void onStop() {
@@ -689,7 +689,7 @@ public class MapActivity extends ActionBarActivity implements
     public void setPartyMemberLocation(List<PartyMember> pm){
         if(pm.isEmpty()) {
             Log.i(TAG, "No party member location");
-                Toast.makeText(getApplicationContext(), "No party member location.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "The party has no other members.", Toast.LENGTH_SHORT).show();
         }else{
             mMap.clear();
             mMap.addMarker(new MarkerOptions()
@@ -746,7 +746,7 @@ public class MapActivity extends ActionBarActivity implements
                             // TODO: handle exception
                         }
                     }
-                }, 0, 3000);
+                }, 0, 8000);
                 return "";
             }
 
