@@ -30,6 +30,7 @@ import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
 import com.thesis.geyoubeta.entity.Party;
 import com.thesis.geyoubeta.service.GeYouService;
 import com.thesis.geyoubeta.SessionManager;
+import com.thesis.geyoubeta.service.MyService;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -86,6 +87,19 @@ public class PartyInfoActivity extends ActionBarActivity {
         initializeComponents();
 
         setDefaults();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        startService(new Intent(getApplicationContext(), MyService.class));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        stopService(new Intent(getApplicationContext(), MyService.class));
     }
 
     @Override

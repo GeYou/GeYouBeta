@@ -32,6 +32,7 @@ import com.thesis.geyoubeta.entity.PartyMember;
 import com.thesis.geyoubeta.entity.User;
 import com.thesis.geyoubeta.service.GeYouService;
 import com.thesis.geyoubeta.SessionManager;
+import com.thesis.geyoubeta.service.MyService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +78,19 @@ public class PartyMembersActivity extends ActionBarActivity {
         initializeDrawer();
         initializeRest();
         initializeComponents();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        startService(new Intent(getApplicationContext(), MyService.class));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        stopService(new Intent(getApplicationContext(), MyService.class));
     }
 
     @Override

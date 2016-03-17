@@ -47,8 +47,10 @@ import com.thesis.geyoubeta.SessionManager;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
 import com.thesis.geyoubeta.entity.Party;
 import com.thesis.geyoubeta.entity.PartyMember;
+import com.thesis.geyoubeta.entity.User;
 import com.thesis.geyoubeta.parser.DirectionJSONParser;
 import com.thesis.geyoubeta.service.GeYouService;
+import com.thesis.geyoubeta.service.MyService;
 
 import org.json.JSONObject;
 
@@ -102,7 +104,8 @@ public class MapActivity extends ActionBarActivity implements
     private ArrayList<LatLng> markerPoints;
     private String url;
     private LatLng currentLoc = null;
-    private String pmDistance;
+    private LatLng pmCurrentLoc =null;
+    private String pmName = "null";
 
 
     @Override
@@ -252,8 +255,6 @@ public class MapActivity extends ActionBarActivity implements
         final LatLng origin2 = new LatLng(originLatitude, originLongitude);
         origin = origin2;
         currentLoc = origin2;
-
-        pmDistance="null";
 
         Log.d(TAG,"OGIRIN:"+origin.toString());
         // Initializing
@@ -493,6 +494,7 @@ public class MapActivity extends ActionBarActivity implements
     public void onLocationChanged(Location location) {
         Log.i(TAG,"location changed");
         handleNewLocation(location);
+        updateUserLocation(location);
     }
 
     @Override
@@ -518,6 +520,7 @@ public class MapActivity extends ActionBarActivity implements
     @Override
     protected void onStart() {
         super.onStart();
+        startService(new Intent(getApplicationContext(), MyService.class));
         if (getPartyMemberLocation()) {
             asyncGetPartyMemberLocation();
         }
@@ -525,6 +528,8 @@ public class MapActivity extends ActionBarActivity implements
     @Override
     protected void onStop() {
         super.onStop();
+
+        stopService(new Intent(getApplicationContext(), MyService.class));
 
         timer.cancel();
         timer.purge();
@@ -667,7 +672,7 @@ public class MapActivity extends ActionBarActivity implements
             @Override
             public void success(List<PartyMember> partyMembers, Response response) {
                 setPartyMemberLocation(partyMembers);
-                if(!partyMembers.isEmpty()){
+                if (!partyMembers.isEmpty()) {
                     retval[0] = true;
                 }
             }
@@ -692,25 +697,26 @@ public class MapActivity extends ActionBarActivity implements
 
             DownloadTask downloadTask = new DownloadTask();
             downloadTask.execute(url);
-            LatLng pos;
+//            LatLng pos;
             for (PartyMember partyMember : pm) {
                 if (partyMember.getLastLat() !=null && partyMember.getLastLong() != null) {
                     if(session.getUserId()!=partyMember.getUser().getId()) {
-                        pos = new LatLng(partyMember.getLastLat(), partyMember.getLastLong());
+                        pmCurrentLoc = new LatLng(partyMember.getLastLat(), partyMember.getLastLong());
                         if(currentLoc!=null) {
                             Log.i(TAG,"currentLoc not null");
-                            String url = getDirectionsUrl(currentLoc, pos);
+                            pmName = partyMember.getUser().getfName();
+                            String url = getDirectionsUrl(currentLoc, pmCurrentLoc);
                             DownloadTaskDistancePm downloadTaskPm = new DownloadTaskDistancePm();
                             downloadTaskPm.execute(url);
-                            mMap.addMarker(new MarkerOptions()
-                                    .position(pos)
-                                    .title(partyMember.getUser().getfName())
-                                    .snippet(pmDistance)
-                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+//                            mMap.addMarker(new MarkerOptions()
+//                                    .position(pm)
+//                                    .title(partyMember.getUser().getfName())
+//                                    .snippet(pmDistance)
+//                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
                         }else{
                             Log.i(TAG,"currentLoc null");
                             mMap.addMarker(new MarkerOptions()
-                                    .position(pos)
+                                    .position(pmCurrentLoc)
                                     .title(partyMember.getUser().getfName())
                                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
                         }
@@ -798,7 +804,7 @@ public class MapActivity extends ActionBarActivity implements
         // Executes in UI thread, after the parsing process
         @Override
         protected void onPostExecute(List<List<HashMap<String, String>>> result) {
-            String distance ="";
+            String distance ="null";
             String duration = "";
 
             if(result.size()<1){
@@ -821,10 +827,44 @@ public class MapActivity extends ActionBarActivity implements
                     }
                 }
             }
-            pmDistance = distance;
-            Log.i(TAG,"PMDISTANCE:" +pmDistance);
+//            pmDistance = distance;
+//            Log.i(TAG,"PMDISTANCE:" +pmDistance);
+
+            mMap.addMarker(new MarkerOptions()
+                    .position(pmCurrentLoc)
+                    .title(pmName)
+                    .snippet(distance)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
         }
 
     }
 
+    public void updateUserLocation(Location l){
+        Toast.makeText(getApplicationContext(), "updating location...", Toast.LENGTH_SHORT).show();
+
+        User u = new User();
+        Party p = new Party();
+        PartyMember pm = new PartyMember();
+        u.setId(session.getUserId());
+        p.setId(session.getPartyId());
+
+        pm.setId(session.getPartyMemberId());
+        pm.setUser(u);
+        pm.setParty(p);
+        pm.setStatus("A");
+        pm.setLastLat(l.getLatitude());
+        pm.setLastLong(l.getLongitude());
+
+        geYouService.editMember(pm, new Callback<PartyMember>() {
+            @Override
+            public void success(PartyMember partyMember, Response response) {
+                Toast.makeText(getApplicationContext(), "Updated location.", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
 }

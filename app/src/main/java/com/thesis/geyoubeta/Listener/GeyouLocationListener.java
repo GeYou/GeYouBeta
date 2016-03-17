@@ -10,6 +10,7 @@ import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.thesis.geyoubeta.SessionManager;
@@ -58,10 +59,10 @@ public class GeyouLocationListener implements LocationListener{
     }
 
     public void updateUserLocation(Location l){
-        Toast.makeText(context, "listener: Updating location...", Toast.LENGTH_SHORT).show();
+        Log.i("LISTENER", "listener: Updating location...");
 
-        Toast.makeText(context, "listener: lat: " +l.getLatitude(), Toast.LENGTH_SHORT).show();
-        Toast.makeText(context, "listener: long: " +l.getLongitude(), Toast.LENGTH_SHORT).show();
+        Log.i("LISTENER", "listener: lat: " + l.getLatitude());
+        Log.i("LISTENER", "listener: long: " + l.getLongitude());
 
         User u = new User();
         Party p = new Party();
@@ -79,12 +80,12 @@ public class GeyouLocationListener implements LocationListener{
         geYouService.editMember(pm, new Callback<PartyMember>() {
             @Override
             public void success(PartyMember partyMember, Response response) {
-                Toast.makeText(context, "listener: Updated location.", Toast.LENGTH_SHORT).show();
+                Log.i("LISTENER", "listener: Updated location.");
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Toast.makeText(context, "listener: failrd Updated location.", Toast.LENGTH_SHORT).show();
+                Log.i("LISTENER", "listener: failrd Updated location.");
             }
         });
     }
