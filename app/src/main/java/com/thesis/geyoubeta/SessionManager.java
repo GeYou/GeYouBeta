@@ -9,6 +9,7 @@ package com.thesis.geyoubeta;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.thesis.geyoubeta.activity.LoginActivity;
@@ -77,7 +78,7 @@ public class SessionManager {
 
             editor.commit();
 
-            Toast.makeText(_context, "Party Name in prefs: " + getPartyName(), Toast.LENGTH_SHORT).show();
+            Log.i("Session: ", "Party Name in prefs: " + getPartyName());
         }
     }
 
@@ -85,7 +86,7 @@ public class SessionManager {
         editor.putInt(KEY_PARTY_MEMBER_ID, id);
         editor.commit();
 
-        Toast.makeText(_context, "Party Mem Id in prefs: " + getPartyMemberId(), Toast.LENGTH_SHORT).show();
+        Log.i("Session: ", "Party Mem Id in prefs: " + getPartyMemberId());
     }
 
     public void clearActiveParty() {

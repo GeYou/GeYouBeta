@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -189,7 +190,7 @@ public class RegisterActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 if (eTxtConfirmPass.getText().toString().equals(eTxtPassword.getText().toString())) {
-                    Toast.makeText(getApplicationContext(), "Passwords match!", Toast.LENGTH_SHORT).show();
+                    Log.i("REGISTER", "Passwords match!");
                     User nUser = new User();
 
                     nUser.setfName(eTxtFName.getText().toString());
@@ -215,12 +216,12 @@ public class RegisterActivity extends ActionBarActivity {
         geYouService.getUserById(1, new Callback<User>() {
             @Override
             public void success(User user, Response response) {
-                Toast.makeText(RegisterActivity.this, "data here : " + user.toString(), Toast.LENGTH_SHORT).show();
+                Log.i("REGISTER: ", "data here : " + user.toString());
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Toast.makeText(RegisterActivity.this, "unsuccessful", Toast.LENGTH_SHORT).show();
+                Log.i("REGISTER: " , "unsuccessful");
             }
         });
     }
@@ -229,7 +230,7 @@ public class RegisterActivity extends ActionBarActivity {
         geYouService.createUser(u, new Callback<User>() {
             @Override
             public void success(User user, Response response) {
-                Toast.makeText(RegisterActivity.this, "Successfully created user:" + user.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(RegisterActivity.this, "Successfully created user", Toast.LENGTH_LONG).show();
                 startActivity(new Intent(getApplicationContext(), LoginActivity.class));
             }
 

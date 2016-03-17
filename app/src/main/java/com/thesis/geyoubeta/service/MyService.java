@@ -50,15 +50,15 @@ public class MyService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, final int startId) {
 
-        Toast.makeText(getApplicationContext(), "Started service.", Toast.LENGTH_SHORT).show();
+        Log.i("Servicess: ", "Started service.");
 
         initializeComponents();
 
         if (session.getPartyId() != -1) {
-            Toast.makeText(getApplicationContext(), "updtr", Toast.LENGTH_SHORT).show();
+            Log.i("Servicess: ", "updtr");
             updateUserLocation(locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER));
         } else {
-            Toast.makeText(getApplicationContext(), "updt21r", Toast.LENGTH_SHORT).show();
+            Log.i("Servicess: ", "updt21r");
         }
 
         final Handler h = new Handler();
@@ -124,7 +124,7 @@ public class MyService extends Service {
 
                     checkIfHistoryExists();
                 } else {
-                    Toast.makeText(getApplicationContext(), "no active party", Toast.LENGTH_SHORT).show();
+                    Log.i("Servicess: ", "no active party");
                 }
             }
 
@@ -157,7 +157,7 @@ public class MyService extends Service {
                     geYouService.addHistory(h, new Callback<History>() {
                         @Override
                         public void success(History history, Response response) {
-                            Toast.makeText(getApplicationContext(), "made history", Toast.LENGTH_SHORT).show();
+                            Log.i("Servicess: ", "made history");
                         }
 
                         @Override
@@ -166,7 +166,7 @@ public class MyService extends Service {
                         }
                     });
                 } else {
-                    Toast.makeText(getApplicationContext(), "has history", Toast.LENGTH_SHORT).show();
+                    Log.i("Servicess: ", "has history");
                 }
             }
 
