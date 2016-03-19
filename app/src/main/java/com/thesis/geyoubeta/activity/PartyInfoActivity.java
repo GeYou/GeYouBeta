@@ -347,7 +347,7 @@ public class PartyInfoActivity extends ActionBarActivity {
         geYouService.updateParty(p, new Callback<Party>() {
             @Override
             public void success(Party party, Response response) {
-                Toast.makeText(getApplicationContext(), "Successfully updated party: " + party.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Successfully updated party", Toast.LENGTH_LONG).show();
                 session.updateActiveParty(party);
                 resetInputs();
             }

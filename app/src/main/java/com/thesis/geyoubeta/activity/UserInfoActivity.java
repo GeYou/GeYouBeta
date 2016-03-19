@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -224,7 +225,7 @@ public class UserInfoActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 if (eTxtConfPass.getText().toString().equals(eTxtPassword.getText().toString())) {
-                    Toast.makeText(getApplicationContext(), "Passwords match!", Toast.LENGTH_SHORT).show();
+                    Log.i("User Info: ", "Passwords match!");
                     User nUser = new User();
 
                     nUser.setId(session.getUserId());
@@ -280,7 +281,7 @@ public class UserInfoActivity extends ActionBarActivity {
         geYouService.updateUser(u, new Callback<User>() {
             @Override
             public void success(User user, Response response) {
-                Toast.makeText(UserInfoActivity.this, "Successfully updated user: " + user.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(UserInfoActivity.this, "Successfully updated user.", Toast.LENGTH_LONG).show();
                 session.updateLoginCredentials(user);
                 resetInputs();
                 btnSave.setEnabled(false);

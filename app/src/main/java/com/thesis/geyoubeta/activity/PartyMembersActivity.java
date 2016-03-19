@@ -217,10 +217,10 @@ public class PartyMembersActivity extends ActionBarActivity {
                     @Override
                     public void success(Boolean aBoolean, Response response) {
                         if (aBoolean) {
-                            Toast.makeText(getApplicationContext(), "User exist.", Toast.LENGTH_SHORT).show();
+                            Log.i("PMEMBERS: ", "User exist.");
                             addPartyMember(eTxtPartyMember.getText().toString());
                         } else {
-                            Toast.makeText(getApplicationContext(), "User does not exist.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "No such user found.", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -283,7 +283,7 @@ public class PartyMembersActivity extends ActionBarActivity {
                                                 @Override
                                                 public void success(PartyMember partyMember, Response response) {
                                                     eTxtPartyMember.setText("");
-                                                    Toast.makeText(getApplicationContext(), "Successfully added to party.", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(getApplicationContext(), "Successfully added user to party.", Toast.LENGTH_SHORT).show();
                                                     partyMembers.add(partyMember.getUser().getEmail());
                                                     partyMembersAdapter.notifyDataSetChanged();
                                                 }
@@ -310,7 +310,7 @@ public class PartyMembersActivity extends ActionBarActivity {
                         }
                     });
                 } else {
-                    Toast.makeText(getApplicationContext(), "Not such user found.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "No such user found.", Toast.LENGTH_SHORT).show();
                 }
             }
 

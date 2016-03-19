@@ -55,7 +55,7 @@ public class LoginActivity extends ActionBarActivity {
     private RestAdapter restAdapter;
     private GeYouService geYouService;
 
-    String TITLES[] = {"IP Settings", "Main"};
+    String TITLES[] = {"IP Settings"};
 
     RecyclerView mRecyclerView;
     RecyclerView.Adapter mAdapter;
@@ -126,8 +126,6 @@ public class LoginActivity extends ActionBarActivity {
                     Intent intent = null;
                     if (recyclerView.getChildPosition(child) == 1) {
                         intent = new Intent(getApplicationContext(), IPSettingsActivity.class);
-                    } else if (recyclerView.getChildPosition(child) == 2) {
-                        intent = new Intent(getApplicationContext(), MainActivity.class);
                     }
 
                     if (intent != null) {
@@ -269,7 +267,7 @@ public class LoginActivity extends ActionBarActivity {
                     checkIfHistoryExists();
 
                 } else {
-                    Toast.makeText(getApplicationContext(), "no active party", Toast.LENGTH_SHORT).show();
+                    Log.i("LOGIN: ", "no active party");
                 }
             }
 
@@ -302,7 +300,7 @@ public class LoginActivity extends ActionBarActivity {
                     geYouService.addHistory(h, new Callback<History>() {
                         @Override
                         public void success(History history, Response response) {
-                            Toast.makeText(getApplicationContext(), "made history", Toast.LENGTH_SHORT).show();
+                            Log.i("LOGIN: ", "made history");
                         }
 
                         @Override
@@ -311,7 +309,7 @@ public class LoginActivity extends ActionBarActivity {
                         }
                     });
                 } else {
-                    Toast.makeText(getApplicationContext(), "has history", Toast.LENGTH_SHORT).show();
+                    Log.i("LOGIN: ", "has history");
                 }
             }
 

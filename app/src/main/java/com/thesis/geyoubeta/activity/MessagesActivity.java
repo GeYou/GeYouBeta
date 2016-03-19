@@ -307,17 +307,4 @@ public class MessagesActivity extends ActionBarActivity {
             }
         }.execute(null,null,null);
     }
-
-    private void doSomethingRepeatedly() {
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            public void run() {
-                try {
-                    asyncGetMsg();
-                } catch (Exception e) {
-                    // TODO: handle exception
-                }
-            }
-        }, 0, 1000);
-    }
 }

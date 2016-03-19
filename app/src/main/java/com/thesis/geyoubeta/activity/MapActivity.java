@@ -841,7 +841,7 @@ public class MapActivity extends ActionBarActivity implements
     }
 
     public void updateUserLocation(Location l){
-        Toast.makeText(getApplicationContext(), "updating location...", Toast.LENGTH_SHORT).show();
+        Log.i("MAPS: ", "updating location...");
 
         User u = new User();
         Party p = new Party();
@@ -859,7 +859,7 @@ public class MapActivity extends ActionBarActivity implements
         geYouService.editMember(pm, new Callback<PartyMember>() {
             @Override
             public void success(PartyMember partyMember, Response response) {
-                Toast.makeText(getApplicationContext(), "Updated location.", Toast.LENGTH_SHORT).show();
+                Log.i("LOGIN: ", "Updated location.");
             }
 
             @Override

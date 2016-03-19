@@ -17,6 +17,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -307,11 +308,11 @@ public class CreatePartyActivity extends ActionBarActivity {
             @Override
             public void success(Party party, Response response) {
                 session.setActiveParty(party);
-                Toast.makeText(CreatePartyActivity.this, "Successfully created party: " + party.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(CreatePartyActivity.this, "Successfully created party" , Toast.LENGTH_LONG).show();
                 addMemberToParty();
                 checkIfHistoryExists();
                 //checkActiveParty();
-                for (int i = 0; i < 20; i++);
+                for (int i = 0; i < 20; i++) ;
                 updateUserLocation();
                 clearInput();
             }
@@ -354,7 +355,7 @@ public class CreatePartyActivity extends ActionBarActivity {
                     geYouService.addHistory(h, new Callback<History>() {
                         @Override
                         public void success(History history, Response response) {
-                            Toast.makeText(getApplicationContext(), "made history", Toast.LENGTH_SHORT).show();
+                            Log.i("CREATE PARTY: ", "made history");
                         }
 
                         @Override
@@ -363,7 +364,7 @@ public class CreatePartyActivity extends ActionBarActivity {
                         }
                     });
                 } else {
-                    Toast.makeText(getApplicationContext(), "has history", Toast.LENGTH_SHORT).show();
+                    Log.i("CREATE PARTY: ", "has history");
                 }
             }
 
@@ -375,7 +376,7 @@ public class CreatePartyActivity extends ActionBarActivity {
     }
 
     public void updateUserLocation(){
-        Toast.makeText(getApplicationContext(), "updating location...", Toast.LENGTH_SHORT).show();
+        Log.i("CREATE PARTY: ", "updating location...");
 
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -397,30 +398,7 @@ public class CreatePartyActivity extends ActionBarActivity {
         geYouService.editMember(pm, new Callback<PartyMember>() {
             @Override
             public void success(PartyMember partyMember, Response response) {
-                Toast.makeText(getApplicationContext(), "Updated location.", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-
-            }
-        });
-    }
-
-    public void checkActiveParty() {
-        geYouService.getActiveParty(session.getUserId(), new Callback<PartyMember>() {
-            @Override
-            public void success(PartyMember partyMember, Response response) {
-                if (partyMember.getId() != null) {
-                    Toast.makeText(getApplicationContext(), "check: Party Mem Id: " + partyMember.getId(), Toast.LENGTH_SHORT).show();
-                    session.setPartyMemberId(partyMember.getId());
-                    session.setActiveParty(partyMember.getParty());
-                    //checkIfHistoryExists();
-                    updateUserLocation();
-
-                } else {
-                    Toast.makeText(getApplicationContext(), "no active party", Toast.LENGTH_SHORT).show();
-                }
+                Log.i("CREATE PARTY: ", "Updated location.");
             }
 
             @Override
