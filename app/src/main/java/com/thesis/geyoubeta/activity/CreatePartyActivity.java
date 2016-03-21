@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.Telephony;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,7 +40,6 @@ import com.thesis.geyoubeta.SessionManager;
 import com.thesis.geyoubeta.service.MyService;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import retrofit.Callback;
@@ -350,6 +348,7 @@ public class CreatePartyActivity extends ActionBarActivity {
                     History h = new History();
                     h.setUser(u);
                     h.setParty(p);
+                    h.setType("R");
                     h.setStartLat(lastKnownLocation.getLatitude());
                     h.setStartLong(lastKnownLocation.getLongitude());
 

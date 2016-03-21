@@ -13,13 +13,16 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.thesis.geyoubeta.NavDrawer;
@@ -199,17 +202,26 @@ public class HistoryActivity extends ActionBarActivity {
         getHistory();
 
         listView = (ListView) findViewById(R.id.listViewHistory);
-        //if (histories != null) {
-            historyAdapter = new HistoryListAdapter(histories, this);
-            listView.setAdapter(historyAdapter);
-            historyAdapter.notifyDataSetChanged();
-//        } else {
-//            ArrayList<String> items = new ArrayList<String>();
-//            items.add("No history");
-//            ArrayAdapter<String> itemAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
-//            listView.setAdapter(itemAdapter);
-//            itemAdapter.notifyDataSetChanged();
-//        }
+        historyAdapter = new HistoryListAdapter(histories, this);
+        listView.setAdapter(historyAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView item = (TextView) view.findViewById(R.id.textViewHistId);
+
+                Intent clickIntent = new Intent(getApplicationContext(), HistoryViewActivity.class);
+                Log.e("TO HISTORY ACTIVITY: ", "id: " + item.getText().toString());
+
+                Bundle b = new Bundle();
+                b.putInt("historyId", Integer.parseInt(item.getText().toString()));
+
+                //clickIntent.putExtra("historyId", item.getText().toString());
+                clickIntent.putExtras(b);
+                startActivity(clickIntent);
+            }
+        });
+        historyAdapter.notifyDataSetChanged();
+
     }
 
     public void getHistory() {

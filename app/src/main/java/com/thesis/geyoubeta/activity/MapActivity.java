@@ -881,6 +881,7 @@ public class MapActivity extends ActionBarActivity implements
         History h = new History();
         h.setUser(u);
         h.setParty(p);
+        h.setType("P");
         h.setStartLat(l.getLatitude());
         h.setStartLong(l.getLongitude());
 

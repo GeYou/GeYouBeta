@@ -154,7 +154,7 @@ public class MyService extends Service {
 //                    h.setStartLat(lastKnownLocation.getLatitude());
 //                    h.setStartLong(lastKnownLocation.getLongitude());
 
-                    addHistory();
+                    addHistory("R");
                 } else {
                     Log.i("Servicess: ", "has history");
                 }
@@ -233,7 +233,7 @@ public class MyService extends Service {
         u.setId(session.getUserId());
     }
 
-    public void addHistory() {
+    public void addHistory(String type) {
         User u = new User();
         Party p = new Party();
 
@@ -245,6 +245,7 @@ public class MyService extends Service {
         History h = new History();
         h.setUser(u);
         h.setParty(p);
+        h.setType(type);
         h.setStartLat(lastKnownLocation.getLatitude());
         h.setStartLong(lastKnownLocation.getLongitude());
 

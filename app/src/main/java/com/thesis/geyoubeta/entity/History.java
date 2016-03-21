@@ -25,6 +25,8 @@ public class History {
 
     private Date userDate;
 
+    private String type;
+
     public Integer getId() {
         return id;
     }
@@ -71,6 +73,14 @@ public class History {
 
     public void setUserDate(Date userDate) {
         this.userDate = userDate;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override

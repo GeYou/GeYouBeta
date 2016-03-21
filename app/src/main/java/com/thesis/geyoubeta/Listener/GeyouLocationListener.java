@@ -103,6 +103,7 @@ public class GeyouLocationListener implements LocationListener{
         History h = new History();
         h.setUser(u);
         h.setParty(p);
+        h.setType("P");
         h.setStartLat(l.getLatitude());
         h.setStartLong(l.getLongitude());
 
