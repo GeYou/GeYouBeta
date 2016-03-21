@@ -6,6 +6,8 @@
 
 package com.thesis.geyoubeta.entity;
 
+import java.util.Date;
+
 /**
  * Created by ivanwesleychua on 16/02/2016.
  */
@@ -20,6 +22,8 @@ public class History {
     private Party party;
 
     private User user;
+
+    private Date userDate;
 
     public Integer getId() {
         return id;
@@ -59,6 +63,14 @@ public class History {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Date getUserDate() {
+        return userDate;
+    }
+
+    public void setUserDate(Date userDate) {
+        this.userDate = userDate;
     }
 
     @Override

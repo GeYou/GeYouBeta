@@ -140,31 +140,21 @@ public class MyService extends Service {
             @Override
             public void success(History history, Response response) {
                 if (history.getId() == null) {
-                    User u = new User();
-                    Party p = new Party();
+//                    User u = new User();
+//                    Party p = new Party();
+//
+//                    Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+//
+//                    u.setId(session.getUserId());
+//                    p.setId(session.getPartyId());
+//
+//                    History h = new History();
+//                    h.setUser(u);
+//                    h.setParty(p);
+//                    h.setStartLat(lastKnownLocation.getLatitude());
+//                    h.setStartLong(lastKnownLocation.getLongitude());
 
-                    Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
-                    u.setId(session.getUserId());
-                    p.setId(session.getPartyId());
-
-                    History h = new History();
-                    h.setUser(u);
-                    h.setParty(p);
-                    h.setStartLat(lastKnownLocation.getLatitude());
-                    h.setStartLong(lastKnownLocation.getLongitude());
-
-                    geYouService.addHistory(h, new Callback<History>() {
-                        @Override
-                        public void success(History history, Response response) {
-                            Log.i("Servicess: ", "made history");
-                        }
-
-                        @Override
-                        public void failure(RetrofitError error) {
-
-                        }
-                    });
+                    addHistory();
                 } else {
                     Log.i("Servicess: ", "has history");
                 }
@@ -243,7 +233,37 @@ public class MyService extends Service {
         u.setId(session.getUserId());
     }
 
+    public void addHistory() {
+        User u = new User();
+        Party p = new Party();
 
+        Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+        u.setId(session.getUserId());
+        p.setId(session.getPartyId());
+
+        History h = new History();
+        h.setUser(u);
+        h.setParty(p);
+        h.setStartLat(lastKnownLocation.getLatitude());
+        h.setStartLong(lastKnownLocation.getLongitude());
+
+        geYouService.addHistory(h, new Callback<History>() {
+            @Override
+            public void success(History history, Response response) {
+                Log.i("Servicess: ", "made history");
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
+
+    //make add history
+    //attach it to on loc change
+    //check other updlate loc to also add history
 
     public void deletePartySession() {
         session.clearActiveParty();

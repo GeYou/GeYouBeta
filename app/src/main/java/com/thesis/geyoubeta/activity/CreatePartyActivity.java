@@ -314,6 +314,7 @@ public class CreatePartyActivity extends ActionBarActivity {
                 //checkActiveParty();
                 for (int i = 0; i < 20; i++) ;
                 updateUserLocation();
+                addHistory();
                 clearInput();
             }
 
@@ -420,6 +421,37 @@ public class CreatePartyActivity extends ActionBarActivity {
             @Override
             public void success(PartyMember partyMember, Response response) {
                 Toast.makeText(CreatePartyActivity.this, "Successfully added user to party", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
+
+    public void addHistory() {
+
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        Location l = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+        User u = new User();
+        Party p = new Party();
+
+        u.setId(session.getUserId());
+        p.setId(session.getPartyId());
+
+        History h = new History();
+        h.setUser(u);
+        h.setParty(p);
+        h.setStartLat(l.getLatitude());
+        h.setStartLong(l.getLongitude());
+
+        geYouService.addHistory(h, new Callback<History>() {
+            @Override
+            public void success(History history, Response response) {
+                Log.i("Servicess: ", "made new history");
             }
 
             @Override

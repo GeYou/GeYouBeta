@@ -91,6 +91,9 @@ public interface GeYouService {
     @GET("/history/getExistingHistory")
     void getExistingHistory(@Query("partyId") Integer partyId, @Query("userId") Integer userId, Callback<History> callback);
 
+    @GET("/history/getHistoryPoints")
+    void getHistoryPoints(@Query("partyId") Integer partyId, @Query("userId") Integer userId, Callback<List<History>> callback);
+
     //PartyMember
 
     @POST("/partyMember/add")

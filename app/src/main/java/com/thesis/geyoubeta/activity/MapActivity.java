@@ -45,6 +45,7 @@ import com.thesis.geyoubeta.NavDrawer;
 import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.SessionManager;
 import com.thesis.geyoubeta.adapter.NavDrawerAdapter;
+import com.thesis.geyoubeta.entity.History;
 import com.thesis.geyoubeta.entity.Party;
 import com.thesis.geyoubeta.entity.PartyMember;
 import com.thesis.geyoubeta.entity.User;
@@ -495,6 +496,7 @@ public class MapActivity extends ActionBarActivity implements
         Log.i(TAG,"location changed");
         handleNewLocation(location);
         updateUserLocation(location);
+        addHistory(location);
     }
 
     @Override
@@ -723,7 +725,7 @@ public class MapActivity extends ActionBarActivity implements
                         }
                     }
                 }else{
-                    Toast.makeText(getApplicationContext(), partyMember.getUser().getfName() +" is not active.", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), partyMember.getUser().getfName() +" is not active.", Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -860,6 +862,32 @@ public class MapActivity extends ActionBarActivity implements
             @Override
             public void success(PartyMember partyMember, Response response) {
                 Log.i("LOGIN: ", "Updated location.");
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
+
+    public void addHistory(Location l) {
+        User u = new User();
+        Party p = new Party();
+
+        u.setId(session.getUserId());
+        p.setId(session.getPartyId());
+
+        History h = new History();
+        h.setUser(u);
+        h.setParty(p);
+        h.setStartLat(l.getLatitude());
+        h.setStartLong(l.getLongitude());
+
+        geYouService.addHistory(h, new Callback<History>() {
+            @Override
+            public void success(History history, Response response) {
+                Log.i("Servicess: ", "made new history");
             }
 
             @Override
