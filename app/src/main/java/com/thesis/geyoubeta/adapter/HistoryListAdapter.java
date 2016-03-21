@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.thesis.geyoubeta.R;
 import com.thesis.geyoubeta.entity.History;
 
 import java.util.ArrayList;
@@ -51,12 +52,17 @@ public class HistoryListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = layoutInflater.inflate(android.R.layout.simple_list_item_2, parent, false);
+            convertView = layoutInflater.inflate(R.layout.history_row, parent, false);
         }
-        TextView destination = (TextView) convertView.findViewById(android.R.id.text1);
-        destination.setText(histories.get(position).getParty().getName());
-        TextView date = (TextView) convertView.findViewById(android.R.id.text2);
-        date.setText(histories.get(position).getParty().getStartDateTime().toString());
+
+        TextView name = (TextView) convertView.findViewById(R.id.textViewHistPartyName);
+        name.setText(histories.get(position).getParty().getName());
+        TextView destLat = (TextView) convertView.findViewById(R.id.textViewHistPartyLat);
+        destLat.setText(histories.get(position).getParty().getDestLat().toString());
+        TextView destLong = (TextView) convertView.findViewById(R.id.textViewHistPartyLong);
+        destLong.setText(histories.get(position).getParty().getDestLong().toString());
+        TextView destLong = (TextView) convertView.findViewById(R.id.textViewHistPartyLong);
+        destLong.setText(histories.get(position)..toString());
         return convertView;
     }
 }
