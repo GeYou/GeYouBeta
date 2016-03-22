@@ -281,7 +281,7 @@ public class MapActivity extends ActionBarActivity implements
                 mMap.addMarker(new MarkerOptions()
                         .position(dest)
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
-                String url = getDirectionsUrl(origin, dest);
+                url = getDirectionsUrl(origin, dest);
                 DL downloadTask = new DL();
                 // Start downloading json data from Google Directions API
                 downloadTask.execute(url);
@@ -994,7 +994,7 @@ public class MapActivity extends ActionBarActivity implements
         String output = "json";
         // Building the url to the web service
         Log.i(TAG, "BINOGO DIRECTIONS URL");
-        url = "https://maps.googleapis.com/maps/api/directions/"+output+"?"+parameters;
+        String url = "https://maps.googleapis.com/maps/api/directions/"+output+"?"+parameters;
         String url2 = "https://maps.googleapis.com/maps/api/directions/"+output+"?"+parameters2;
         Log.d(TAG,url2);
         return url;
