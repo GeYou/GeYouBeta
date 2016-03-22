@@ -9,10 +9,12 @@ package com.thesis.geyoubeta.Listener;
 import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.thesis.geyoubeta.SessionManager;
+import com.thesis.geyoubeta.entity.History;
 import com.thesis.geyoubeta.entity.Party;
 import com.thesis.geyoubeta.entity.PartyMember;
 import com.thesis.geyoubeta.entity.User;
@@ -40,6 +42,7 @@ public class GeyouLocationListener implements LocationListener{
     @Override
     public void onLocationChanged(Location location) {
         updateUserLocation(location);
+        addHistory(location);
     }
 
     @Override
@@ -85,6 +88,33 @@ public class GeyouLocationListener implements LocationListener{
             @Override
             public void failure(RetrofitError error) {
                 Log.i("LISTENER", "listener: failrd Updated location.");
+            }
+        });
+    }
+
+    public void addHistory(Location l) {
+        User u = new User();
+        Party p = new Party();
+
+        u.setId(session.getUserId());
+        p.setId(session.getPartyId());
+
+        History h = new History();
+        h.setUser(u);
+        h.setParty(p);
+        h.setType("P");
+        h.setStartLat(l.getLatitude());
+        h.setStartLong(l.getLongitude());
+
+        geYouService.addHistory(h, new Callback<History>() {
+            @Override
+            public void success(History history, Response response) {
+                Log.i("Servicess: ", "made new history");
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
             }
         });
     }
