@@ -213,9 +213,8 @@ public class HistoryActivity extends ActionBarActivity {
                 Log.e("TO HISTORY ACTIVITY: ", "id: " + item.getText().toString());
 
                 Bundle b = new Bundle();
-                b.putInt("historyId", Integer.parseInt(item.getText().toString()));
+                b.putInt("partyId", Integer.parseInt(item.getText().toString()));
 
-                //clickIntent.putExtra("historyId", item.getText().toString());
                 clickIntent.putExtras(b);
                 startActivity(clickIntent);
             }

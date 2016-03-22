@@ -35,15 +35,18 @@ import retrofit.converter.JacksonConverter;
  */
 public class HistoryListAdapter extends BaseAdapter {
 
+
+
     private ArrayList<History> histories;
     private Context context;
     private LayoutInflater layoutInflater;
     private List<String> partyMemberList;
-    private String partyMemberString;
 
     private RestAdapter restAdapter;
     private GeYouService geYouService;
     private SessionManager session;
+
+    private TextView partyMemba;
 
     public HistoryListAdapter(ArrayList<History> h, Context c) {
         histories = h;
@@ -78,7 +81,9 @@ public class HistoryListAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.history_row, parent, false);
         }
 
-        String partyMem = "here ";
+        Log.i("Get view", "in");
+
+        partyMemba = (TextView) convertView.findViewById(R.id.textViewHistPartyMem);
 
         TextView name = (TextView) convertView.findViewById(R.id.textViewHistPartyName);
         name.setText(histories.get(position).getParty().getName());
@@ -89,23 +94,10 @@ public class HistoryListAdapter extends BaseAdapter {
         TextView partyDateTime = (TextView) convertView.findViewById(R.id.textViewHistDateTime);
         partyDateTime.setText(histories.get(position).getUserDate().toString());
         TextView histId = (TextView) convertView.findViewById(R.id.textViewHistId);
-        histId.setText(histories.get(position).getId().toString());
-
-
-        partyMemberString = "HERE ";
-
-        partyMemberList.clear();
+        histId.setText(histories.get(position).getParty().getId().toString());
 
         getPartyMembers(histories.get(position).getParty().getId());
-//        for (String s : partyMemberList) {
-//            partyMem += " ";
-//            partyMem += s;
-//            Log.e("HEHE", s);
-//            Log.e("HEHE", partyMem);
-//        }
 
-        TextView partyMemba = (TextView) convertView.findViewById(R.id.textViewHistPartyMem);
-        partyMemba.setText(partyMemberList.toString());
 
         return convertView;
     }
@@ -137,10 +129,19 @@ public class HistoryListAdapter extends BaseAdapter {
 
     public void setPM(List<User> u) {
 
+        partyMemberList.clear();
         Log.e("HEHEHEH: ", "ning sud");
         for (User user : u) {
+            Log.i("SetPM", "Add users" + user.getEmail());
             partyMemberList.add(user.getEmail());
-            Log.e("HEHEHEH: ", partyMemberList.toString());
+
+            Log.e("HEHEHEHBEFORE: ", partyMemberList.toString());
+
         }
+        Log.e("HEHEHEHBEFORE: ", partyMemberList.toString());
+        partyMemba.setText(partyMemberList.toString());
+//        partyMemba.setText("Please print ug sakto");
+        Log.i("GetText", ""+ partyMemba.getText());
+//        Log.e("HEHEHEH: ", partyMemberList.toString());
     }
 }
