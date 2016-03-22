@@ -49,7 +49,8 @@ import com.thesis.geyoubeta.entity.History;
 import com.thesis.geyoubeta.entity.Party;
 import com.thesis.geyoubeta.entity.PartyMember;
 import com.thesis.geyoubeta.entity.User;
-import com.thesis.geyoubeta.parser.DirectionJSONParser;
+import com.thesis.geyoubeta.parser.DirectionJSONDijkstra;
+import com.thesis.geyoubeta.parser.DistanceJSONParser;
 import com.thesis.geyoubeta.service.GeYouService;
 import com.thesis.geyoubeta.service.MyService;
 
@@ -280,8 +281,8 @@ public class MapActivity extends ActionBarActivity implements
                 mMap.addMarker(new MarkerOptions()
                         .position(dest)
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)));
-                url = getDirectionsUrl(origin, dest);
-                DownloadTask downloadTask = new DownloadTask();
+                String url = getDirectionsUrl(origin, dest);
+                DL downloadTask = new DL();
                 // Start downloading json data from Google Directions API
                 downloadTask.execute(url);
             } else {
@@ -389,7 +390,7 @@ public class MapActivity extends ActionBarActivity implements
 
             try{
                 jObject = new JSONObject(jsonData[0]);
-                DirectionJSONParser parser = new DirectionJSONParser();
+                DistanceJSONParser parser = new DistanceJSONParser();
 
                 // Starts parsing data
                 routes = parser.parse(jObject);
@@ -441,7 +442,7 @@ public class MapActivity extends ActionBarActivity implements
                 lineOptions.color(Color.rgb(26, 255, 26));
             }
 
-            tvDistanceDuration.setText("Distance:"+distance + ", Duration:"+duration);
+//            tvDistanceDuration.setText("Distance:"+distance + ", Duration:"+duration);
             // Drawing polyline in the Google Map for the i-th route
             mMap.addPolyline(lineOptions);
         }
@@ -574,7 +575,7 @@ public class MapActivity extends ActionBarActivity implements
 
             try{
                 jObject = new JSONObject(jsonData[0]);
-                DirectionJSONParser parser = new DirectionJSONParser();
+                DistanceJSONParser parser = new DistanceJSONParser();
 
                 // Starts parsing data
                 routes = parser.parse(jObject);
@@ -795,7 +796,7 @@ public class MapActivity extends ActionBarActivity implements
 
             try{
                 jObject = new JSONObject(jsonData[0]);
-                DirectionJSONParser parser = new DirectionJSONParser();
+                DistanceJSONParser parser = new DistanceJSONParser();
 
                 // Starts parsing data
                 routes = parser.parse(jObject);
@@ -896,5 +897,106 @@ public class MapActivity extends ActionBarActivity implements
 
             }
         });
+    }
+
+    private class DL extends AsyncTask<String, Void, String>{
+        // Downloading data in non-ui thread
+        //List<LatLng> retVal;
+        @Override
+        protected String doInBackground(String... url) {
+            Log.i(TAG, "BINOGO DOWNLOAD URL");
+            // For storing data from web service
+            String data = "";
+
+            try{
+                // Fetching the data from web service
+                data = downloadUrl(url[0]);
+            }catch(Exception e){
+                Log.d("Background Task",e.toString());
+            }
+            return data;
+        }
+        // Executes in UI thread, after the execution of
+        // doInBackground()
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            Log.i(TAG, "BINOGO DOWNLOAD URL");
+            PT parserTask = new PT();
+            // Invokes the thread for parsing the JSON data
+            parserTask.execute(result);
+        }
+    }
+
+    private class PT extends AsyncTask<String, Integer, List<LatLng>> {
+        // Parsing the data in non-ui thread
+        List<LatLng> retVal;
+        @Override
+        protected List<LatLng> doInBackground(String... jsonData) {
+            Log.i(TAG, "BINOGO DOWNLOAD URL");
+            JSONObject jObject;
+            List <LatLng> routes = null;
+
+            try{
+                jObject = new JSONObject(jsonData[0]);
+                DirectionJSONDijkstra parser = new DirectionJSONDijkstra();
+
+                // Starts parsing data
+                routes = parser.parse(jObject);
+                Log.d("URL","PTeaw");
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            return routes;
+        }
+        // Executes in UI thread, after the parsing process
+        @Override
+        protected void onPostExecute(List<LatLng> result) {
+            Log.i(TAG, "BINOGO POST DOWNLOAD URL");
+            Log.d("POST", String.valueOf(result.size()));
+            parseRetVal(result);
+        }
+
+        public void parseRetVal(List<LatLng> res){
+            String waypoint="";
+            for(LatLng point:res){
+                if(point!=res.get(0)&&point!=res.get(res.size()-1)){
+                    if(point!=res.get(res.size()-2)){
+                        waypoint = waypoint.concat(String .valueOf(point.latitude)+","+String.valueOf(point.longitude)+"|");
+                    }else{
+                        waypoint = waypoint.concat(String .valueOf(point.latitude)+","+String.valueOf(point.longitude));
+                    }
+                }
+            }
+            Log.d("WAYPOINT", waypoint);
+            String url = getDirectionsWayPointsUrl(res.get(res.size()-1), res.get(0), waypoint);
+            DownloadTask downloadTask = new DownloadTask();
+            downloadTask.execute(url);
+        }
+    }
+
+    private String getDirectionsWayPointsUrl(LatLng origin,LatLng dest, String waypoint){
+
+        // Origin of route
+        String str_origin = "origin="+origin.latitude+","+origin.longitude;
+
+        // Destination of route
+        String str_dest = "destination="+dest.latitude+","+dest.longitude;
+        // Sensor enabled
+        String waypoints = "waypoints="+waypoint;
+
+        String API = "key=AIzaSyAVFXzFyuw3noxN6_yLviSUW_dipgJJQSo";
+
+        // Building the parameters to the web service
+        String parameters = str_origin+"&"+str_dest+"&"+API;
+        String parameters2 = str_origin+"&"+str_dest+"&"+waypoints+"&"+API;
+        // Output format
+        String output = "json";
+        // Building the url to the web service
+        Log.i(TAG, "BINOGO DIRECTIONS URL");
+        url = "https://maps.googleapis.com/maps/api/directions/"+output+"?"+parameters;
+        String url2 = "https://maps.googleapis.com/maps/api/directions/"+output+"?"+parameters2;
+        Log.d(TAG,url2);
+        return url;
     }
 }
