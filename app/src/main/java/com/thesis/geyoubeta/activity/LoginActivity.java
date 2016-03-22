@@ -294,6 +294,7 @@ public class LoginActivity extends ActionBarActivity {
                     History h = new History();
                     h.setUser(u);
                     h.setParty(p);
+                    h.setType("R");
                     h.setStartLat(lastKnownLocation.getLatitude());
                     h.setStartLong(lastKnownLocation.getLongitude());
 
