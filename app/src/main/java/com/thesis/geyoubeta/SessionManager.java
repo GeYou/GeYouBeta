@@ -40,7 +40,7 @@ public class SessionManager {
     private static final String PREF_NAME = "GeYouPrefs";
     private static final String IS_LOGIN = "IsLoggedIn";
 
-    private static final String DEFAULT_URL = "http://192.168.2.101:8080/geyou";
+    private static final String DEFAULT_URL = "http://192.168.1.153:8080/geyou";
 
     SharedPreferences pref;
     SharedPreferences.Editor editor;
